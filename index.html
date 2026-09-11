@@ -10,9 +10,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Tangerine:wght@400;700&family=Cormorant+Infant:ital@0;1&display=swap" rel="stylesheet">
 
 <style>
-/* ======================================================
-   CONFIGURACIÓN — TOKENS DE DISEÑO
-   ====================================================== */
 :root{
   --ivory:        #F4EEE1;
   --ivory-deep:   #ECE3D0;
@@ -34,9 +31,7 @@
 }
 
 *{ box-sizing:border-box; margin:0; padding:0; }
-
 html{ scroll-behavior:smooth; }
-
 body{
   font-family:var(--serif);
   background:var(--ivory);
@@ -53,30 +48,25 @@ a{ color:inherit; text-decoration:none; }
 button{ font-family:inherit; cursor:pointer; }
 :focus-visible{ outline:2px solid var(--gold); outline-offset:3px; }
 
-/* Textura de papel sutil */
 .paper-texture{
   background-image:
     radial-gradient(circle at 20% 20%, rgba(46,42,34,0.03) 0%, transparent 45%),
     radial-gradient(circle at 80% 60%, rgba(46,42,34,0.025) 0%, transparent 50%);
 }
 
-/* ======================================================
-   ANIMACIONES GENERALES DE APARICIÓN (SCROLL & LOAD)
-   ====================================================== */
 .animate-on-scroll {
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
-
 .animate-on-scroll.is-visible {
   opacity: 1;
   transform: translateY(0);
 }
 
 /* ======================================================
-   1. PANTALLA INICIAL — SOBRE / PORTADA
+   PANTALLA INICIAL — SOBRE INTERACTIVO REAL
    ====================================================== */
 #envelope-screen{
   position:fixed;
@@ -85,12 +75,9 @@ button{ font-family:inherit; cursor:pointer; }
   display:flex;
   align-items:center;
   justify-content:center;
-  background:var(--ivory);
-  cursor:pointer;
-  transition:opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 1.2s ease;
-}
-.paper-texture#envelope-screen{
-  background-color:var(--ivory);
+  background:#E5DCB8;
+  background-image: radial-gradient(circle, #EFE8D0 0%, #D8CEAA 100%);
+  transition:opacity 1s ease 0.6s, visibility 1s ease 0.6s;
 }
 #envelope-screen.hidden{
   opacity:0;
@@ -107,7 +94,7 @@ button{ font-family:inherit; cursor:pointer; }
   font-size:0.85rem;
   letter-spacing:0.04em;
   color:var(--ink-soft);
-  z-index:5;
+  z-index:10;
 }
 .lang-switch button{
   background:none;
@@ -126,87 +113,123 @@ button{ font-family:inherit; cursor:pointer; }
 }
 .lang-switch .sep{ color:var(--line); }
 
-.envelope-content{
-  text-align:center;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:28px;
-  padding:20px;
-  animation: envelope-content-in 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-@keyframes envelope-content-in {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Contenedor del sobre 3D */
+.envelope-wrapper {
+  position: relative;
+  width: min(90vw, 420px);
+  height: min(60vw, 280px);
+  cursor: pointer;
+  perspective: 1000px;
+  filter: drop-shadow(0 15px 35px rgba(46,42,34,0.22));
 }
 
-/* Sello de cera simulado */
-.wax-seal{
-  width:112px;
-  height:112px;
-  border-radius:50%;
-  background:
-    radial-gradient(circle at 35% 30%, #C97F60 0%, var(--clay) 45%, #8F4530 100%);
-  box-shadow:
-    0 10px 24px rgba(139,69,48,0.35),
-    inset 0 3px 6px rgba(255,255,255,0.25),
-    inset 0 -6px 10px rgba(0,0,0,0.25);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  position:relative;
-  animation:seal-breathe 4.5s ease-in-out infinite;
-}
-@keyframes seal-breathe{
-  0%,100%{ transform:scale(1); }
-  50%{ transform:scale(1.035); }
-}
-.wax-seal::before{
-  content:"";
-  position:absolute;
-  inset:8px;
-  border-radius:50%;
-  border:1px solid rgba(255,240,230,0.35);
-}
-.wax-seal svg{
-  width:46px;
-  height:46px;
-  fill:none;
-  stroke:#F4E3D6;
-  stroke-width:1.1;
-  opacity:0.9;
+.envelope {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #F4EEE1;
+  border-radius: 4px;
 }
 
-.envelope-content .seal-caption{
-  font-family:var(--serif);
-  font-style:italic;
-  font-size:1.05rem;
-  color:var(--ink-soft);
-  letter-spacing:0.02em;
-  max-width:280px;
-  line-height:1.5;
+/* Solapa superior del sobre */
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: min(45vw, 210px) solid transparent;
+  border-right: min(45vw, 210px) solid transparent;
+  border-top: min(30vw, 140px) solid #E4D8C2;
+  transform-origin: top;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 4;
 }
 
-.envelope-content .invite-names{
-  font-family:var(--script);
-  font-size:4.5rem;
-  color:var(--olive-deep);
-  line-height:1;
-  margin-top:6px;
+/* Bolsillo frontal del sobre */
+.envelope-pocket {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(0 30%, 50% 70%, 100% 30%, 100% 100%, 0 100%);
+  background: #ECE3D0;
+  z-index: 3;
 }
 
-.envelope-content .tap-hint{
-  margin-top:10px;
-  font-size:0.78rem;
-  text-transform:uppercase;
-  letter-spacing:0.18em;
-  color:var(--ink-soft);
-  opacity:0.75;
-  animation:hint-pulse 2.4s ease-in-out infinite;
+/* Tarjeta interior que asoma al abrir */
+.envelope-letter {
+  position: absolute;
+  bottom: 10px;
+  left: 5%;
+  width: 90%;
+  height: 85%;
+  background: #FFFFFF;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+  z-index: 2;
 }
-@keyframes hint-pulse{
-  0%,100%{ opacity:0.45; }
-  50%{ opacity:0.85; }
+
+.envelope-letter .names {
+  font-family: var(--script);
+  font-size: 3.5rem;
+  color: var(--olive-deep);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.envelope-letter .hint {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--clay);
+  margin-top: 8px;
+}
+
+/* Sello de cera sobre la solapa */
+.wax-seal {
+  position: absolute;
+  top: min(24vw, 110px);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #C97F60 0%, var(--clay) 45%, #8F4530 100%);
+  box-shadow: 0 6px 16px rgba(139,69,48,0.4), inset 0 2px 4px rgba(255,255,255,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+.wax-seal svg {
+  width: 30px;
+  height: 30px;
+  fill: none;
+  stroke: #F4E3D6;
+  stroke-width: 1.2;
+}
+
+/* Estados al hacer clic / abrir */
+.envelope-wrapper.open .envelope-flap {
+  transform: rotateX(180deg);
+  z-index: 1;
+}
+.envelope-wrapper.open .wax-seal {
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+}
+.envelope-wrapper.open .envelope-letter {
+  transform: translateY(-45px);
 }
 
 /* ======================================================
@@ -215,14 +238,13 @@ button{ font-family:inherit; cursor:pointer; }
 #invitation{
   opacity:0;
   transform:translateY(20px);
-  transition:opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s, transform 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+  transition:opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.2s, transform 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
 }
 #invitation.revealed{
   opacity:1;
   transform:translateY(0);
 }
 
-/* Cabecera con animación de entrada elegante */
 header.hero{
   min-height:100svh;
   display:flex;
@@ -232,36 +254,14 @@ header.hero{
   text-align:center;
   position:relative;
   padding:80px 24px 60px;
-  background:
-    linear-gradient(180deg, var(--ivory) 0%, var(--ivory-deep) 100%);
+  background: linear-gradient(180deg, var(--ivory) 0%, var(--ivory-deep) 100%);
 }
 header.hero .ornament{
   width:1px;
-  height:0;
+  height:64px;
   background:linear-gradient(180deg, transparent, var(--gold));
   margin-bottom:24px;
-  animation: grow-line 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
 }
-@keyframes grow-line {
-  to { height: 64px; }
-}
-header.hero .eyebrow,
-header.hero h1,
-header.hero .date-line,
-header.hero .place-line {
-  opacity: 0;
-  transform: translateY(15px);
-  animation: hero-fade-in 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-header.hero .eyebrow { animation-delay: 0.6s; }
-header.hero h1 { animation-delay: 0.8s; }
-header.hero .date-line { animation-delay: 1.0s; }
-header.hero .place-line { animation-delay: 1.2s; }
-
-@keyframes hero-fade-in {
-  to { opacity: 1; transform: translateY(0); }
-}
-
 header.hero h1{
   font-family:var(--script);
   font-size:clamp(4.2rem, 15vw, 8.5rem);
@@ -304,6 +304,12 @@ header.hero .place-line{
 }
 .music-toggle:hover{ transform:scale(1.06); }
 .music-toggle svg{ width:20px; height:20px; stroke:var(--olive-deep); fill:none; stroke-width:1.4; }
+.music-toggle .bars{
+  display:none;
+  gap:3px;
+  align-items:flex-end;
+  height:18px;
+}
 .music-toggle .bar{
   width:2px;
   background:var(--clay);
@@ -311,12 +317,6 @@ header.hero .place-line{
   animation:bar-bounce 0.9s ease-in-out infinite;
 }
 .music-toggle.playing .bars{ display:flex; }
-.music-toggle .bars{
-  display:none;
-  gap:3px;
-  align-items:flex-end;
-  height:18px;
-}
 .music-toggle .bars .bar:nth-child(1){ height:8px; animation-delay:0s; }
 .music-toggle .bars .bar:nth-child(2){ height:16px; animation-delay:.15s; }
 .music-toggle .bars .bar:nth-child(3){ height:11px; animation-delay:.3s; }
@@ -325,7 +325,6 @@ header.hero .place-line{
   50%{ transform:scaleY(1); }
 }
 
-/* Secciones genéricas */
 .section{
   padding:100px 24px;
   max-width:760px;
@@ -356,9 +355,6 @@ header.hero .place-line{
   margin:22px auto 0;
 }
 
-/* ======================================================
-   SECCIÓN 1 — CUENTA ATRÁS
-   ====================================================== */
 #countdown{
   background:var(--olive-deep);
   color:var(--ivory);
@@ -366,10 +362,7 @@ header.hero .place-line{
   padding-left: 24px;
   padding-right: 24px;
 }
-#countdown .section-inner {
-  max-width: 760px;
-  margin: 0 auto;
-}
+#countdown .section-inner { max-width: 760px; margin: 0 auto; }
 #countdown .section-head h2{ color:var(--ivory); }
 #countdown .section-head .kicker{ color:var(--clay-soft); }
 
@@ -388,10 +381,7 @@ header.hero .place-line{
   text-align:center;
   transition: transform 0.3s ease;
 }
-.countdown-card:hover {
-  transform: translateY(-4px);
-  background:rgba(244,238,225,0.1);
-}
+.countdown-card:hover { transform: translateY(-4px); }
 .countdown-card .num{
   font-size:clamp(1.8rem, 6vw, 2.6rem);
   font-weight:500;
@@ -406,9 +396,6 @@ header.hero .place-line{
   color:var(--clay-soft);
 }
 
-/* ======================================================
-   SECCIÓN 2 — LOCALIZACIÓN
-   ====================================================== */
 .venue-card{
   border:1px solid var(--line);
   border-radius:var(--radius-m);
@@ -423,17 +410,14 @@ header.hero .place-line{
 .venue-image{
   width:100%;
   aspect-ratio:16/9;
-  background:
-    linear-gradient(155deg, #7C8A66 0%, #5B6B4F 45%, #3E4A35 100%);
+  background: linear-gradient(155deg, #7C8A66 0%, #5B6B4F 45%, #3E4A35 100%);
   position:relative;
   display:flex;
   align-items:center;
   justify-content:center;
 }
 .venue-image svg{ width:64px; height:64px; stroke:rgba(244,238,225,0.65); fill:none; stroke-width:1.1; }
-.venue-body{
-  padding:32px 28px 34px;
-}
+.venue-body{ padding:32px 28px 34px; }
 .venue-kicker-small{
   font-size:0.72rem;
   letter-spacing:0.12em;
@@ -447,11 +431,7 @@ header.hero .place-line{
   color:var(--olive-deep);
   margin-bottom:4px;
 }
-.venue-body .venue-address{
-  font-size:0.95rem;
-  color:var(--ink-soft);
-  margin-bottom:18px;
-}
+.venue-body .venue-address{ font-size:0.95rem; color:var(--ink-soft); margin-bottom:18px; }
 .venue-schedule{
   display:flex;
   flex-wrap:wrap;
@@ -482,9 +462,6 @@ header.hero .place-line{
 .btn-maps svg{ width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:1.6; }
 .btn-maps:hover{ background:var(--olive-deep); color:var(--ivory); transform: translateY(-2px); }
 
-/* ======================================================
-   SECCIÓN 3 — PROGRAMA / TIMELINE
-   ====================================================== */
 .timeline{
   position:relative;
   margin-top:12px;
@@ -499,10 +476,7 @@ header.hero .place-line{
   width:1px;
   background:var(--line);
 }
-.timeline-item{
-  position:relative;
-  padding-bottom:38px;
-}
+.timeline-item{ position:relative; padding-bottom:38px; }
 .timeline-item:last-child{ padding-bottom:0; }
 .timeline-item .dot{
   position:absolute;
@@ -518,13 +492,8 @@ header.hero .place-line{
   justify-content:center;
   transition: background 0.3s, transform 0.3s;
 }
-.timeline-item:hover .dot {
-  background: var(--gold);
-  transform: scale(1.1);
-}
-.timeline-item:hover .dot svg {
-  stroke: var(--ivory);
-}
+.timeline-item:hover .dot { background: var(--gold); transform: scale(1.1); }
+.timeline-item:hover .dot svg { stroke: var(--ivory); }
 .timeline-item .dot svg{ width:10px; height:10px; stroke:var(--clay); fill:none; stroke-width:1.6; transition: stroke 0.3s; }
 .timeline-item .time{
   font-size:0.78rem;
@@ -533,18 +502,9 @@ header.hero .place-line{
   color:var(--clay);
   margin-bottom:3px;
 }
-.timeline-item .title{
-  font-size:1.15rem;
-  color:var(--ink);
-}
+.timeline-item .title{ font-size:1.15rem; color:var(--ink); }
 
-/* ======================================================
-   SECCIÓN 4 — FAQ
-   ====================================================== */
-.faq-item{
-  border-bottom:1px solid var(--line);
-  transition: background 0.3s;
-}
+.faq-item{ border-bottom:1px solid var(--line); }
 .faq-item summary{
   list-style:none;
   padding:20px 4px;
@@ -556,12 +516,7 @@ header.hero .place-line{
   color:var(--ink);
 }
 .faq-item summary::-webkit-details-marker{ display:none; }
-.faq-item summary .plus{
-  flex-shrink:0;
-  width:20px;
-  height:20px;
-  position:relative;
-}
+.faq-item summary .plus{ flex-shrink:0; width:20px; height:20px; position:relative; }
 .faq-item summary .plus::before,
 .faq-item summary .plus::after{
   content:"";
@@ -578,26 +533,14 @@ header.hero .place-line{
   color:var(--ink-soft);
   line-height:1.6;
   max-width:62ch;
-  animation: fadeInAnswer 0.5s ease;
-}
-@keyframes fadeInAnswer {
-  from { opacity: 0; transform: translateY(-6px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
-/* ======================================================
-   SECCIÓN 5 — REGALOS
-   ====================================================== */
 .gift-box{
   text-align:center;
   border:1px solid var(--line);
   border-radius:var(--radius-m);
   padding:44px 30px;
   background:var(--ivory-deep);
-  transition: transform 0.3s;
-}
-.gift-box:hover {
-  transform: translateY(-2px);
 }
 .gift-box .gift-icon{
   width:38px;
@@ -607,12 +550,7 @@ header.hero .place-line{
   fill:none;
   stroke-width:1.2;
 }
-.gift-box p{
-  color:var(--ink-soft);
-  line-height:1.7;
-  max-width:48ch;
-  margin:0 auto 22px;
-}
+.gift-box p{ color:var(--ink-soft); line-height:1.7; max-width:48ch; margin:0 auto 22px; }
 .btn-iban{
   display:inline-block;
   padding:12px 26px;
@@ -624,32 +562,17 @@ header.hero .place-line{
   border: none;
   transition: background 0.3s, transform 0.2s;
 }
-.btn-iban:hover {
-  background: var(--olive);
-  transform: translateY(-2px);
-}
+.btn-iban:hover { background: var(--olive); transform: translateY(-2px); }
 #iban-reveal{
   margin-top:22px;
   padding-top:22px;
   border-top:1px dashed var(--line);
   display:none;
 }
-#iban-reveal.shown{ display:block; animation: fadeInAnswer 0.5s ease; }
-#iban-reveal .iban-number{
-  font-size:1.15rem;
-  letter-spacing:0.06em;
-  color:var(--olive-deep);
-  font-weight:500;
-}
-#iban-reveal .iban-name{
-  margin-top:4px;
-  font-size:0.85rem;
-  color:var(--ink-soft);
-}
+#iban-reveal.shown{ display:block; }
+#iban-reveal .iban-number{ font-size:1.15rem; letter-spacing:0.06em; color:var(--olive-deep); font-weight:500; }
+#iban-reveal .iban-name{ margin-top:4px; font-size:0.85rem; color:var(--ink-soft); }
 
-/* ======================================================
-   RSVP
-   ====================================================== */
 #rsvp{
   background:var(--olive-deep);
   color:var(--ivory);
@@ -657,10 +580,7 @@ header.hero .place-line{
   padding-left: 24px;
   padding-right: 24px;
 }
-#rsvp .section-inner {
-  max-width: 760px;
-  margin: 0 auto;
-}
+#rsvp .section-inner { max-width: 760px; margin: 0 auto; }
 #rsvp .section-head h2{ color:var(--ivory); }
 #rsvp .section-head .kicker{ color:var(--clay-soft); }
 #rsvp .section-head p.sub{
@@ -673,13 +593,7 @@ header.hero .place-line{
   line-height:1.6;
 }
 
-.rsvp-form{
-  display:flex;
-  flex-direction:column;
-  gap:22px;
-  max-width: 760px;
-  margin: 0 auto;
-}
+.rsvp-form{ display:flex; flex-direction:column; gap:22px; max-width: 760px; margin: 0 auto; }
 .field label{
   display:block;
   font-size:0.78rem;
@@ -690,7 +604,6 @@ header.hero .place-line{
 }
 .field input[type="text"],
 .field input[type="email"],
-.field input[type="number"],
 .field textarea{
   width:100%;
   background:rgba(244,238,225,0.06);
@@ -700,25 +613,13 @@ header.hero .place-line{
   color:var(--ivory);
   font-family:var(--serif);
   font-size:1rem;
-  transition: border-color 0.3s, background 0.3s;
 }
-.field input:focus, .field textarea:focus {
-  border-color: var(--clay-soft);
-  background:rgba(244,238,225,0.1);
-}
-.field input::placeholder,
-.field textarea::placeholder{ color:rgba(244,238,225,0.4); }
+.field input:focus, .field textarea:focus { border-color: var(--clay-soft); background:rgba(244,238,225,0.1); }
+.field input::placeholder, .field textarea::placeholder{ color:rgba(244,238,225,0.4); }
 .field textarea{ resize:vertical; min-height:90px; }
 
-.radio-group,
-.checkbox-group{
-  display:flex;
-  flex-wrap:wrap;
-  gap:12px;
-}
-.radio-pill{
-  position:relative;
-}
+.radio-group, .checkbox-group{ display:flex; flex-wrap:wrap; gap:12px; }
+.radio-pill{ position:relative; }
 .radio-pill input{ position:absolute; opacity:0; inset:0; cursor:pointer; }
 .radio-pill span{
   display:inline-block;
@@ -726,32 +627,14 @@ header.hero .place-line{
   border:1px solid rgba(244,238,225,0.3);
   border-radius:30px;
   font-size:0.92rem;
-  transition:background .25s, border-color .25s, color .25s, transform .2s;
+  transition:background .25s, border-color .25s, color .25s;
 }
-.radio-pill span:hover {
-  transform: translateY(-2px);
-}
-.radio-pill input:checked + span{
-  background:var(--clay);
-  border-color:var(--clay);
-  color:#fff;
-}
-.radio-pill input:focus-visible + span{ outline:2px solid var(--gold); outline-offset:2px; }
+.radio-pill input:checked + span{ background:var(--clay); border-color:var(--clay); color:#fff; }
 
-.checkbox-row{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-size:0.92rem;
-  cursor: pointer;
-}
+.checkbox-row{ display:flex; align-items:center; gap:10px; font-size:0.92rem; cursor: pointer; }
 .checkbox-row input{ width:16px; height:16px; accent-color:var(--clay); }
 
-.guest-count-wrap{
-  display:flex;
-  align-items:center;
-  gap:16px;
-}
+.guest-count-wrap{ display:flex; align-items:center; gap:16px; }
 .stepper{
   display:flex;
   align-items:center;
@@ -759,22 +642,9 @@ header.hero .place-line{
   border-radius:30px;
   overflow:hidden;
 }
-.stepper button{
-  width:40px;
-  height:40px;
-  background:none;
-  border:none;
-  color:var(--ivory);
-  font-size:1.2rem;
-  transition: background 0.2s;
-}
+.stepper button{ width:40px; height:40px; background:none; border:none; color:var(--ivory); font-size:1.2rem; }
 .stepper button:hover{ background:rgba(244,238,225,0.15); }
-.stepper span{
-  width:36px;
-  text-align:center;
-  font-size:1.05rem;
-  font-variant-numeric:tabular-nums;
-}
+.stepper span{ width:36px; text-align:center; font-size:1.05rem; }
 
 #attend-conditional{
   display:flex;
@@ -785,10 +655,7 @@ header.hero .place-line{
   opacity:0;
   transition:max-height .5s cubic-bezier(0.16, 1, 0.3, 1), opacity .4s ease;
 }
-#attend-conditional.open{
-  max-height:900px;
-  opacity:1;
-}
+#attend-conditional.open{ max-height:900px; opacity:1; }
 
 .btn-submit{
   align-self:flex-start;
@@ -802,32 +669,14 @@ header.hero .place-line{
   transition:background .3s, transform .2s;
 }
 .btn-submit:hover{ background:#A65840; transform: translateY(-2px); }
-.btn-submit:active{ transform:scale(0.98); }
-.btn-submit:disabled{ opacity:0.6; cursor:default; transform: none; }
-
-.form-status{
-  font-size:0.9rem;
-  min-height:22px;
-  color:var(--clay-soft);
-}
+.form-status{ font-size:0.9rem; min-height:22px; color:var(--clay-soft); }
 .form-status.success{ color:#C9DDB0; }
 .form-status.error{ color:#E8A98F; }
 
-/* Confirmación tras enviar */
-#rsvp-success{
-  display:none;
-  text-align:center;
-  padding:20px 0;
-}
-#rsvp-success.shown{ display:block; animation: fadeInAnswer 0.6s ease; }
-#rsvp-success .script{
-  font-family:var(--script);
-  font-size:3rem;
-  color:var(--ivory);
-  margin-bottom:10px;
-}
+#rsvp-success{ display:none; text-align:center; padding:20px 0; }
+#rsvp-success.shown{ display:block; }
+#rsvp-success .script{ font-family:var(--script); font-size:3rem; color:var(--ivory); margin-bottom:10px; }
 
-/* Footer */
 footer{
   padding:60px 24px 48px;
   text-align:center;
@@ -836,50 +685,36 @@ footer{
   font-size:0.85rem;
   border-top: 1px solid rgba(244,238,225,0.1);
 }
-footer .footer-names{
-  font-family:var(--script);
-  font-size:2.4rem;
-  color:var(--ivory);
-  margin-bottom:8px;
-}
-
-/* Responsive */
-@media (max-width:560px){
-  .section{ padding:76px 20px; }
-  .countdown-grid{ gap:8px; }
-  .countdown-card{ padding:16px 4px; }
-  header.hero h1{ font-size:clamp(3.6rem, 18vw, 6rem); }
-  .venue-schedule{ gap:8px 20px; }
-}
+footer .footer-names{ font-family:var(--script); font-size:2.4rem; color:var(--ivory); margin-bottom:8px; }
 </style>
 </head>
 <body>
 
-<!-- ======================================================
-     PANTALLA INICIAL — SOBRE
-     ====================================================== -->
-<div id="envelope-screen" class="paper-texture" role="button" tabindex="0" aria-label="Toca para abrir la invitación">
+<!-- PANTALLA INICIAL: SOBRE REAL -->
+<div id="envelope-screen" role="button" tabindex="0" aria-label="Toca para abrir la invitación">
   <div class="lang-switch" role="group" aria-label="Selector de idioma">
     <button type="button" class="active" data-lang="es">ES</button>
     <span class="sep">/</span>
     <button type="button" data-lang="fr">FR</button>
   </div>
 
-  <div class="envelope-content">
-    <div class="wax-seal" aria-hidden="true">
-      <svg viewBox="0 0 24 24"><path d="M12 3l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7z"/></svg>
+  <div class="envelope-wrapper" id="envelopeWrapper">
+    <div class="envelope">
+      <div class="envelope-flap"></div>
+      <div class="envelope-pocket"></div>
+      <div class="envelope-letter">
+        <div class="names">Carolina &amp; Daniel</div>
+        <p class="hint" data-i18n="tap-hint">Toca para abrir</p>
+      </div>
+      <div class="wax-seal" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M12 3l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7z"/></svg>
+      </div>
     </div>
-    <p class="seal-caption" data-i18n="seal-caption">Esta invitación es exclusiva para ti</p>
-    <div class="invite-names">Carolina &amp; Daniel</div>
-    <p class="tap-hint" data-i18n="tap-hint">Toca para abrir</p>
   </div>
 </div>
 
-<!-- ======================================================
-     INVITACIÓN COMPLETA
-     ====================================================== -->
+<!-- INVITACIÓN PRINCIPAL -->
 <div id="invitation" class="paper-texture">
-
   <button class="music-toggle" id="musicToggle" aria-label="Reproducir música" aria-pressed="false">
     <svg id="musicIconPlay" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
     <div class="bars" id="musicBars">
@@ -887,7 +722,6 @@ footer .footer-names{
     </div>
   </button>
 
-  <!-- CABECERA -->
   <header class="hero">
     <div class="ornament"></div>
     <p class="eyebrow" data-i18n="hero-eyebrow">Nos casamos</p>
@@ -896,7 +730,6 @@ footer .footer-names{
     <p class="place-line" id="eventVenueShort">Casa de Burgos, Madrid</p>
   </header>
 
-  <!-- SECCIÓN 1 — CUENTA ATRÁS -->
   <section class="section animate-on-scroll" id="countdown">
     <div class="section-inner">
       <div class="section-head">
@@ -904,34 +737,20 @@ footer .footer-names{
         <h2 data-i18n="countdown-title">Cuenta atrás para el gran día</h2>
       </div>
       <div class="countdown-grid" aria-live="off">
-        <div class="countdown-card">
-          <div class="num" id="cd-days">00</div>
-          <div class="label" data-i18n="countdown-days">Días</div>
-        </div>
-        <div class="countdown-card">
-          <div class="num" id="cd-hours">00</div>
-          <div class="label" data-i18n="countdown-hours">Horas</div>
-        </div>
-        <div class="countdown-card">
-          <div class="num" id="cd-minutes">00</div>
-          <div class="label" data-i18n="countdown-minutes">Minutos</div>
-        </div>
-        <div class="countdown-card">
-          <div class="num" id="cd-seconds">00</div>
-          <div class="label" data-i18n="countdown-seconds">Segundos</div>
-        </div>
+        <div class="countdown-card"><div class="num" id="cd-days">00</div><div class="label" data-i18n="countdown-days">Días</div></div>
+        <div class="countdown-card"><div class="num" id="cd-hours">00</div><div class="label" data-i18n="countdown-hours">Horas</div></div>
+        <div class="countdown-card"><div class="num" id="cd-minutes">00</div><div class="label" data-i18n="countdown-minutes">Minutos</div></div>
+        <div class="countdown-card"><div class="num" id="cd-seconds">00</div><div class="label" data-i18n="countdown-seconds">Segundos</div></div>
       </div>
     </div>
   </section>
 
-  <!-- SECCIÓN 2 — LOCALIZACIÓN -->
   <section class="section animate-on-scroll" id="location">
     <div class="section-head">
       <div class="kicker" data-i18n="location-kicker">El lugar</div>
       <h2 data-i18n="location-title">Dónde celebramos</h2>
     </div>
 
-    <!-- Iglesia / ceremonia -->
     <div class="venue-card">
       <div class="venue-image">
         <svg viewBox="0 0 24 24"><path d="M12 3l7 4v14H5V7z"/><path d="M9 21v-7h6v7"/><path d="M12 3v4"/><path d="M10 5h4"/></svg>
@@ -950,7 +769,6 @@ footer .footer-names{
       </div>
     </div>
 
-    <!-- Lugar del banquete -->
     <div class="venue-card" style="margin-top:28px;">
       <div class="venue-image">
         <svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.4"/></svg>
@@ -972,7 +790,6 @@ footer .footer-names{
     </div>
   </section>
 
-  <!-- SECCIÓN 3 — PROGRAMA DEL DÍA -->
   <section class="section animate-on-scroll" id="program">
     <div class="section-head">
       <div class="kicker" data-i18n="program-kicker">El día</div>
@@ -981,7 +798,6 @@ footer .footer-names{
     <div class="timeline" id="timelineList"></div>
   </section>
 
-  <!-- SECCIÓN 4 — FAQ -->
   <section class="section animate-on-scroll" id="faq">
     <div class="section-head">
       <div class="kicker" data-i18n="faq-kicker">Dudas</div>
@@ -990,7 +806,6 @@ footer .footer-names{
     <div id="faqList"></div>
   </section>
 
-  <!-- SECCIÓN 5 — REGALOS -->
   <section class="section animate-on-scroll" id="gifts">
     <div class="section-head">
       <div class="kicker" data-i18n="gifts-kicker">Detalle</div>
@@ -1007,9 +822,6 @@ footer .footer-names{
     </div>
   </section>
 
-  <!-- ======================================================
-       RSVP — FORMULARIO DE ASISTENCIA
-       ====================================================== -->
   <section class="section animate-on-scroll" id="rsvp">
     <div class="section-inner">
       <div class="section-head">
@@ -1019,7 +831,6 @@ footer .footer-names{
       </div>
 
       <form class="rsvp-form" id="rsvpForm" novalidate>
-
         <div class="field">
           <label for="fullName" data-i18n="form-name">Nombre completo *</label>
           <input type="text" id="fullName" name="fullName" placeholder="Nombre y apellidos" required>
@@ -1045,7 +856,6 @@ footer .footer-names{
         </div>
 
         <div id="attend-conditional" class="open">
-
           <div class="field">
             <label data-i18n="form-guests">Número de invitados (incluyéndote)</label>
             <div class="guest-count-wrap">
@@ -1077,7 +887,6 @@ footer .footer-names{
             <label for="messageToCouple" data-i18n="form-message">Mensaje para los novios (opcional)</label>
             <textarea id="messageToCouple" name="messageToCouple" placeholder="Escríbenos unas palabras..."></textarea>
           </div>
-
         </div>
 
         <button type="submit" class="btn-submit" id="submitBtn" data-i18n="form-submit">Enviar confirmación</button>
@@ -1095,7 +904,6 @@ footer .footer-names{
     <div class="footer-names">Carolina &amp; Daniel</div>
     <p data-i18n="footer-text">16 de abril de 2027 · Casa de Burgos, Madrid</p>
   </footer>
-
 </div>
 
 <script>
@@ -1140,7 +948,6 @@ const WEDDING_CONFIG = {
 
 const I18N = {
   es: {
-    "seal-caption":"Esta invitación es exclusiva para ti",
     "tap-hint":"Toca para abrir",
     "hero-eyebrow":"Nos casamos",
     "countdown-kicker":"Queda poco",
@@ -1170,7 +977,6 @@ const I18N = {
     "footer-text":"16 de abril de 2027 · Casa de Burgos, Madrid"
   },
   fr: {
-    "seal-caption":"Cette invitation vous est exclusivement destinée",
     "tap-hint":"Touchez pour ouvrir",
     "hero-eyebrow":"Nous nous marions",
     "countdown-kicker":"Plus que quelques jours",
@@ -1233,18 +1039,21 @@ document.querySelectorAll(".lang-switch button").forEach(btn=>{
 });
 
 const envelopeScreen = document.getElementById("envelope-screen");
+const envelopeWrapper = document.getElementById("envelopeWrapper");
 const invitation = document.getElementById("invitation");
 
-function openInvitation(){
+function openEnvelope(e){
+  if(e) e.stopPropagation();
+  envelopeWrapper.classList.add("open");
   envelopeScreen.classList.add("hidden");
   invitation.classList.add("revealed");
   document.body.style.overflow = "auto";
 }
-document.body.style.overflow = "hidden";
 
-envelopeScreen.addEventListener("click", openInvitation);
+document.body.style.overflow = "hidden";
+envelopeScreen.addEventListener("click", openEnvelope);
 envelopeScreen.addEventListener("keydown", (e)=>{
-  if(e.key === "Enter" || e.key === " "){ e.preventDefault(); openInvitation(); }
+  if(e.key === "Enter" || e.key === " "){ e.preventDefault(); openEnvelope(); }
 });
 
 function updateEventDateLong(){
@@ -1409,7 +1218,7 @@ rsvpForm.addEventListener("submit", async (e)=>{
         body: JSON.stringify(payload)
       });
     } else {
-      console.log("RSVP (modo demo, sin webhook configurado):", payload);
+      console.log("RSVP (modo demo):", payload);
       await new Promise(res => setTimeout(res, 500));
     }
 
@@ -1420,19 +1229,10 @@ rsvpForm.addEventListener("submit", async (e)=>{
     formStatus.textContent = I18N[currentLang]["form-error"];
     formStatus.classList.add("error");
     submitBtn.disabled = false;
-    console.error("Error al enviar RSVP:", err);
   }
 });
 
-/* ============================================================
-   OBSERVER PARA ANIMAR AL HACER SCROLL
-   ============================================================ */
-const observerOptions = {
-  root: null,
-  rootMargin: '0px 0px -50px 0px',
-  threshold: 0.15
-};
-
+const observerOptions = { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.15 };
 const observer = new IntersectionObserver((entries, observer) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -1442,9 +1242,7 @@ const observer = new IntersectionObserver((entries, observer) => {
   });
 }, observerOptions);
 
-document.querySelectorAll('.animate-on-scroll').forEach(section => {
-  observer.observe(section);
-});
+document.querySelectorAll('.animate-on-scroll').forEach(section => observer.observe(section));
 
 applyLang("es");
 </script>
