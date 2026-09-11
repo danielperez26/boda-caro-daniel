@@ -11,16 +11,16 @@
 
 <style>
 :root{
-  --ivory:        #F4EEE1;
-  --ivory-deep:   #ECE3D0;
-  --olive:        #5B6B4F;
-  --olive-deep:   #3E4A35;
+  --ivory:        #F6F5F0;       
+  --ivory-deep:   #EBE8DE;       
+  --olive:        #6B7A5E;       
+  --olive-deep:   #444E3B;       
   --clay:         #B9694F;
   --clay-soft:    #D79B84;
-  --gold:         #A8823F;
-  --ink:          #2E2A22;
-  --ink-soft:     #6B6152;
-  --line:         rgba(46,42,34,0.18);
+  --gold:         #8FA8C4;       
+  --ink:          #2C3029;       
+  --ink-soft:     #5E6559;
+  --line:         rgba(107,122,94,0.18);
 
   --serif: 'Cormorant Garamond', serif;
   --script: 'Tangerine', cursive;
@@ -45,12 +45,12 @@ body{
 
 a{ color:inherit; text-decoration:none; }
 button{ font-family:inherit; cursor:pointer; }
-:focus-visible{ outline:2px solid var(--gold); outline-offset:3px; }
+:focus-visible{ outline:2px solid var(--olive); outline-offset:3px; }
 
 .paper-texture{
   background-image:
-    radial-gradient(circle at 20% 20%, rgba(46,42,34,0.03) 0%, transparent 45%),
-    radial-gradient(circle at 80% 60%, rgba(46,42,34,0.025) 0%, transparent 50%);
+    radial-gradient(circle at 20% 20%, rgba(107,122,94,0.03) 0%, transparent 45%),
+    radial-gradient(circle at 80% 60%, rgba(107,122,94,0.025) 0%, transparent 50%);
 }
 
 .animate-on-scroll {
@@ -74,10 +74,10 @@ button{ font-family:inherit; cursor:pointer; }
   display:flex;
   align-items:center;
   justify-content:center;
-  background:#E5DCB8;
+  background:#E3E7DE;
   background-image: 
-    radial-gradient(circle at 50% 40%, rgba(255,253,245,0.7) 0%, rgba(216,206,170,0.9) 100%),
-    repeating-linear-gradient(45deg, rgba(46,42,34,0.01) 0, rgba(46,42,34,0.01) 2px, transparent 0, transparent 4px);
+    radial-gradient(circle at 50% 40%, rgba(255,255,255,0.8) 0%, rgba(210,218,202,0.9) 100%),
+    repeating-linear-gradient(45deg, rgba(107,122,94,0.01) 0, rgba(107,122,94,0.01) 2px, transparent 0, transparent 4px);
   transition:opacity 1s ease 0.6s, visibility 1s ease 0.6s;
 }
 #envelope-screen.hidden{
@@ -93,10 +93,10 @@ button{ font-family:inherit; cursor:pointer; }
   display:flex;
   gap:8px;
   font-size:0.85rem;
-  background: rgba(244, 238, 225, 0.85);
+  background: rgba(246, 245, 240, 0.85);
   padding: 4px 10px;
   border-radius: 20px;
-  border: 1px solid rgba(46,42,34,0.12);
+  border: 1px solid rgba(107,122,94,0.12);
   backdrop-filter: blur(4px);
   z-index:10;
 }
@@ -115,81 +115,79 @@ button{ font-family:inherit; cursor:pointer; }
   color: #fff;
 }
 .lang-switch button:hover:not(.active){
-  color:var(--clay);
+  color:var(--olive);
 }
 .lang-switch .sep{ color:var(--line); align-self: center; font-size: 0.75rem; }
 
-/* Contenedor del sobre tipo carta clásica */
 .envelope-container {
   position: relative;
   width: min(92vw, 400px);
   height: min(130vw, 560px);
   cursor: pointer;
   perspective: 1200px;
-  filter: drop-shadow(0 20px 40px rgba(46,42,34,0.25));
+  filter: drop-shadow(0 20px 40px rgba(68,78,59,0.22));
 }
 
 .envelope-card-bg {
   position: absolute;
   inset: 0;
-  background: #F5EFE6;
+  background: #F0EFEA;
   background-image: 
-    radial-gradient(circle at 50% 30%, rgba(255,255,255,0.8) 0%, transparent 70%),
+    radial-gradient(circle at 50% 30%, rgba(255,255,255,0.9) 0%, transparent 70%),
     url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
   border-radius: 4px;
-  border: 1px solid rgba(168, 130, 63, 0.25);
+  border: 1px solid rgba(107, 122, 94, 0.25);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 40px 30px;
   text-align: center;
-  box-shadow: inset 0 0 40px rgba(185, 155, 120, 0.15);
+  box-shadow: inset 0 0 40px rgba(107, 122, 94, 0.1);
   transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Solapa superior del sobre que se pliega */
 .envelope-top-flap {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 50%;
-  background: #EBE1D0;
-  background-image: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(0,0,0,0.04) 100%);
+  background: #E2E6DE;
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(0,0,0,0.04) 100%);
   clip-path: polygon(0 0, 100% 0, 50% 100%);
   transform-origin: top;
   transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 4;
-  border-bottom: 1px solid rgba(168, 130, 63, 0.15);
+  border-bottom: 1px solid rgba(107, 122, 94, 0.15);
 }
 
-/* Texto impreso en el fondo del sobre */
 .envelope-text {
   font-family: var(--script);
-  font-size: clamp(2.4rem, 8vw, 3.2rem);
-  color: #4A4238;
-  line-height: 1.15;
-  margin-top: 60px;
+  font-size: clamp(2.3rem, 7.5vw, 2.9rem);
+  color: #444E3B;
+  line-height: 1.2;
+  margin-top: 20px;
+  max-width: 280px;
+  text-align: center;
   font-weight: 400;
-  text-shadow: 0 1px 1px rgba(255,255,255,0.6);
+  text-shadow: 0 1px 1px rgba(255,255,255,0.7);
+  z-index: 2;
 }
 
-/* Sello de lacre claro con el ángel */
 .wax-seal-badge {
-  position: absolute;
-  top: 48%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 92px;
-  height: 92px;
+  position: relative;
+  margin-top: 25px;
+  width: 86px;
+  height: 86px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #FAF6EE 0%, #E6DEC9 65%, #C9BFA7 100%);
-  box-shadow: 0 8px 22px rgba(46,42,34,0.18), inset 0 2px 4px rgba(255,255,255,0.9), inset 0 -3px 6px rgba(130,115,90,0.25);
+  background: radial-gradient(circle at 35% 30%, #F5F6F2 0%, #D8DEC9 65%, #BAC4B0 100%);
+  box-shadow: 0 6px 18px rgba(68,78,59,0.18), inset 0 2px 4px rgba(255,255,255,0.9), inset 0 -3px 6px rgba(107,122,94,0.25);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 6;
+  flex-shrink: 0;
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
 }
 
@@ -198,28 +196,26 @@ button{ font-family:inherit; cursor:pointer; }
   position: absolute;
   inset: 4px;
   border-radius: 50%;
-  border: 1px dashed rgba(130, 115, 90, 0.4);
+  border: 1px dashed rgba(107, 122, 94, 0.4);
 }
 
-/* Ilustración SVG del Querubín con carta */
 .cherub-svg {
-  width: 62px;
-  height: 62px;
-  fill: #6E5F4C;
+  width: 52px;
+  height: 52px;
+  fill: #5E6E52;
 }
 
-/* Animación de apertura */
 .envelope-container.open .envelope-top-flap {
   transform: rotateX(180deg);
   z-index: 1;
 }
 .envelope-container.open .wax-seal-badge {
-  transform: translate(-50%, -50%) scale(0) rotate(45deg);
+  transform: scale(0) rotate(45deg);
   opacity: 0;
 }
 .envelope-container.open .envelope-card-bg {
   transform: scale(1.03);
-  box-shadow: 0 30px 60px rgba(46,42,34,0.3);
+  box-shadow: 0 30px 60px rgba(68,78,59,0.28);
 }
 
 /* ======================================================
@@ -249,7 +245,7 @@ header.hero{
 header.hero .ornament{
   width:1px;
   height:64px;
-  background:linear-gradient(180deg, transparent, var(--gold));
+  background:linear-gradient(180deg, transparent, var(--olive));
   margin-bottom:24px;
 }
 header.hero h1{
@@ -266,7 +262,7 @@ header.hero .date-line{
   color:var(--ink-soft);
 }
 header.hero .date-line strong{
-  color:var(--clay);
+  color:var(--olive);
   font-weight:500;
 }
 header.hero .place-line{
@@ -285,7 +281,7 @@ header.hero .place-line{
   border-radius:50%;
   background:var(--ivory);
   border:1px solid var(--line);
-  box-shadow:0 6px 18px rgba(46,42,34,0.18);
+  box-shadow:0 6px 18px rgba(68,78,59,0.15);
   display:flex;
   align-items:center;
   justify-content:center;
@@ -302,7 +298,7 @@ header.hero .place-line{
 }
 .music-toggle .bar{
   width:2px;
-  background:var(--clay);
+  background:var(--olive);
   border-radius:2px;
   animation:bar-bounce 0.9s ease-in-out infinite;
 }
@@ -328,7 +324,7 @@ header.hero .place-line{
 .section-head .kicker{
   font-family:var(--script);
   font-size:2.6rem;
-  color:var(--clay);
+  color:var(--olive);
   line-height:1;
   margin-bottom:6px;
 }
@@ -341,7 +337,7 @@ header.hero .place-line{
 .section-divider{
   width:44px;
   height:1px;
-  background:var(--gold);
+  background:var(--olive);
   margin:22px auto 0;
 }
 
@@ -354,7 +350,7 @@ header.hero .place-line{
 }
 #countdown .section-inner { max-width: 760px; margin: 0 auto; }
 #countdown .section-head h2{ color:var(--ivory); }
-#countdown .section-head .kicker{ color:var(--clay-soft); }
+#countdown .section-head .kicker{ color:var(--ivory-deep); }
 
 .countdown-grid{
   display:grid;
@@ -364,8 +360,8 @@ header.hero .place-line{
   margin:0 auto;
 }
 .countdown-card{
-  background:rgba(244,238,225,0.06);
-  border:1px solid rgba(244,238,225,0.18);
+  background:rgba(246,245,240,0.06);
+  border:1px solid rgba(246,245,240,0.18);
   border-radius:var(--radius-m);
   padding:22px 8px;
   text-align:center;
@@ -383,7 +379,7 @@ header.hero .place-line{
   font-size:0.7rem;
   letter-spacing:0.14em;
   text-transform:uppercase;
-  color:var(--clay-soft);
+  color:var(--ivory-deep);
 }
 
 .venue-card{
@@ -395,24 +391,27 @@ header.hero .place-line{
 }
 .venue-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(46,42,34,0.08);
+  box-shadow: 0 12px 30px rgba(68,78,59,0.08);
 }
 .venue-image{
   width:100%;
   aspect-ratio:16/9;
-  background: linear-gradient(155deg, #7C8A66 0%, #5B6B4F 45%, #3E4A35 100%);
+  background: #E8ECE5;
   position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  overflow:hidden;
 }
-.venue-image svg{ width:64px; height:64px; stroke:rgba(244,238,225,0.65); fill:none; stroke-width:1.1; }
+.venue-image iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
 .venue-body{ padding:32px 28px 34px; }
 .venue-kicker-small{
   font-size:0.72rem;
   letter-spacing:0.12em;
   text-transform:uppercase;
-  color:var(--gold);
+  color:var(--olive);
   margin-bottom:6px;
 }
 .venue-body h3{
@@ -434,7 +433,7 @@ header.hero .place-line{
   font-size:0.7rem;
   letter-spacing:0.12em;
   text-transform:uppercase;
-  color:var(--gold);
+  color:var(--olive);
   margin-bottom:3px;
 }
 .btn-maps{
@@ -455,41 +454,41 @@ header.hero .place-line{
 .timeline{
   position:relative;
   margin-top:12px;
-  padding-left:36px;
+  padding-left:48px;
 }
 .timeline::before{
   content:"";
   position:absolute;
-  left:9px;
-  top:6px;
-  bottom:6px;
+  left:17px;
+  top:8px;
+  bottom:8px;
   width:1px;
   background:var(--line);
 }
-.timeline-item{ position:relative; padding-bottom:38px; }
+.timeline-item{ position:relative; padding-bottom:44px; }
 .timeline-item:last-child{ padding-bottom:0; }
 .timeline-item .dot{
   position:absolute;
-  left:-36px;
-  top:2px;
-  width:20px;
-  height:20px;
+  left:-48px;
+  top:0px;
+  width:36px;
+  height:36px;
   border-radius:50%;
   background:var(--ivory);
-  border:1px solid var(--gold);
+  border:1.5px solid var(--olive);
   display:flex;
   align-items:center;
   justify-content:center;
   transition: background 0.3s, transform 0.3s;
 }
-.timeline-item:hover .dot { background: var(--gold); transform: scale(1.1); }
+.timeline-item:hover .dot { background: var(--olive); transform: scale(1.1); }
 .timeline-item:hover .dot svg { stroke: var(--ivory); }
-.timeline-item .dot svg{ width:10px; height:10px; stroke:var(--clay); fill:none; stroke-width:1.6; transition: stroke 0.3s; }
+.timeline-item .dot svg{ width:18px; height:18px; stroke:var(--olive); fill:none; stroke-width:1.6; transition: stroke 0.3s; }
 .timeline-item .time{
   font-size:0.78rem;
   letter-spacing:0.12em;
   text-transform:uppercase;
-  color:var(--clay);
+  color:var(--olive);
   margin-bottom:3px;
 }
 .timeline-item .title{ font-size:1.15rem; color:var(--ink); }
@@ -536,7 +535,7 @@ header.hero .place-line{
   width:38px;
   height:38px;
   margin:0 auto 18px;
-  stroke:var(--clay);
+  stroke:var(--olive);
   fill:none;
   stroke-width:1.2;
 }
@@ -572,10 +571,10 @@ header.hero .place-line{
 }
 #rsvp .section-inner { max-width: 760px; margin: 0 auto; }
 #rsvp .section-head h2{ color:var(--ivory); }
-#rsvp .section-head .kicker{ color:var(--clay-soft); }
+#rsvp .section-head .kicker{ color:var(--ivory-deep); }
 #rsvp .section-head p.sub{
   margin-top:14px;
-  color:rgba(244,238,225,0.75);
+  color:rgba(246,245,240,0.75);
   font-size:0.95rem;
   max-width:44ch;
   margin-left:auto;
@@ -589,23 +588,23 @@ header.hero .place-line{
   font-size:0.78rem;
   letter-spacing:0.1em;
   text-transform:uppercase;
-  color:var(--clay-soft);
+  color:var(--ivory-deep);
   margin-bottom:8px;
 }
 .field input[type="text"],
 .field input[type="email"],
 .field textarea{
   width:100%;
-  background:rgba(244,238,225,0.06);
-  border:1px solid rgba(244,238,225,0.28);
+  background:rgba(246,245,240,0.06);
+  border:1px solid rgba(246,245,240,0.28);
   border-radius:var(--radius-s);
   padding:13px 14px;
   color:var(--ivory);
   font-family:var(--serif);
   font-size:1rem;
 }
-.field input:focus, .field textarea:focus { border-color: var(--clay-soft); background:rgba(244,238,225,0.1); }
-.field input::placeholder, .field textarea::placeholder{ color:rgba(244,238,225,0.4); }
+.field input:focus, .field textarea:focus { border-color: var(--ivory-deep); background:rgba(246,245,240,0.1); }
+.field input::placeholder, .field textarea::placeholder{ color:rgba(246,245,240,0.4); }
 .field textarea{ resize:vertical; min-height:90px; }
 
 .radio-group, .checkbox-group{ display:flex; flex-wrap:wrap; gap:12px; }
@@ -614,26 +613,26 @@ header.hero .place-line{
 .radio-pill span{
   display:inline-block;
   padding:11px 22px;
-  border:1px solid rgba(244,238,225,0.3);
+  border:1px solid rgba(246,245,240,0.3);
   border-radius:30px;
   font-size:0.92rem;
   transition:background .25s, border-color .25s, color .25s;
 }
-.radio-pill input:checked + span{ background:var(--clay); border-color:var(--clay); color:#fff; }
+.radio-pill input:checked + span{ background:var(--olive); border-color:var(--olive); color:#fff; }
 
 .checkbox-row{ display:flex; align-items:center; gap:10px; font-size:0.92rem; cursor: pointer; }
-.checkbox-row input{ width:16px; height:16px; accent-color:var(--clay); }
+.checkbox-row input{ width:16px; height:16px; accent-color:var(--olive); }
 
 .guest-count-wrap{ display:flex; align-items:center; gap:16px; }
 .stepper{
   display:flex;
   align-items:center;
-  border:1px solid rgba(244,238,225,0.28);
+  border:1px solid rgba(246,245,240,0.28);
   border-radius:30px;
   overflow:hidden;
 }
 .stepper button{ width:40px; height:40px; background:none; border:none; color:var(--ivory); font-size:1.2rem; }
-.stepper button:hover{ background:rgba(244,238,225,0.15); }
+.stepper button:hover{ background:rgba(246,245,240,0.15); }
 .stepper span{ width:36px; text-align:center; font-size:1.05rem; }
 
 #attend-conditional{
@@ -651,16 +650,16 @@ header.hero .place-line{
   align-self:flex-start;
   padding:15px 38px;
   border-radius:30px;
-  background:var(--clay);
+  background:var(--olive);
   color:#fff;
   font-size:0.98rem;
   letter-spacing:0.05em;
   border:none;
   transition:background .3s, transform .2s;
 }
-.btn-submit:hover{ background:#A65840; transform: translateY(-2px); }
-.form-status{ font-size:0.9rem; min-height:22px; color:var(--clay-soft); }
-.form-status.success{ color:#C9DDB0; }
+.btn-submit:hover{ background:#5E6E52; transform: translateY(-2px); }
+.form-status{ font-size:0.9rem; min-height:22px; color:var(--ivory-deep); }
+.form-status.success{ color:#C2D0B5; }
 .form-status.error{ color:#E8A98F; }
 
 #rsvp-success{ display:none; text-align:center; padding:20px 0; }
@@ -671,9 +670,9 @@ footer{
   padding:60px 24px 48px;
   text-align:center;
   background:var(--olive-deep);
-  color:rgba(244,238,225,0.6);
+  color:rgba(246,245,240,0.6);
   font-size:0.85rem;
-  border-top: 1px solid rgba(244,238,225,0.1);
+  border-top: 1px solid rgba(246,245,240,0.1);
 }
 footer .footer-names{ font-family:var(--script); font-size:2.4rem; color:var(--ivory); margin-bottom:8px; }
 </style>
@@ -691,17 +690,16 @@ footer .footer-names{ font-family:var(--script); font-size:2.4rem; color:var(--i
   <div class="envelope-container" id="envelopeContainer">
     <div class="envelope-card-bg">
       <div class="envelope-top-flap"></div>
-      <div class="envelope-text" data-i18n="envelope-msg">Esta invitación es exclusiva para ti</div>
       <div class="wax-seal-badge" aria-hidden="true">
         <svg class="cherub-svg" viewBox="0 0 24 24">
-          <!-- Querubín con carta y alas -->
-          <path d="M12 4.5c-1.2 0-2.2.8-2.5 1.9-.4-.3-.9-.5-1.5-.5-1.4 0-2.5 1.1-2.5 2.5 0 .6.2 1.1.5 1.5-1.1.3-1.9 1.3-1.9 2.5 0 1.4 1.1 2.5 2.5 2.5.3 0 .7-.1 1-.2 1.1 1.2 2.7 2 4.4 2 1.7 0 3.3-.8 4.4-2 .3.1.7.2 1 .2 1.4 0 2.5-1.1 2.5-2.5 0-1.2-.8-2.2-1.9-2.5.3-.4.5-.9.5-1.5 0-1.4-1.1-2.5-2.5-2.5-.6 0-1.1.2-1.5.5-.3-1.1-1.3-1.9-2.5-1.9z" fill="none"/>
-          <path d="M10.5 12.5l2.5-1.5 1.5 2.5-2.5 1.5z" stroke="#6E5F4C" stroke-width="0.8" fill="#F4EEE1"/>
-          <path d="M13.5 10.5c1.5-1.5 3.5-2 5.5-1.5-0.5 2-1 4-2.5 5.5" stroke="#6E5F4C" stroke-width="0.8" fill="none"/>
-          <circle cx="10.5" cy="8" r="2.2" fill="#6E5F4C"/>
-          <path d="M8.5 10c.8 1.2 2 2 3.5 2.2" stroke="#6E5F4C" stroke-width="0.9" fill="none"/>
+          <path d="M12 3c-1.5 0-2.8 1-3.2 2.4-.6-.4-1.4-.6-2.2-.5-1.8.1-3.2 1.6-3.2 3.4 0 .8.3 1.5.8 2.1-1.4.4-2.4 1.7-2.4 3.3 0 1.9 1.5 3.4 3.4 3.4.4 0 .9-.1 1.3-.3 1.5 1.6 3.6 2.6 5.9 2.6s4.4-1 5.9-2.6c.4.2.9.3 1.3.3 1.9 0 3.4-1.5 3.4-3.4 0-1.6-1-2.9-2.4-3.3.5-.6.8-1.3.8-2.1 0-1.8-1.4-3.3-3.2-3.4-.8-.1-1.6.1-2.2.5C14.8 4 13.5 3 12 3z" fill="none"/>
+          <path d="M9.5 12l3-2 2 3-3 2z" stroke="#5E6E52" stroke-width="0.8" fill="#F0EFEA"/>
+          <path d="M13 9c2-2 4.5-2.5 7-2-0.8 2.5-1.5 5-3.5 7" stroke="#5E6E52" stroke-width="0.8" fill="none"/>
+          <circle cx="10" cy="7.5" r="2.5" fill="#5E6E52"/>
+          <path d="M7.5 10c1 1.5 2.5 2.5 4.5 2.8" stroke="#5E6E52" stroke-width="0.9" fill="none"/>
         </svg>
       </div>
+      <div class="envelope-text" data-i18n="envelope-msg">Esta invitación es exclusiva para ti</div>
     </div>
   </div>
 </div>
@@ -720,7 +718,7 @@ footer .footer-names{ font-family:var(--script); font-size:2.4rem; color:var(--i
     <p class="eyebrow" data-i18n="hero-eyebrow">Nos casamos</p>
     <h1 id="coupleNames">Carolina &amp; Daniel</h1>
     <p class="date-line"><strong id="eventDateLong">Viernes, 16 de abril de 2027</strong></p>
-    <p class="place-line" id="eventVenueShort">Casa de Burgos, Madrid</p>
+    <p class="place-line" id="eventVenueShort">Parroquia de Nuestra Señora del Pilar, Madrid</p>
   </header>
 
   <section class="section animate-on-scroll" id="countdown">
@@ -746,7 +744,7 @@ footer .footer-names{ font-family:var(--script); font-size:2.4rem; color:var(--i
 
     <div class="venue-card">
       <div class="venue-image">
-        <svg viewBox="0 0 24 24"><path d="M12 3l7 4v14H5V7z"/><path d="M9 21v-7h6v7"/><path d="M12 3v4"/><path d="M10 5h4"/></svg>
+        <iframe title="Mapa Parroquia de Nuestra Señora del Pilar" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3036.8553258548987!2d-3.7037902!3d40.4503!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd4228e123456789%3A0x123456789abcdef!2sParroquia%20de%20Nuestra%20Se%C3%B1ora%20del%20Pilar%2C%20Madrid!5e0!3m2!1ses!2ses!4v1710000000000!5m2!1ses!2ses" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
       <div class="venue-body">
         <p class="venue-kicker-small" data-i18n="venue-church-label">La ceremonia</p>
@@ -755,7 +753,7 @@ footer .footer-names{ font-family:var(--script); font-size:2.4rem; color:var(--i
         <div class="venue-schedule">
           <div><span data-i18n="venue-ceremony">Ceremonia</span>18:00 h</div>
         </div>
-        <a class="btn-maps" id="churchMapsLink" href="https://maps.google.com/?q=Parroquia+de+Nuestra+Se%C3%B1ora+del+Pilar+Madrid" target="_blank" rel="noopener">
+        <a class="btn-maps" id="churchMapsLink" href="https://maps.google.com/?q=Parroquia+de+Nuestra+Senora+del+Pilar+Madrid" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M9 20l-5-2V4l5 2m0 14l6-2m-6 2V6m6 12l5 2V6l-5-2m0 16V4m0 2l-6-2"/></svg>
           <span data-i18n="venue-maps-btn">Abrir en Maps</span>
         </a>
@@ -764,7 +762,7 @@ footer .footer-names{ font-family:var(--script); font-size:2.4rem; color:var(--i
 
     <div class="venue-card" style="margin-top:28px;">
       <div class="venue-image">
-        <svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.4"/></svg>
+        <iframe title="Mapa Casa de Burgos" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3036.5!2d-3.69!3d40.44!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd42289!2sCasa%20de%20Burgos%20Madrid!5e0!3m2!1ses!2ses!4v1710000000000!5m2!1ses!2ses" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
       <div class="venue-body">
         <p class="venue-kicker-small" data-i18n="venue-reception-label">El cóctel y el banquete</p>
@@ -895,7 +893,7 @@ footer .footer-names{ font-family:var(--script); font-size:2.4rem; color:var(--i
 
   <footer>
     <div class="footer-names">Carolina &amp; Daniel</div>
-    <p data-i18n="footer-text">16 de abril de 2027 · Casa de Burgos, Madrid</p>
+    <p data-i18n="footer-text">16 de abril de 2027 · Parroquia de Nuestra Señora del Pilar y Casa de Burgos, Madrid</p>
   </footer>
 </div>
 
@@ -905,7 +903,7 @@ const WEDDING_CONFIG = {
   church: {
     name: "Parroquia de Nuestra Señora del Pilar",
     address: "Madrid",
-    mapsUrl: "https://maps.google.com/?q=Parroquia+de+Nuestra+Se%C3%B1ora+del+Pilar+Madrid"
+    mapsUrl: "https://maps.google.com/?q=Parroquia+de+Nuestra+Senora+del+Pilar+Madrid"
   },
   venue: {
     name: "Casa de Burgos",
@@ -913,8 +911,6 @@ const WEDDING_CONFIG = {
     mapsUrl: "https://maps.google.com/?q=Casa+de+Burgos+Madrid"
   },
   programItems: [
-    { time: "17:00", titleKey: "prog-1", titleEs: "Llegada de invitados", titleFr: "Arrivée des invités", icon: "guests" },
-    { time: "17:30", titleKey: "prog-2", titleEs: "Welcome Drink",        titleFr: "Cocktail de bienvenue", icon: "drink" },
     { time: "18:00", titleKey: "prog-3", titleEs: "Ceremonia",           titleFr: "Cérémonie",             icon: "rings" },
     { time: "19:30", titleKey: "prog-4", titleEs: "Cóctel",              titleFr: "Cocktail",               icon: "drink" },
     { time: "21:00", titleKey: "prog-5", titleEs: "Banquete",            titleFr: "Banquet",                icon: "food" },
@@ -926,11 +922,11 @@ const WEDDING_CONFIG = {
       a_es:"Sí, indícanos el número total de invitados (incluyéndote) en el formulario de confirmación.",
       a_fr:"Oui, merci d'indiquer le nombre total d'invités (vous inclus) dans le formulaire de confirmation." },
     { q_es:"¿Habrá parking?", q_fr:"Y aura-t-il un parking ?",
-      a_es:"Sí, la finca dispone de aparcamiento privado y gratuito para todos los invitados.",
-      a_fr:"Oui, le domaine dispose d'un parking privé et gratuit pour tous les invités." },
+      a_es:"Sí, los lugares disponen de opciones de aparcamiento en las inmediaciones para todos los invitados.",
+      a_fr:"Oui, les lieux disposent d'options de stationnement à proximité pour tous les invités." },
     { q_es:"¿Código de vestimenta?", q_fr:"Y a-t-il un code vestimentaire ?",
-      a_es:"Elegante campestre. Evitad el blanco y tacones muy finos, la ceremonia es sobre césped.",
-      a_fr:"Élégant champêtre. Évitez le blanc et les talons très fins, la cérémonie se déroule sur l'herbe." },
+      a_es:"Elegante.",
+      a_fr:"Élégant." },
     { q_es:"¿Se pueden hacer fotos durante la ceremonia?", q_fr:"Peut-on prendre des photos pendant la cérémonie ?",
       a_es:"Preferimos una ceremonia \"unplugged\": guardad los móviles y disfrutad del momento, nuestro fotógrafo se encarga de todo.",
       a_fr:"Nous préférons une cérémonie « unplugged » : rangez vos téléphones, notre photographe s'occupe de tout." }
@@ -964,10 +960,10 @@ const I18N = {
     "form-allergy-nuts":"Alergia a frutos secos","form-allergy-shellfish":"Alergia a mariscos",
     "form-allergy-other":"Otras alergias o restricciones","form-message":"Mensaje para los novios (opcional)",
     "form-submit":"Enviar confirmación",
-    "form-sending":"Enviando...", "form-success":"Hemos recibido tu confirmación. ¡Nos vemos en la finca!",
+    "form-sending":"Enviando...", "form-success":"Hemos recibido tu confirmación. ¡Nos vemos!",
     "form-error":"No hemos podido enviar tu confirmación. Inténtalo de nuevo en unos minutos.",
     "form-name-required":"Por favor, escribe tu nombre completo.",
-    "footer-text":"16 de abril de 2027 · Casa de Burgos, Madrid"
+    "footer-text":"16 de abril de 2027 · Parroquia de Nuestra Señora del Pilar y Casa de Burgos, Madrid"
   },
   fr: {
     "envelope-msg":"Cette invitation est exclusive pour vous",
@@ -993,10 +989,10 @@ const I18N = {
     "form-allergy-nuts":"Allergie aux fruits à coque","form-allergy-shellfish":"Allergie aux fruits de mer",
     "form-allergy-other":"Autres allergies ou restrictions","form-message":"Message pour les mariés (facultatif)",
     "form-submit":"Envoyer la confirmation",
-    "form-sending":"Envoi en cours...", "form-success":"Nous avons bien reçu votre confirmation. À très vite au domaine !",
+    "form-sending":"Envoi en cours...", "form-success":"Nous avons bien reçu votre confirmation. À très vite !",
     "form-error":"Impossible d'envoyer votre confirmation. Merci de réessayer dans quelques minutes.",
     "form-name-required":"Merci d'indiquer votre nom complet.",
-    "footer-text":"16 avril 2027 · Casa de Burgos, Madrid"
+    "footer-text":"16 avril 2027 · Parroquia de Nuestra Señora del Pilar et Casa de Burgos, Madrid"
   }
 };
 
@@ -1065,7 +1061,7 @@ document.getElementById("churchMapsLink").href = WEDDING_CONFIG.church.mapsUrl;
 
 document.getElementById("venueName").textContent = WEDDING_CONFIG.venue.name;
 document.getElementById("venueAddress").textContent = WEDDING_CONFIG.venue.address;
-document.getElementById("eventVenueShort").textContent = WEDDING_CONFIG.venue.name + ", " + WEDDING_CONFIG.venue.address;
+document.getElementById("eventVenueShort").textContent = WEDDING_CONFIG.church.name + ", " + WEDDING_CONFIG.church.address;
 document.getElementById("mapsLink").href = WEDDING_CONFIG.venue.mapsUrl;
 
 function pad(n){ return String(n).padStart(2,"0"); }
