@@ -21,7 +21,6 @@
   --ink:          #2E2A22;
   --ink-soft:     #6B6152;
   --line:         rgba(46,42,34,0.18);
-  --paper-shadow: rgba(46,42,34,0.14);
 
   --serif: 'Cormorant Garamond', serif;
   --script: 'Tangerine', cursive;
@@ -66,7 +65,7 @@ button{ font-family:inherit; cursor:pointer; }
 }
 
 /* ======================================================
-   PANTALLA INICIAL — SOBRE INTERACTIVO REAL
+   PANTALLA INICIAL — SOBRE ESTILO VINTAGE & QUERUBÍN
    ====================================================== */
 #envelope-screen{
   position:fixed;
@@ -76,7 +75,9 @@ button{ font-family:inherit; cursor:pointer; }
   align-items:center;
   justify-content:center;
   background:#E5DCB8;
-  background-image: radial-gradient(circle, #EFE8D0 0%, #D8CEAA 100%);
+  background-image: 
+    radial-gradient(circle at 50% 40%, rgba(255,253,245,0.7) 0%, rgba(216,206,170,0.9) 100%),
+    repeating-linear-gradient(45deg, rgba(46,42,34,0.01) 0, rgba(46,42,34,0.01) 2px, transparent 0, transparent 4px);
   transition:opacity 1s ease 0.6s, visibility 1s ease 0.6s;
 }
 #envelope-screen.hidden{
@@ -90,10 +91,13 @@ button{ font-family:inherit; cursor:pointer; }
   top:28px;
   right:32px;
   display:flex;
-  gap:10px;
+  gap:8px;
   font-size:0.85rem;
-  letter-spacing:0.04em;
-  color:var(--ink-soft);
+  background: rgba(244, 238, 225, 0.85);
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(46,42,34,0.12);
+  backdrop-filter: blur(4px);
   z-index:10;
 }
 .lang-switch button{
@@ -101,135 +105,121 @@ button{ font-family:inherit; cursor:pointer; }
   border:none;
   color:var(--ink-soft);
   font-family:var(--serif);
-  font-size:0.9rem;
-  padding:2px 4px;
-  border-bottom:1px solid transparent;
-  transition:color .3s, border-color .3s;
+  font-size:0.85rem;
+  padding:2px 6px;
+  border-radius: 12px;
+  transition:all .3s;
 }
-.lang-switch button.active,
-.lang-switch button:hover{
+.lang-switch button.active{
+  background: var(--olive-deep);
+  color: #fff;
+}
+.lang-switch button:hover:not(.active){
   color:var(--clay);
-  border-color:var(--clay);
 }
-.lang-switch .sep{ color:var(--line); }
+.lang-switch .sep{ color:var(--line); align-self: center; font-size: 0.75rem; }
 
-/* Contenedor del sobre 3D */
-.envelope-wrapper {
+/* Contenedor del sobre tipo carta clásica */
+.envelope-container {
   position: relative;
-  width: min(90vw, 420px);
-  height: min(60vw, 280px);
+  width: min(92vw, 400px);
+  height: min(130vw, 560px);
   cursor: pointer;
-  perspective: 1000px;
-  filter: drop-shadow(0 15px 35px rgba(46,42,34,0.22));
+  perspective: 1200px;
+  filter: drop-shadow(0 20px 40px rgba(46,42,34,0.25));
 }
 
-.envelope {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  background: #F4EEE1;
+.envelope-card-bg {
+  position: absolute;
+  inset: 0;
+  background: #F5EFE6;
+  background-image: 
+    radial-gradient(circle at 50% 30%, rgba(255,255,255,0.8) 0%, transparent 70%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
   border-radius: 4px;
-}
-
-/* Solapa superior del sobre */
-.envelope-flap {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 0;
-  border-left: min(45vw, 210px) solid transparent;
-  border-right: min(45vw, 210px) solid transparent;
-  border-top: min(30vw, 140px) solid #E4D8C2;
-  transform-origin: top;
-  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 4;
-}
-
-/* Bolsillo frontal del sobre */
-.envelope-pocket {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  clip-path: polygon(0 30%, 50% 70%, 100% 30%, 100% 100%, 0 100%);
-  background: #ECE3D0;
-  z-index: 3;
-}
-
-/* Tarjeta interior que asoma al abrir */
-.envelope-letter {
-  position: absolute;
-  bottom: 10px;
-  left: 5%;
-  width: 90%;
-  height: 85%;
-  background: #FFFFFF;
-  border-radius: 3px;
+  border: 1px solid rgba(168, 130, 63, 0.25);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 40px 30px;
   text-align: center;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
-  z-index: 2;
+  box-shadow: inset 0 0 40px rgba(185, 155, 120, 0.15);
+  transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.envelope-letter .names {
-  font-family: var(--script);
-  font-size: 3.5rem;
-  color: var(--olive-deep);
-  line-height: 1;
-  margin-bottom: 6px;
-}
-
-.envelope-letter .hint {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--clay);
-  margin-top: 8px;
-}
-
-/* Sello de cera sobre la solapa */
-.wax-seal {
+/* Solapa superior del sobre que se pliega */
+.envelope-top-flap {
   position: absolute;
-  top: min(24vw, 110px);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: #EBE1D0;
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(0,0,0,0.04) 100%);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 4;
+  border-bottom: 1px solid rgba(168, 130, 63, 0.15);
+}
+
+/* Texto impreso en el fondo del sobre */
+.envelope-text {
+  font-family: var(--script);
+  font-size: clamp(2.4rem, 8vw, 3.2rem);
+  color: #4A4238;
+  line-height: 1.15;
+  margin-top: 60px;
+  font-weight: 400;
+  text-shadow: 0 1px 1px rgba(255,255,255,0.6);
+}
+
+/* Sello de lacre claro con el ángel */
+.wax-seal-badge {
+  position: absolute;
+  top: 48%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 68px;
-  height: 68px;
+  width: 92px;
+  height: 92px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #C97F60 0%, var(--clay) 45%, #8F4530 100%);
-  box-shadow: 0 6px 16px rgba(139,69,48,0.4), inset 0 2px 4px rgba(255,255,255,0.3);
+  background: radial-gradient(circle at 35% 30%, #FAF6EE 0%, #E6DEC9 65%, #C9BFA7 100%);
+  box-shadow: 0 8px 22px rgba(46,42,34,0.18), inset 0 2px 4px rgba(255,255,255,0.9), inset 0 -3px 6px rgba(130,115,90,0.25);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 5;
-  transition: transform 0.4s ease, opacity 0.4s ease;
-}
-.wax-seal svg {
-  width: 30px;
-  height: 30px;
-  fill: none;
-  stroke: #F4E3D6;
-  stroke-width: 1.2;
+  z-index: 6;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
 }
 
-/* Estados al hacer clic / abrir */
-.envelope-wrapper.open .envelope-flap {
+.wax-seal-badge::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  border: 1px dashed rgba(130, 115, 90, 0.4);
+}
+
+/* Ilustración SVG del Querubín con carta */
+.cherub-svg {
+  width: 62px;
+  height: 62px;
+  fill: #6E5F4C;
+}
+
+/* Animación de apertura */
+.envelope-container.open .envelope-top-flap {
   transform: rotateX(180deg);
   z-index: 1;
 }
-.envelope-wrapper.open .wax-seal {
-  transform: translate(-50%, -50%) scale(0);
+.envelope-container.open .wax-seal-badge {
+  transform: translate(-50%, -50%) scale(0) rotate(45deg);
   opacity: 0;
 }
-.envelope-wrapper.open .envelope-letter {
-  transform: translateY(-45px);
+.envelope-container.open .envelope-card-bg {
+  transform: scale(1.03);
+  box-shadow: 0 30px 60px rgba(46,42,34,0.3);
 }
 
 /* ======================================================
@@ -690,7 +680,7 @@ footer .footer-names{ font-family:var(--script); font-size:2.4rem; color:var(--i
 </head>
 <body>
 
-<!-- PANTALLA INICIAL: SOBRE REAL -->
+<!-- PANTALLA INICIAL: SOBRE ESTILO VINTAGE & QUERUBÍN -->
 <div id="envelope-screen" role="button" tabindex="0" aria-label="Toca para abrir la invitación">
   <div class="lang-switch" role="group" aria-label="Selector de idioma">
     <button type="button" class="active" data-lang="es">ES</button>
@@ -698,16 +688,19 @@ footer .footer-names{ font-family:var(--script); font-size:2.4rem; color:var(--i
     <button type="button" data-lang="fr">FR</button>
   </div>
 
-  <div class="envelope-wrapper" id="envelopeWrapper">
-    <div class="envelope">
-      <div class="envelope-flap"></div>
-      <div class="envelope-pocket"></div>
-      <div class="envelope-letter">
-        <div class="names">Carolina &amp; Daniel</div>
-        <p class="hint" data-i18n="tap-hint">Toca para abrir</p>
-      </div>
-      <div class="wax-seal" aria-hidden="true">
-        <svg viewBox="0 0 24 24"><path d="M12 3l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7z"/></svg>
+  <div class="envelope-container" id="envelopeContainer">
+    <div class="envelope-card-bg">
+      <div class="envelope-top-flap"></div>
+      <div class="envelope-text" data-i18n="envelope-msg">Esta invitación es exclusiva para ti</div>
+      <div class="wax-seal-badge" aria-hidden="true">
+        <svg class="cherub-svg" viewBox="0 0 24 24">
+          <!-- Querubín con carta y alas -->
+          <path d="M12 4.5c-1.2 0-2.2.8-2.5 1.9-.4-.3-.9-.5-1.5-.5-1.4 0-2.5 1.1-2.5 2.5 0 .6.2 1.1.5 1.5-1.1.3-1.9 1.3-1.9 2.5 0 1.4 1.1 2.5 2.5 2.5.3 0 .7-.1 1-.2 1.1 1.2 2.7 2 4.4 2 1.7 0 3.3-.8 4.4-2 .3.1.7.2 1 .2 1.4 0 2.5-1.1 2.5-2.5 0-1.2-.8-2.2-1.9-2.5.3-.4.5-.9.5-1.5 0-1.4-1.1-2.5-2.5-2.5-.6 0-1.1.2-1.5.5-.3-1.1-1.3-1.9-2.5-1.9z" fill="none"/>
+          <path d="M10.5 12.5l2.5-1.5 1.5 2.5-2.5 1.5z" stroke="#6E5F4C" stroke-width="0.8" fill="#F4EEE1"/>
+          <path d="M13.5 10.5c1.5-1.5 3.5-2 5.5-1.5-0.5 2-1 4-2.5 5.5" stroke="#6E5F4C" stroke-width="0.8" fill="none"/>
+          <circle cx="10.5" cy="8" r="2.2" fill="#6E5F4C"/>
+          <path d="M8.5 10c.8 1.2 2 2 3.5 2.2" stroke="#6E5F4C" stroke-width="0.9" fill="none"/>
+        </svg>
       </div>
     </div>
   </div>
@@ -948,7 +941,7 @@ const WEDDING_CONFIG = {
 
 const I18N = {
   es: {
-    "tap-hint":"Toca para abrir",
+    "envelope-msg":"Esta invitación es exclusiva para ti",
     "hero-eyebrow":"Nos casamos",
     "countdown-kicker":"Queda poco",
     "countdown-title":"Cuenta atrás para el gran día",
@@ -977,7 +970,7 @@ const I18N = {
     "footer-text":"16 de abril de 2027 · Casa de Burgos, Madrid"
   },
   fr: {
-    "tap-hint":"Touchez pour ouvrir",
+    "envelope-msg":"Cette invitation est exclusive pour vous",
     "hero-eyebrow":"Nous nous marions",
     "countdown-kicker":"Plus que quelques jours",
     "countdown-title":"Compte à rebours avant le grand jour",
@@ -1039,12 +1032,12 @@ document.querySelectorAll(".lang-switch button").forEach(btn=>{
 });
 
 const envelopeScreen = document.getElementById("envelope-screen");
-const envelopeWrapper = document.getElementById("envelopeWrapper");
+const envelopeContainer = document.getElementById("envelopeContainer");
 const invitation = document.getElementById("invitation");
 
 function openEnvelope(e){
   if(e) e.stopPropagation();
-  envelopeWrapper.classList.add("open");
+  envelopeContainer.classList.add("open");
   envelopeScreen.classList.add("hidden");
   invitation.classList.add("revealed");
   document.body.style.overflow = "auto";
