@@ -64,6 +64,30 @@ button{ font-family:inherit; cursor:pointer; }
   transform: translateY(0);
 }
 
+/* Cuenta atrás: pequeño pulso en cada segundo, como un reloj mecánico */
+@keyframes digit-pop{
+  0%{ transform: scale(1); }
+  35%{ transform: scale(1.14); }
+  100%{ transform: scale(1); }
+}
+.countdown-card .num.pulse{ animation: digit-pop 0.4s ease; }
+
+/* Programa del día: cada parada de la línea de tiempo aparece en cascada,
+   no de golpe, cuando la sección entra en pantalla. */
+.timeline-item{
+  opacity: 0;
+  transform: translateX(-18px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.section.is-visible .timeline-item{ opacity: 1; transform: translateX(0); }
+.section.is-visible .timeline-item:nth-child(1){ transition-delay: 0.05s; }
+.section.is-visible .timeline-item:nth-child(2){ transition-delay: 0.13s; }
+.section.is-visible .timeline-item:nth-child(3){ transition-delay: 0.21s; }
+.section.is-visible .timeline-item:nth-child(4){ transition-delay: 0.29s; }
+.section.is-visible .timeline-item:nth-child(5){ transition-delay: 0.37s; }
+.section.is-visible .timeline-item:nth-child(6){ transition-delay: 0.45s; }
+.section.is-visible .timeline-item:nth-child(7){ transition-delay: 0.53s; }
+
 /* ======================================================
    PANTALLA INICIAL — SOBRE ESTILO VINTAGE & QUERUBÍN
    ====================================================== */
@@ -120,7 +144,7 @@ button{ font-family:inherit; cursor:pointer; }
 .lang-switch .sep{ color:var(--line); align-self: center; font-size: 0.75rem; }
 
 .envelope-container {
-  position: relative;
+  position: relative; /* fija el contenedor de referencia para el sobre, el lazo y el sello */
   width: min(92vw, 400px);
   height: min(130vw, 560px);
   cursor: pointer;
@@ -204,7 +228,101 @@ button{ font-family:inherit; cursor:pointer; }
   height: 52px;
   fill: #5E6E52;
 }
+.seal-initials{
+  font-family: var(--script);
+  font-size: 2.1rem;
+  color: #4A5640;
+  line-height: 1;
+}
 
+/* ------------------------------------------------------------
+   LAZO QUE SE DESATA — capa independiente encima del sobre.
+   Secuencia: 1) el nudo gira y se encoge, 2) las dos lazadas se
+   abren hacia los lados, 3) las tiras vertical/horizontal se
+   deslizan fuera del sobre. Todo antes de que la solapa se abra.
+   ------------------------------------------------------------ */
+.ribbon-layer{
+  position:absolute;
+  inset:0;
+  z-index:5;
+  pointer-events:none;
+}
+.ribbon-v, .ribbon-h-l, .ribbon-h-r{
+  position:absolute;
+  background: linear-gradient(180deg, #C77B5A 0%, #B9694F 45%, #9C5540 100%);
+  box-shadow: 0 1px 2px rgba(68,78,59,0.25) inset, 0 2px 6px rgba(68,78,59,0.15);
+  transition: transform 0.7s cubic-bezier(0.6, 0, 0.4, 1), opacity 0.5s ease 0.3s;
+}
+.ribbon-v{
+  top:0; left:50%; width:15px; height:100%;
+  transform: translateX(-50%);
+  transform-origin: top center;
+}
+.ribbon-h-l{
+  top:50%; left:0; width:50%; height:15px;
+  transform: translateY(-50%);
+  transform-origin: left center;
+}
+.ribbon-h-r{
+  top:50%; right:0; width:50%; height:15px;
+  transform: translateY(-50%);
+  transform-origin: right center;
+}
+.ribbon-bow{
+  position:absolute;
+  top:50%; left:50%;
+  width:104px; height:56px;
+  transform: translate(-50%, -50%);
+  transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease 0.25s;
+}
+.bow-loop{
+  position:absolute;
+  top:50%; left:50%;
+  width:52px; height:38px;
+  background: linear-gradient(135deg, #D48064 0%, #B9694F 60%, #9C5540 100%);
+  border-radius: 60% 40% 55% 45% / 55% 60% 40% 45%;
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.3), 0 3px 8px rgba(68,78,59,0.2);
+  transition: transform 0.6s cubic-bezier(0.6, 0, 0.4, 1), opacity 0.45s ease;
+}
+.bow-loop-l{ transform: translate(-98%, -50%) rotate(-18deg); }
+.bow-loop-r{ transform: translate(-2%, -50%) rotate(18deg) scaleX(-1); }
+.bow-knot{
+  position:absolute;
+  top:50%; left:50%;
+  width:26px; height:26px;
+  transform: translate(-50%,-50%) rotate(45deg);
+  background: linear-gradient(135deg, #C77B5A, #9C5540);
+  box-shadow: 0 2px 5px rgba(68,78,59,0.3);
+  transition: transform 0.5s cubic-bezier(0.6, 0, 0.4, 1), opacity 0.4s ease 0.35s;
+}
+
+/* Paso 1 — desatar: se añade nada más pulsar */
+.envelope-container.untying .bow-knot{
+  transform: translate(-50%,-50%) rotate(230deg) scale(0.3);
+  opacity: 0;
+}
+.envelope-container.untying .bow-loop-l{
+  transform: translate(-160%, -70%) rotate(-70deg) scale(0.6);
+  opacity: 0;
+}
+.envelope-container.untying .bow-loop-r{
+  transform: translate(60%, -70%) rotate(70deg) scaleX(-1) scale(0.6);
+  opacity: 0;
+}
+.envelope-container.untying .ribbon-v{
+  transform: translateX(-50%) translateY(-100%);
+  opacity: 0;
+}
+.envelope-container.untying .ribbon-h-l{
+  transform: translateY(-50%) translateX(-100%);
+  opacity: 0;
+}
+.envelope-container.untying .ribbon-h-r{
+  transform: translateY(-50%) translateX(100%);
+  opacity: 0;
+}
+
+/* Paso 2 — abrir: llega 0.55s después (ver JS), cuando el lazo ya ha desaparecido */
 .envelope-container.open .envelope-top-flap {
   transform: rotateX(180deg);
   z-index: 1;
@@ -270,6 +388,31 @@ header.hero .place-line{
   font-size:0.95rem;
   font-style:italic;
   color:var(--ink-soft);
+}
+header.hero .tagline{
+  font-family:var(--script);
+  font-size:clamp(1.6rem, 5vw, 2.1rem);
+  color:var(--clay);
+  margin-bottom:14px;
+}
+
+/* Motivos botánicos de esquina, estilo porcelana azul, muy sutiles */
+.corner-motif{
+  position:absolute;
+  width:130px;
+  height:130px;
+  opacity:0.55;
+  pointer-events:none;
+  z-index:0;
+}
+.corner-motif svg{ width:100%; height:100%; }
+.corner-motif.top-left{ top:18px; left:18px; }
+.corner-motif.top-right{ top:18px; right:18px; transform:scaleX(-1); }
+.corner-motif.bottom-left{ bottom:18px; left:18px; transform:scaleY(-1); }
+.corner-motif.bottom-right{ bottom:18px; right:18px; transform:scale(-1,-1); }
+header.hero > *:not(.corner-motif){ position:relative; z-index:1; }
+@media (max-width:560px){
+  .corner-motif{ width:88px; height:88px; }
 }
 
 .music-toggle{
@@ -581,6 +724,12 @@ header.hero .place-line{
   margin-right:auto;
   line-height:1.6;
 }
+#rsvp .guest-greeting{
+  margin-top:18px;
+  font-family:var(--script);
+  font-size:1.9rem;
+  color:var(--clay-soft, #D79B84);
+}
 
 .rsvp-form{ display:flex; flex-direction:column; gap:22px; max-width: 760px; margin: 0 auto; }
 .field label{
@@ -633,7 +782,9 @@ header.hero .place-line{
 }
 .stepper button{ width:40px; height:40px; background:none; border:none; color:var(--ivory); font-size:1.2rem; }
 .stepper button:hover{ background:rgba(246,245,240,0.15); }
-.stepper span{ width:36px; text-align:center; font-size:1.05rem; }
+.stepper button:disabled{ opacity:0.35; cursor:not-allowed; }
+.stepper button:disabled:hover{ background:none; }
+.stepper span{ width:36px; text-align:center; font-size:1.05rem; font-variant-numeric:lining-nums; font-feature-settings:"lnum" 1, "onum" 0; }
 
 #attend-conditional{
   display:flex;
@@ -690,14 +841,18 @@ footer .footer-names{ font-family:var(--script); font-size:2.4rem; color:var(--i
   <div class="envelope-container" id="envelopeContainer">
     <div class="envelope-card-bg">
       <div class="envelope-top-flap"></div>
+      <div class="ribbon-layer" aria-hidden="true">
+        <div class="ribbon-v"></div>
+        <div class="ribbon-h-l"></div>
+        <div class="ribbon-h-r"></div>
+        <div class="ribbon-bow">
+          <span class="bow-loop bow-loop-l"></span>
+          <span class="bow-loop bow-loop-r"></span>
+          <span class="bow-knot"></span>
+        </div>
+      </div>
       <div class="wax-seal-badge" aria-hidden="true">
-        <svg class="cherub-svg" viewBox="0 0 24 24">
-          <path d="M12 3c-1.5 0-2.8 1-3.2 2.4-.6-.4-1.4-.6-2.2-.5-1.8.1-3.2 1.6-3.2 3.4 0 .8.3 1.5.8 2.1-1.4.4-2.4 1.7-2.4 3.3 0 1.9 1.5 3.4 3.4 3.4.4 0 .9-.1 1.3-.3 1.5 1.6 3.6 2.6 5.9 2.6s4.4-1 5.9-2.6c.4.2.9.3 1.3.3 1.9 0 3.4-1.5 3.4-3.4 0-1.6-1-2.9-2.4-3.3.5-.6.8-1.3.8-2.1 0-1.8-1.4-3.3-3.2-3.4-.8-.1-1.6.1-2.2.5C14.8 4 13.5 3 12 3z" fill="none"/>
-          <path d="M9.5 12l3-2 2 3-3 2z" stroke="#5E6E52" stroke-width="0.8" fill="#F0EFEA"/>
-          <path d="M13 9c2-2 4.5-2.5 7-2-0.8 2.5-1.5 5-3.5 7" stroke="#5E6E52" stroke-width="0.8" fill="none"/>
-          <circle cx="10" cy="7.5" r="2.5" fill="#5E6E52"/>
-          <path d="M7.5 10c1 1.5 2.5 2.5 4.5 2.8" stroke="#5E6E52" stroke-width="0.9" fill="none"/>
-        </svg>
+        <span class="seal-initials">C&amp;D</span>
       </div>
       <div class="envelope-text" data-i18n="envelope-msg">Esta invitación es exclusiva para ti</div>
     </div>
@@ -714,11 +869,53 @@ footer .footer-names{ font-family:var(--script); font-size:2.4rem; color:var(--i
   </button>
 
   <header class="hero">
+    <div class="corner-motif top-left" aria-hidden="true">
+      <svg viewBox="0 0 130 130" fill="none" stroke="#5B7FA6" stroke-width="1.1">
+        <path d="M5 5c20 2 35 10 42 28 5 13 3 27-6 35"/>
+        <path d="M12 12c14 3 22 12 26 24"/>
+        <circle cx="47" cy="33" r="4"/>
+        <path d="M20 40c8-2 14 2 16 9"/>
+        <circle cx="38" cy="52" r="2.6"/>
+        <path d="M8 22c10 0 16 6 18 14"/>
+        <circle cx="27" cy="38" r="2.2"/>
+      </svg>
+    </div>
+    <div class="corner-motif top-right" aria-hidden="true">
+      <svg viewBox="0 0 130 130" fill="none" stroke="#5B7FA6" stroke-width="1.1">
+        <path d="M5 5c20 2 35 10 42 28 5 13 3 27-6 35"/>
+        <path d="M12 12c14 3 22 12 26 24"/>
+        <circle cx="47" cy="33" r="4"/>
+        <path d="M20 40c8-2 14 2 16 9"/>
+        <circle cx="38" cy="52" r="2.6"/>
+        <path d="M8 22c10 0 16 6 18 14"/>
+        <circle cx="27" cy="38" r="2.2"/>
+      </svg>
+    </div>
+    <div class="corner-motif bottom-left" aria-hidden="true">
+      <svg viewBox="0 0 130 130" fill="none" stroke="#5B7FA6" stroke-width="1.1">
+        <path d="M5 5c20 2 35 10 42 28 5 13 3 27-6 35"/>
+        <path d="M12 12c14 3 22 12 26 24"/>
+        <circle cx="47" cy="33" r="4"/>
+        <path d="M20 40c8-2 14 2 16 9"/>
+        <circle cx="38" cy="52" r="2.6"/>
+      </svg>
+    </div>
+    <div class="corner-motif bottom-right" aria-hidden="true">
+      <svg viewBox="0 0 130 130" fill="none" stroke="#5B7FA6" stroke-width="1.1">
+        <path d="M5 5c20 2 35 10 42 28 5 13 3 27-6 35"/>
+        <path d="M12 12c14 3 22 12 26 24"/>
+        <circle cx="47" cy="33" r="4"/>
+        <path d="M20 40c8-2 14 2 16 9"/>
+        <circle cx="38" cy="52" r="2.6"/>
+      </svg>
+    </div>
+
+    <p class="tagline" data-i18n="hero-tagline">With all our love, we invite you</p>
     <div class="ornament"></div>
     <p class="eyebrow" data-i18n="hero-eyebrow">Nos casamos</p>
     <h1 id="coupleNames">Carolina &amp; Daniel</h1>
     <p class="date-line"><strong id="eventDateLong">Viernes, 16 de abril de 2027</strong></p>
-    <p class="place-line" id="eventVenueShort">Parroquia de Nuestra Señora del Pilar, Madrid</p>
+    <p class="place-line" id="eventVenueShort">Madrid</p>
   </header>
 
   <section class="section animate-on-scroll" id="countdown">
@@ -819,6 +1016,7 @@ footer .footer-names{ font-family:var(--script); font-size:2.4rem; color:var(--i
         <div class="kicker" data-i18n="rsvp-kicker">Confirmación</div>
         <h2 data-i18n="rsvp-title">¿Nos acompañas?</h2>
         <p class="sub" data-i18n="rsvp-sub">Confírmanos tu asistencia antes del 1 de abril de 2027. Nos hace muchísima ilusión celebrarlo con vosotros.</p>
+        <p class="guest-greeting" id="guestGreeting" style="display:none;"></p>
       </div>
 
       <form class="rsvp-form" id="rsvpForm" novalidate>
@@ -900,6 +1098,11 @@ footer .footer-names{ font-family:var(--script); font-size:2.4rem; color:var(--i
 <script>
 const WEDDING_CONFIG = {
   eventDateISO: "2027-04-16T18:00:00",
+
+  // Número máximo de invitados que puede indicar esta invitación
+  // (por ejemplo, si la invitación es para 2 personas, pon 2 aquí).
+  // El formulario arranca en este número y solo permite bajar, nunca subir.
+  maxGuests: 2,
   church: {
     name: "Parroquia de Nuestra Señora del Pilar",
     address: "Madrid",
@@ -918,26 +1121,118 @@ const WEDDING_CONFIG = {
     { time: "03:00", titleKey: "prog-7", titleEs: "Fin de fiesta",       titleFr: "Fin de soirée",          icon: "moon" }
   ],
   faqItems: [
-    { q_es:"¿Puedo llevar acompañantes?", q_fr:"Puis-je venir accompagné(e) ?",
-      a_es:"Sí, indícanos el número total de invitados (incluyéndote) en el formulario de confirmación.",
-      a_fr:"Oui, merci d'indiquer le nombre total d'invités (vous inclus) dans le formulaire de confirmation." },
     { q_es:"¿Habrá parking?", q_fr:"Y aura-t-il un parking ?",
       a_es:"Sí, los lugares disponen de opciones de aparcamiento en las inmediaciones para todos los invitados.",
       a_fr:"Oui, les lieux disposent d'options de stationnement à proximité pour tous les invités." },
     { q_es:"¿Código de vestimenta?", q_fr:"Y a-t-il un code vestimentaire ?",
       a_es:"Elegante.",
-      a_fr:"Élégant." },
-    { q_es:"¿Se pueden hacer fotos durante la ceremonia?", q_fr:"Peut-on prendre des photos pendant la cérémonie ?",
-      a_es:"Preferimos una ceremonia \"unplugged\": guardad los móviles y disfrutad del momento, nuestro fotógrafo se encarga de todo.",
-      a_fr:"Nous préférons une cérémonie « unplugged » : rangez vos téléphones, notre photographe s'occupe de tout." }
+      a_fr:"Élégant." }
   ],
   iban: { number: "ES12 3456 7890 1234 5678 9012", holder: "Carolina & Daniel" },
   rsvpWebhookUrl: ""
 };
 
+/* ============================================================
+   LISTA DE INVITADOS — enlaces personalizados por código
+   ============================================================
+   Cada entrada define cuántos invitados corresponden a ese enlace
+   concreto. Para invitar a alguien, le mandas la URL de tu web
+   añadiendo "?inv=SU_CODIGO" al final, por ejemplo:
+
+     https://tuweb.com/?inv=perez
+
+   No hace falta crear ningún archivo nuevo: todo vive aquí, en esta
+   misma lista. Añade una línea por cada familia/grupo que invites.
+   - La clave (a la izquierda, ej. "perez") es el código que va en
+     la URL. Usa solo letras/números/guiones, sin espacios ni tildes.
+   - "name" es el nombre que se muestra en el saludo (puede llevar
+     tildes y espacios sin problema).
+   - "maxGuests" es el número de invitados que tiene esa familia.
+   ============================================================ */
+const GUEST_LIST = {
+  "papa-tios": { name: "Papá + tíos", maxGuests: 3 },
+  "ina-y-hermana": { name: "Ina y Hermana", maxGuests: 2 },
+  "negra-y-jimmy": { name: "Negra y Jimmy", maxGuests: 2 },
+  "tio-edgard-y": { name: "Tío Edgard y Esposa", maxGuests: 2 },
+  "carolina-yitani": { name: "Carolina Yitani", maxGuests: 1 },
+  "eladio-y-elena": { name: "Eladio y Elena", maxGuests: 2 },
+  "simon-yitani-magaly": { name: "Simón Yitani, Magaly, Yuya y Simon", maxGuests: 4 },
+  "mariale-y-esposo": { name: "Mariale y Esposo", maxGuests: 2 },
+  "yoli-y-novio": { name: "Yoli y Novio", maxGuests: 2 },
+  "nicole": { name: "Nicole", maxGuests: 1 },
+  "geraldine-novio-e": { name: "Geraldine, Novio e Hija", maxGuests: 2 },
+  "lucia-y-novio": { name: "Lucia y Novio", maxGuests: 2 },
+  "abuelos-daniel": { name: "Abuelos Daniel", maxGuests: 2 },
+  "eduardo-antonio-esposa": { name: "Eduardo Antonio, Esposa e Hijo", maxGuests: 2 },
+  "david-ortiz": { name: "David Ortiz", maxGuests: 1 },
+  "tio-issac-belmary": { name: "Tío Issac, Belmary, Sofia y Esposo", maxGuests: 4 },
+  "gianfranco": { name: "Gianfranco", maxGuests: 1 },
+  "tio-javier-esposa": { name: "Tío Javier, Esposa e Hijo", maxGuests: 3 },
+  "carlo-y-nicol": { name: "Carlo y Nicol", maxGuests: 2 },
+  "javier-y-novia": { name: "Javier y novia", maxGuests: 2 },
+  "maru-y-fran": { name: "Maru y Fran", maxGuests: 2 },
+  "papas-daniel-andres": { name: "Papás Daniel, Andrés y Michelle", maxGuests: 4 },
+  "leidy-javi-e": { name: "Leidy, Javi e Hijo", maxGuests: 3 },
+  "rosa-michelle-e": { name: "Rosa, Michelle e Hijos", maxGuests: 4 },
+  "claudia-novio-y": { name: "Claudia, Novio y Mamá Claudia", maxGuests: 3 },
+  "ricardo-rojas": { name: "Ricardo Rojas", maxGuests: 1 },
+  "marina-y-novio": { name: "Marina y Novio", maxGuests: 2 },
+  "karla-y-wilmer": { name: "Karla y Wilmer", maxGuests: 2 },
+  "nani-lupe-alan": { name: "Nani, Lupe, Alan e Hijos", maxGuests: 6 },
+  "melisa-prima-novio": { name: "Melisa Prima, Novio e Hija", maxGuests: 3 },
+  "maria-sol-y": { name: "Maria Sol y Tía Sol", maxGuests: 2 },
+  "isabella-y-german": { name: "Isabella y German", maxGuests: 2 },
+  "lorea-y-alberto": { name: "Lorea y Alberto", maxGuests: 2 },
+  "ana-morin-y": { name: "Ana Morin y Novia", maxGuests: 2 },
+  "vero": { name: "Vero", maxGuests: 1 },
+  "daniela-regla-esposo": { name: "Daniela Regla, Esposo e Hija", maxGuests: 3 },
+  "joseph-y-novia": { name: "Joseph y Novia", maxGuests: 2 },
+  "cristian-sever-y": { name: "Cristian Sever y Rocío", maxGuests: 2 },
+  "madeleine-y-javier": { name: "Madeleine y Javier", maxGuests: 2 },
+  "henry-sabina-e": { name: "Henry, Sabina e Hijo", maxGuests: 3 },
+  "monica-caceres-y": { name: "Monica Caceres y Esposo", maxGuests: 2 },
+  "david-reyes-y": { name: "David Reyes y Novia", maxGuests: 2 },
+  "luis-lopez": { name: "Luis Lopez", maxGuests: 1 },
+  "marcos-cachafeiro": { name: "Marcos Cachafeiro", maxGuests: 1 },
+  "daniel-risas": { name: "Daniel Risas", maxGuests: 1 },
+  "tia-karla": { name: "Tía Karla", maxGuests: 4 },
+  "tio-giovanni": { name: "Tío Giovanni", maxGuests: 2 },
+  "jessica-marian": { name: "Jessica Marian", maxGuests: 2 },
+  "bottini": { name: "Bottini", maxGuests: 1 },
+  "tico-y-novia": { name: "Tico y Novia", maxGuests: 2 },
+  "yolanda": { name: "Yolanda", maxGuests: 1 },
+  "tinti-y-novio": { name: "Tinti y Novio", maxGuests: 2 },
+  "ivanna-y-novio": { name: "Ivanna y Novio", maxGuests: 2 },
+  "tio-alberto-tia": { name: "Tío Alberto, Tia e Hijo", maxGuests: 3 },
+  "chino": { name: "Chino", maxGuests: 1 },
+  "fotografo": { name: "Fotógrafo", maxGuests: 1 },
+  "maralesy-novio-e": { name: "Maralesy, Novio e Hijo", maxGuests: 3 },
+  "maria-carolina-y": { name: "Maria Carolina y Daniel", maxGuests: 2 }
+};
+
+// Lee el parámetro ?inv=codigo de la URL actual y, si existe y está
+// en la lista de arriba, sobrescribe el máximo de invitados y guarda
+// el nombre para poder saludar a esa familia por su nombre.
+// Si el enlace no lleva código, o el código no existe en la lista,
+// la invitación funciona igual que hasta ahora (comportamiento por
+// defecto: WEDDING_CONFIG.maxGuests), sin romperse nunca.
+function resolveGuestFromUrl(){
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("inv");
+  if(code && GUEST_LIST[code]){
+    return { code, ...GUEST_LIST[code] };
+  }
+  return null;
+}
+const currentGuest = resolveGuestFromUrl();
+if(currentGuest){
+  WEDDING_CONFIG.maxGuests = currentGuest.maxGuests;
+}
+
 const I18N = {
   es: {
     "envelope-msg":"Esta invitación es exclusiva para ti",
+    "hero-tagline":"With all our love, we invite you",
     "hero-eyebrow":"Nos casamos",
     "countdown-kicker":"Queda poco",
     "countdown-title":"Cuenta atrás para el gran día",
@@ -967,6 +1262,7 @@ const I18N = {
   },
   fr: {
     "envelope-msg":"Cette invitation est exclusive pour vous",
+    "hero-tagline":"With all our love, we invite you",
     "hero-eyebrow":"Nous nous marions",
     "countdown-kicker":"Plus que quelques jours",
     "countdown-title":"Compte à rebours avant le grand jour",
@@ -1031,12 +1327,24 @@ const envelopeScreen = document.getElementById("envelope-screen");
 const envelopeContainer = document.getElementById("envelopeContainer");
 const invitation = document.getElementById("invitation");
 
+let envelopeOpening = false;
 function openEnvelope(e){
   if(e) e.stopPropagation();
-  envelopeContainer.classList.add("open");
-  envelopeScreen.classList.add("hidden");
-  invitation.classList.add("revealed");
-  document.body.style.overflow = "auto";
+  if(envelopeOpening) return; // evita reabrir a mitad de la animación
+  envelopeOpening = true;
+
+  // Paso 1: el lazo se desata (nudo gira, lazadas se abren, tiras se deslizan fuera)
+  envelopeContainer.classList.add("untying");
+
+  // Paso 2: con el lazo ya fuera, se abre la solapa y aparece la invitación.
+  // El propio CSS de #envelope-screen.hidden tiene su transition-delay,
+  // así que aquí solo hace falta esperar a que termine la animación del lazo.
+  setTimeout(()=>{
+    envelopeContainer.classList.add("open");
+    envelopeScreen.classList.add("hidden");
+    invitation.classList.add("revealed");
+    document.body.style.overflow = "auto";
+  }, 550);
 }
 
 document.body.style.overflow = "hidden";
@@ -1061,7 +1369,7 @@ document.getElementById("churchMapsLink").href = WEDDING_CONFIG.church.mapsUrl;
 
 document.getElementById("venueName").textContent = WEDDING_CONFIG.venue.name;
 document.getElementById("venueAddress").textContent = WEDDING_CONFIG.venue.address;
-document.getElementById("eventVenueShort").textContent = WEDDING_CONFIG.church.name + ", " + WEDDING_CONFIG.church.address;
+document.getElementById("eventVenueShort").textContent = WEDDING_CONFIG.venue.address;
 document.getElementById("mapsLink").href = WEDDING_CONFIG.venue.mapsUrl;
 
 function pad(n){ return String(n).padStart(2,"0"); }
@@ -1155,15 +1463,25 @@ function syncAttendVisibility(){
 attendRadios.forEach(r => r.addEventListener("change", syncAttendVisibility));
 syncAttendVisibility();
 
-let guestCount = 1;
+let guestCount = WEDDING_CONFIG.maxGuests;
 const guestCountEl = document.getElementById("guestCount");
+const guestPlusBtn = document.getElementById("guestPlus");
+guestCountEl.textContent = guestCount;
+
+function syncGuestButtons(){
+  guestPlusBtn.disabled = guestCount >= WEDDING_CONFIG.maxGuests;
+}
+syncGuestButtons();
+
 document.getElementById("guestMinus").addEventListener("click", ()=>{
   guestCount = Math.max(1, guestCount - 1);
   guestCountEl.textContent = guestCount;
+  syncGuestButtons();
 });
-document.getElementById("guestPlus").addEventListener("click", ()=>{
-  guestCount = Math.min(10, guestCount + 1);
+guestPlusBtn.addEventListener("click", ()=>{
+  guestCount = Math.min(WEDDING_CONFIG.maxGuests, guestCount + 1);
   guestCountEl.textContent = guestCount;
+  syncGuestButtons();
 });
 
 const rsvpForm = document.getElementById("rsvpForm");
@@ -1232,6 +1550,17 @@ const observer = new IntersectionObserver((entries, observer) => {
 }, observerOptions);
 
 document.querySelectorAll('.animate-on-scroll').forEach(section => observer.observe(section));
+
+// Si el enlace lleva un código de invitado reconocido, saluda por su
+// nombre y deja el campo de nombre pre-rellenado (el invitado puede
+// corregirlo si lo prefiere, por ejemplo para escribir solo el suyo
+// dentro de una invitación familiar).
+if(currentGuest){
+  const greetingEl = document.getElementById("guestGreeting");
+  greetingEl.textContent = `¡Hola, ${currentGuest.name}!`;
+  greetingEl.style.display = "block";
+  document.getElementById("fullName").value = currentGuest.name;
+}
 
 applyLang("es");
 </script>
