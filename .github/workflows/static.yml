@@ -30,11 +30,11 @@ jobs:
 
       - name: Install dependencies
         working-directory: Proyecto_react
-        run: npm install
+        run: npm ci
 
       - name: Build
         working-directory: Proyecto_react
-        run: npx vite build
+        run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
