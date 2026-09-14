@@ -26,7 +26,8 @@ jobs:
         with:
           node-version: 22
           cache: 'npm'
-          
+          cache-dependency-path: Proyecto_react/package-lock.json
+
       - name: Install dependencies
         working-directory: Proyecto_react
         run: npm install
