@@ -28,10 +28,12 @@ jobs:
           cache: 'npm'
           
       - name: Install dependencies
-        run: npm install --prefix Proyecto_react
+        working-directory: Proyecto_react
+        run: npm install
 
       - name: Build
-        run: npm run build --prefix Proyecto_react
+        working-directory: Proyecto_react
+        run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
