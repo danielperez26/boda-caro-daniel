@@ -6,7 +6,6 @@ on:
 
 jobs:
   build-and-deploy:
-
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -19,15 +18,17 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
+        working-directory: Proyecto_react
         run: npm install
 
       - name: Build
+        working-directory: Proyecto_react
         run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.output/public'
+          path: 'Proyecto_react/.output/public'
 
       - name: Deploy to GitHub Pages
         id: deployment
