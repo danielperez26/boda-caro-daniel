@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 
 import oliveBranch from "../assets/olive-branch.png";
+import { GUESTS_DATABASE, DEFAULT_GUEST } from "../data/guests";
 
 const WEDDING_DATE = new Date("2027-04-16T17:00:00");
 
@@ -39,23 +40,34 @@ const head = () => ({
 
 export const Route = createFileRoute("/")({
   head,
-  validateSearch: (search: Record<string, unknown>): { invitados?: number; nombre?: string } => {
-    const raw = Number(search["invitados"]);
-    const invitados = Number.isFinite(raw) && raw > 0 ? Math.min(Math.floor(raw), 10) : undefined;
-    const nombre = typeof search["nombre"] === "string" ? search["nombre"] : undefined;
-    return { ...(invitados ? { invitados } : {}), ...(nombre ? { nombre } : {}) };
+  validateSearch: (search: Record<string, unknown>): { inv?: string } => {
+    const inv = typeof search["inv"] === "string" ? search["inv"] : undefined;
+    return inv ? { inv } : {};
   },
   component: Index,
 });
 
 function Index() {
-  const { invitados = 2, nombre } = Route.useSearch();
+  const { inv } = Route.useSearch();
   const [opened, setOpened] = useState(false);
+
+  const currentGuest = inv ? GUESTS_DATABASE[inv] : undefined;
+
+  if (!currentGuest) {
+    return (
+      <main className="min-h-screen flex flex-col items-center justify-center bg-background text-foreground p-6 text-center">
+        <h1 className="font-display text-3xl md:text-4xl font-medium mb-4">Acceso no válido</h1>
+        <p className="text-muted-foreground max-w-md mb-6">
+          Lo sentimos, para ver esta invitación necesitas un enlace personalizado válido. Por favor, revisa el enlace que te compartimos por WhatsApp.
+        </p>
+      </main>
+    );
+  }
 
   return (
     <>
       {!opened && (
-        <EnvelopeGate guests={invitados} guestName={nombre} onOpen={() => setOpened(true)} />
+        <EnvelopeGate guests={currentGuest.seats} guestName={currentGuest.name} onOpen={() => setOpened(true)} />
       )}
       <main
         className={`min-h-screen overflow-x-hidden bg-background text-foreground ${
@@ -70,7 +82,7 @@ function Index() {
         <ItinerarySection />
         <DressCodeSection />
         <RegistrySection />
-        <RSVPSection />
+        <RSVPSection guestName={currentGuest.name} seats={currentGuest.seats} />
         <Footer />
       </main>
     </>
@@ -196,7 +208,7 @@ function EnvelopeGate({
             Estás invitado
           </p>
           <p className="mt-4 font-display text-3xl font-medium text-foreground">
-            {guestName ?? "Carolina & Daniel"}
+            {guestName ? `¡Hola, ${guestName}!` : "¡Estás invitado!"}
           </p>
           <div className="mx-auto my-5 h-px w-16 bg-primary/40" />
           <p className="text-sm text-muted-foreground">
@@ -248,6 +260,7 @@ function EnvelopeGate({
     </div>
   );
 }
+
 
 /* -------------------------------------------------------------------------- */
 /*  DRESS CODE                                                                */
@@ -763,11 +776,10 @@ function ItinerarySection() {
 /*  RSVP                                                                      */
 /* -------------------------------------------------------------------------- */
 
-function RSVPSection() {
+function RSVPSection({ guestName, seats }: { guestName: string; seats: number }) {
   const ref = useRef<HTMLElement>(null);
   const isVisible = useInView(ref, { once: true, threshold: 0.15 });
-
-  const googleFormUrl = "https://forms.gle/BxKTaHR7T9Wn2BZFA";
+  const googleFormUrl = `https://docs.google.com/forms/d/e/1FAIpQLScUqWIZvrLVh0uOpVg32ZZKYtiWqJpPRTWGZ9KFZbLxQlgQNA/viewform?usp=pp_url&entry.1498135098=${encodeURIComponent(guestName)}&entry.151129012=${seats}`;
 
   return (
     <section ref={ref} className="relative bg-secondary/50 px-6 py-28 overflow-hidden border-t border-primary/10">
@@ -784,7 +796,7 @@ function RSVPSection() {
           </p>
           <h2 className="font-display text-3xl font-medium md:text-4xl">Confirma tu asistencia</h2>
           <p className="mx-auto mt-4 max-w-md text-muted-foreground">
-            Por favor, confirma tu asistencia antes del 14 de marzo de 2027 rellenando nuestro formulario.
+            Por favor, confirma tu asistencia antes del 01 de marzo de 2027 rellenando nuestro formulario.
           </p>
           <div className="mx-auto my-6 h-px w-16 bg-primary/40" />
         </div>
@@ -795,9 +807,23 @@ function RSVPSection() {
           }`}
         >
           <div className="space-y-6 py-4">
-            <p className="text-muted-foreground">
-              Haz clic en el botón de abajo para acceder al formulario de confirmación. ¡Te esperamos!
+            {/* Aviso personalizado con su nombre y plazas */}
+            <div className="rounded-xl bg-primary/5 p-4 border border-primary/15">
+              <p className="font-display text-lg font-medium text-foreground">
+                {guestName}
+              </p>
+              <p className="text-sm text-muted-foreground mt-1">
+                Invitación válida para{" "}
+                <span className="font-semibold text-primary">
+                  {seats} {seats === 1 ? "persona" : "personas"}
+                </span>
+              </p>
+            </div>
+
+            <p className="text-muted-foreground text-sm">
+              Haz clic en el botón de abajo para acceder al formulario de confirmación e indicar vuestra asistencia. ¡Os esperamos!
             </p>
+            
             <a
               href={googleFormUrl}
               target="_blank"

@@ -572,7 +572,7 @@ function RSVPSection() {
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 						className: "mx-auto mt-4 max-w-md text-muted-foreground",
-						children: "Por favor, confirma tu asistencia antes del 14 de marzo de 2027 rellenando nuestro formulario."
+						children: "Por favor, confirma tu asistencia antes del 01 de marzo de 2027 rellenando nuestro formulario."
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "mx-auto my-6 h-px w-16 bg-primary/40" })
 				]
