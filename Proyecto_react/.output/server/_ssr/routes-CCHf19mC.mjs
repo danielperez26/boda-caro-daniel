@@ -464,7 +464,7 @@ var ITINERARY = [
 		icon: Wine
 	},
 	{
-		time: "21:00",
+		time: "20:15-20:30",
 		title: "Banquete",
 		icon: UtensilsCrossed
 	},
