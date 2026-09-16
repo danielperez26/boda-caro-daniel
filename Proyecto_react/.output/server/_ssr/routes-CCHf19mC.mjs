@@ -7,7 +7,7 @@ import { a as Music, c as Heart, d as CalendarHeart, i as PartyPopper, l as Cloc
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var olive_branch_default = "/assets/olive-branch-CRZc2JlZ.png";
-var WEDDING_DATE = /* @__PURE__ */ new Date("2027-04-16T18:00:00");
+var WEDDING_DATE = /* @__PURE__ */ new Date("2027-04-16T17:00:00");
 function Index() {
 	const { invitados = 2, nombre } = Route.useSearch();
 	const [opened, setOpened] = (0, import_react.useState)(false);
@@ -366,14 +366,14 @@ var LOCATIONS = [{
 	type: "Ceremonia",
 	name: "Parroquia Nuestra Señora del Pilar",
 	address: "Juan Bravo, 40, 28006 Madrid",
-	time: "18:00",
+	time: "17:00",
 	mapsUrl: "https://www.google.com/maps/search/?api=1&query=Parroquia+Nuestra+Señora+del+Pilar+Juan+Bravo+40+Madrid"
 }, {
 	icon: PartyPopper,
 	type: "Celebración",
 	name: "Casa de Burgos",
 	address: "Madrid, España",
-	time: "19:30",
+	time: "19:00",
 	mapsUrl: "https://www.google.com/maps/search/?api=1&query=Casa+de+Burgos+Madrid"
 }];
 function LocationsSection() {
@@ -396,7 +396,7 @@ function LocationsSection() {
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
 						className: "font-display text-3xl font-medium md:text-4xl",
-						children: "¿Dónde celebramos?"
+						children: "¿Dónde celebraremos?"
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "mx-auto my-6 h-px w-16 bg-primary/40" })
 				]
@@ -454,12 +454,12 @@ function LocationCard({ location, index, visible }) {
 }
 var ITINERARY = [
 	{
-		time: "18:00",
+		time: "17:00",
 		title: "Ceremonia",
 		icon: Church
 	},
 	{
-		time: "19:30",
+		time: "19:00",
 		title: "Cóctel",
 		icon: Wine
 	},

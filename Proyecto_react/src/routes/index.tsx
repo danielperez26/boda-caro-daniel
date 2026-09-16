@@ -1,27 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState, type ReactNode } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { useEffect, useRef, useState } from "react";
 import {
   MapPin,
   Church,
   PartyPopper,
   Clock,
   Heart,
-  Check,
   CalendarHeart,
   Wine,
   UtensilsCrossed,
   Music,
   Moon,
   Shirt,
-  Baby,
 } from "lucide-react";
 
 import oliveBranch from "../assets/olive-branch.png";
 
-const WEDDING_DATE = new Date("2027-04-16T18:00:00");
+const WEDDING_DATE = new Date("2027-04-16T17:00:00");
 
 const head = () => ({
   meta: [
@@ -74,9 +69,71 @@ function Index() {
         <LocationsSection />
         <ItinerarySection />
         <DressCodeSection />
+        <RegistrySection />
         <RSVPSection />
         <Footer />
       </main>
+    </>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*  ORNAMENTAL CORNER COMPONENT (Más grandes y con puntos animados)          */
+/* -------------------------------------------------------------------------- */
+
+function FloralCorners() {
+  return (
+    <>
+      {/* Esquina Superior Izquierda */}
+      <div className="absolute top-4 left-4 w-32 h-32 pointer-events-none text-primary/60">
+        <svg viewBox="0 0 100 100" fill="currentColor">
+          <path d="M8,8 Q55,8 80,60" fill="none" stroke="currentColor" strokeWidth="1.4" />
+          <path d="M12,20 Q45,20 60,55" fill="none" stroke="currentColor" strokeWidth="1.1" />
+          <path d="M22,14 C32,8 38,18 30,26 Z" opacity="0.85" />
+          <path d="M42,10 C52,6 58,16 50,24 Z" opacity="0.85" />
+          <path d="M14,35 C22,27 30,34 22,44 Z" opacity="0.85" />
+          <circle cx="6" cy="6" r="3" className="animate-ping text-amber-500/70" fill="currentColor" />
+          <circle cx="32" cy="6" r="2" className="animate-pulse text-amber-500/90" fill="currentColor" />
+          <circle cx="10" cy="30" r="2.2" className="animate-bounce text-amber-500/80" fill="currentColor" />
+        </svg>
+      </div>
+
+      {/* Esquina Superior Derecha */}
+      <div className="absolute top-4 right-4 w-32 h-32 pointer-events-none text-primary/60 transform scale-x-[-1]">
+        <svg viewBox="0 0 100 100" fill="currentColor">
+          <path d="M8,8 Q55,8 80,60" fill="none" stroke="currentColor" strokeWidth="1.4" />
+          <path d="M12,20 Q45,20 60,55" fill="none" stroke="currentColor" strokeWidth="1.1" />
+          <path d="M22,14 C32,8 38,18 30,26 Z" opacity="0.85" />
+          <path d="M42,10 C52,6 58,16 50,24 Z" opacity="0.85" />
+          <path d="M14,35 C22,27 30,34 22,44 Z" opacity="0.85" />
+          <circle cx="8" cy="8" r="2.5" className="animate-pulse text-amber-500/90" fill="currentColor" />
+          <circle cx="35" cy="15" r="2" className="animate-bounce text-amber-500/80" fill="currentColor" />
+        </svg>
+      </div>
+
+      {/* Esquina Inferior Izquierda */}
+      <div className="absolute bottom-4 left-4 w-32 h-32 pointer-events-none text-primary/60 transform scale-y-[-1]">
+        <svg viewBox="0 0 100 100" fill="currentColor">
+          <path d="M8,8 Q55,8 80,60" fill="none" stroke="currentColor" strokeWidth="1.4" />
+          <path d="M12,20 Q45,20 60,55" fill="none" stroke="currentColor" strokeWidth="1.1" />
+          <path d="M22,14 C32,8 38,18 30,26 Z" opacity="0.85" />
+          <path d="M42,10 C52,6 58,16 50,24 Z" opacity="0.85" />
+          <circle cx="15" cy="8" r="2.2" className="animate-bounce text-amber-500/80" fill="currentColor" />
+          <circle cx="28" cy="28" r="2" className="animate-pulse text-amber-500/90" fill="currentColor" />
+        </svg>
+      </div>
+
+      {/* Esquina Inferior Derecha */}
+      <div className="absolute bottom-4 right-4 w-32 h-32 pointer-events-none text-primary/60 transform scale-[-1]">
+        <svg viewBox="0 0 100 100" fill="currentColor">
+          <path d="M8,8 Q55,8 80,60" fill="none" stroke="currentColor" strokeWidth="1.4" />
+          <path d="M12,20 Q45,20 60,55" fill="none" stroke="currentColor" strokeWidth="1.1" />
+          <path d="M22,14 C32,8 38,18 30,26 Z" opacity="0.85" />
+          <path d="M42,10 C52,6 58,16 50,24 Z" opacity="0.85" />
+          <circle cx="6" cy="6" r="3" className="animate-ping text-amber-500/70" fill="currentColor" />
+          <circle cx="22" cy="22" r="2.2" className="animate-pulse text-amber-500/90" fill="currentColor" />
+        </svg>
+      </div>
     </>
   );
 }
@@ -152,15 +209,11 @@ function EnvelopeGate({
 
         {/* Cuerpo del sobre */}
         <div className="relative aspect-[4/3] w-full [transform-style:preserve-3d]">
-          {/* Fondo del sobre */}
           <div className="absolute inset-0 rounded-xl border border-primary/20 bg-secondary/70 shadow-sm" />
-
-          {/* Frente del sobre (tapa la tarjeta al salir) */}
           <div className="absolute inset-x-0 bottom-0 z-20 h-[62%] overflow-hidden rounded-b-xl border-x border-b border-primary/20 bg-secondary shadow-sm">
             <div className="absolute -top-[60%] left-1/2 h-[120%] w-[80%] -translate-x-1/2 rotate-45 border-b border-primary/10 bg-secondary/80" />
           </div>
 
-          {/* Solapa superior animada */}
           <div
             className={`absolute inset-x-0 top-0 z-30 h-[52%] origin-top transition-transform duration-[1100ms] ease-[cubic-bezier(0.65,0,0.35,1)] [backface-visibility:hidden] [transform-style:preserve-3d] ${
               flapOpen ? "[transform:rotateX(-172deg)]" : "[transform:rotateX(0deg)]"
@@ -170,7 +223,6 @@ function EnvelopeGate({
               className="h-full w-full rounded-t-xl border border-primary/20 bg-secondary/90"
               style={{ clipPath: "polygon(0 0, 100% 0, 50% 100%)" }}
             />
-            {/* Sello con iniciales */}
             <div
               className={`absolute left-1/2 top-[62%] flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-primary/40 bg-primary/10 shadow-sm transition-opacity duration-300 ${
                 flapOpen ? "opacity-0" : "animate-float opacity-100"
@@ -201,54 +253,153 @@ function EnvelopeGate({
 /*  DRESS CODE                                                                */
 /* -------------------------------------------------------------------------- */
 
+// Importa tus imágenes desde la carpeta src/assets/
+import vestidoImg from "../assets/vestido.png";
+import trajeImg from "../assets/traje.png";
+
 const FORBIDDEN_COLORS = [
   { name: "Blanco", className: "bg-[oklch(0.99_0_0)]" },
-  { name: "Azul claro", className: "bg-[oklch(0.85_0.06_240)]" },
-  { name: "Beige", className: "bg-[oklch(0.9_0.03_85)]" },
+  { name: "Azul", className: "bg-primary" },
+  // Beige ajustado a un tono más intenso y tostado
+  { name: "Beige", className: "bg-[#e1d0c0]" },
 ];
 
-function DressCodeSection() {
+export function DressCodeSection() {
+  const ref = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section ref={ref} className="relative bg-secondary/50 px-6 py-28 text-center overflow-hidden border-y border-primary/10">
+      <div
+        className={`mx-auto max-w-4xl transition-all duration-1000 ease-out ${
+          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+        }`}
+      >
+        <Shirt className="mx-auto mb-6 h-8 w-8 animate-pulse text-primary/80" strokeWidth={1.5} />
+        <p className="mb-3 text-xs font-medium uppercase tracking-[0.25em] text-primary">
+          Vestimenta
+        </p>
+        <h2 className="font-display text-3xl font-medium md:text-4xl">Código de Vestimenta</h2>
+        <div className="mx-auto mb-16 mt-6 h-px w-16 bg-primary/40" />
+
+        {/* Tarjetas simétricas */}
+        <div className="grid gap-8 md:grid-cols-2 mb-16">
+          {/* Tarjeta Ellas */}
+          <div className="flex flex-col items-center rounded-2xl border border-primary/15 bg-background/80 p-8 shadow-sm backdrop-blur-sm transition-transform duration-300 hover:scale-[1.02]">
+            <div className="mb-6 h-36 flex items-center justify-center">
+              <img
+                src={vestidoImg}
+                alt="Vestido largo"
+                className="h-full w-auto object-contain brightness-0 opacity-85"
+              />
+            </div>
+            <h3 className="font-display text-2xl font-medium mb-3 text-foreground">Ellas</h3>
+            <div className="space-y-2 text-sm text-muted-foreground">
+              <p className="font-medium text-foreground text-base">Vestido largo</p>
+              <p>Tacones cómodos (lo agradecerás para disfrutar y bailar al máximo)</p>
+            </div>
+          </div>
+
+          {/* Tarjeta Ellos */}
+          <div className="flex flex-col items-center rounded-2xl border border-primary/15 bg-background/80 p-8 shadow-sm backdrop-blur-sm transition-transform duration-300 hover:scale-[1.02]">
+            <div className="mb-6 h-36 flex items-center justify-center">
+              <img
+                src={trajeImg}
+                alt="Traje"
+                className="h-full w-auto object-contain brightness-0 opacity-85"
+              />
+            </div>
+            <h3 className="font-display text-2xl font-medium mb-3 text-foreground">Ellos</h3>
+            <div className="space-y-2 text-sm text-muted-foreground">
+              <p className="font-medium text-foreground text-base">Traje</p>
+              <p>Corbata opcional</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Colores reservados y nota de excepciones */}
+        <div className="rounded-2xl border border-primary/10 bg-background/40 p-8">
+          <p className="text-sm font-medium text-foreground mb-3">
+            Te pedimos con cariño que evites los siguientes colores reservados para la novia:
+          </p>
+          <p className="text-xs text-muted-foreground mb-8 italic">
+            * El azul está permitido siempre y cuando no sea unicolor.
+          </p>
+
+          <div className="flex flex-wrap items-center justify-center gap-8">
+            {FORBIDDEN_COLORS.map((color, index) => (
+              <div
+                key={color.name}
+                className={`flex flex-col items-center transition-all duration-700 ease-out ${
+                  isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                }`}
+                style={{ transitionDelay: `${(index + 1) * 150}ms` }}
+              >
+                {/* Añadido bg-white y un borde sutil para que los tonos claros resalten sobre cualquier fondo */}
+                <div className="relative h-14 w-14 overflow-hidden rounded-full border-2 border-primary/20 bg-white shadow-sm">
+                  <div className={`h-full w-full ${color.className}`} />
+                  <div className="absolute left-1/2 top-1/2 h-px w-[130%] -translate-x-1/2 -translate-y-1/2 rotate-45 bg-destructive/80" />
+                </div>
+                <span className="mt-2 text-sm font-medium text-foreground">{color.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+/* -------------------------------------------------------------------------- */
+/*  REGISTRY / GIFTS (Actualizado con el mensaje en efectivo)                */
+/* -------------------------------------------------------------------------- */
+
+function RegistrySection() {
   const ref = useRef<HTMLElement>(null);
   const isVisible = useInView(ref, { once: true, threshold: 0.15 });
 
   return (
-    <section ref={ref} className="bg-secondary/40 px-6 py-24 text-center">
+    <section ref={ref} className="relative bg-background px-6 py-28 text-center overflow-hidden">
+      <FloralCorners />
       <div
-        className={`mx-auto max-w-3xl transition-all duration-1000 ease-out ${
+        className={`mx-auto max-w-2xl transition-all duration-1000 ease-out ${
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
         }`}
       >
-        <Shirt className="mx-auto mb-6 h-8 w-8 animate-float text-primary/80" strokeWidth={1.5} />
+        <span className="text-primary text-2xl mb-4 block">💙</span>
         <p className="mb-3 text-xs font-medium uppercase tracking-[0.25em] text-primary">
-          Vestimenta
+          Regalos
         </p>
-        <h2 className="font-display text-3xl font-medium md:text-4xl">Etiqueta formal</h2>
+        <h2 className="font-display text-3xl font-medium md:text-4xl">Nuestro futuro juntos</h2>
         <div className="mx-auto my-6 h-px w-16 bg-primary/40" />
-        <p className="mx-auto max-w-xl leading-relaxed text-muted-foreground">
-          El código de vestimenta es formal. Te pedimos con cariño que evites los siguientes
-          colores, reservados para la novia y el ambiente de la celebración.
-        </p>
 
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-6">
-          {FORBIDDEN_COLORS.map((color, index) => (
-            <div
-              key={color.name}
-              className={`flex flex-col items-center transition-all duration-700 ease-out ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
-              style={{ transitionDelay: isVisible ? `${(index + 1) * 150}ms` : "0ms" }}
-            >
-              <div className="relative h-16 w-16 overflow-hidden rounded-full border border-primary/20 shadow-sm">
-                <div className={`h-full w-full ${color.className}`} />
-                <div className="absolute left-1/2 top-1/2 h-px w-[130%] -translate-x-1/2 -translate-y-1/2 rotate-45 bg-destructive/80" />
-              </div>
-              <span className="mt-3 text-sm font-medium text-foreground">{color.name}</span>
-              <span className="text-xs uppercase tracking-widest text-muted-foreground">
-                No permitido
-              </span>
-            </div>
-          ))}
+        <div className="mx-auto max-w-xl space-y-4 mb-6 text-muted-foreground">
+          <p className="font-display text-xl md:text-2xl text-foreground leading-relaxed">
+            Celebrar este día contigo ya es un regalo.
+          </p>
+          <p className="text-base leading-relaxed">
+            Si además quieres obsequiarnos algo agradeceríamos que cualquier contribución sea en efectivo.
+          </p>
         </div>
+
+        <span className="text-primary text-xl mt-8 block">✨</span>
       </div>
     </section>
   );
@@ -260,7 +411,8 @@ function DressCodeSection() {
 
 function Hero() {
   return (
-    <section className="relative flex min-h-screen flex-col items-center justify-center px-6 py-20 text-center">
+    <section className="relative flex min-h-screen flex-col items-center justify-center px-6 py-20 text-center overflow-hidden">
+      <FloralCorners />
       <div className="animate-fade-in absolute inset-0 -z-10 opacity-60">
         <div className="absolute left-1/2 top-1/2 h-[40rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/5 blur-3xl" />
       </div>
@@ -325,7 +477,8 @@ function CountdownSection() {
   }, []);
 
   return (
-    <section ref={ref} className="bg-secondary/40 px-6 py-24 text-center">
+    <section ref={ref} className="relative bg-secondary/40 px-6 py-28 text-center overflow-hidden border-y border-primary/10">
+      <FloralCorners />
       <div
         className={`transition-all duration-1000 ease-out ${
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -416,7 +569,8 @@ function StorySection() {
   const isVisible = useInView(ref, { once: true, threshold: 0.25 });
 
   return (
-    <section ref={ref} className="px-6 py-24 text-center">
+    <section ref={ref} className="relative bg-background px-6 py-28 text-center overflow-hidden">
+      <FloralCorners />
       <div
         className={`mx-auto max-w-2xl transition-all duration-1000 ease-out ${
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -447,7 +601,7 @@ const LOCATIONS = [
     type: "Ceremonia",
     name: "Parroquia Nuestra Señora del Pilar",
     address: "Juan Bravo, 40, 28006 Madrid",
-    time: "18:00",
+    time: "17:00",
     mapsUrl:
       "https://www.google.com/maps/search/?api=1&query=Parroquia+Nuestra+Señora+del+Pilar+Juan+Bravo+40+Madrid",
   },
@@ -456,7 +610,7 @@ const LOCATIONS = [
     type: "Celebración",
     name: "Casa de Burgos",
     address: "Madrid, España",
-    time: "19:30",
+    time: "19:00",
     mapsUrl: "https://www.google.com/maps/search/?api=1&query=Casa+de+Burgos+Madrid",
   },
 ];
@@ -466,7 +620,8 @@ function LocationsSection() {
   const isVisible = useInView(ref, { once: true, threshold: 0.15 });
 
   return (
-    <section ref={ref} className="bg-secondary/40 px-6 py-24">
+    <section ref={ref} className="relative bg-secondary/40 px-6 py-28 overflow-hidden border-y border-primary/10">
+      <FloralCorners />
       <div className="mx-auto max-w-5xl">
         <div
           className={`mb-14 text-center transition-all duration-1000 ease-out ${
@@ -476,7 +631,7 @@ function LocationsSection() {
           <p className="mb-3 text-xs font-medium uppercase tracking-[0.25em] text-primary">
             Localización
           </p>
-          <h2 className="font-display text-3xl font-medium md:text-4xl">¿Dónde celebramos?</h2>
+          <h2 className="font-display text-3xl font-medium md:text-4xl">Dónde celebraremos</h2>
           <div className="mx-auto my-6 h-px w-16 bg-primary/40" />
         </div>
 
@@ -551,8 +706,8 @@ function LocationCard({
 /* -------------------------------------------------------------------------- */
 
 const ITINERARY = [
-  { time: "18:00", title: "Ceremonia", icon: Church },
-  { time: "19:30", title: "Cóctel", icon: Wine },
+  { time: "17:00", title: "Ceremonia", icon: Church },
+  { time: "19:00", title: "Cóctel", icon: Wine },
   { time: "21:00", title: "Banquete", icon: UtensilsCrossed },
   { time: "00:00", title: "Fiesta", icon: Music },
   { time: "03:00", title: "Fin fiesta", icon: Moon },
@@ -563,7 +718,8 @@ function ItinerarySection() {
   const isVisible = useInView(ref, { once: true, threshold: 0.15 });
 
   return (
-    <section ref={ref} className="px-6 py-24 text-center">
+    <section ref={ref} className="relative bg-background px-6 py-28 text-center overflow-hidden">
+      <FloralCorners />
       <div
         className={`mx-auto max-w-4xl transition-all duration-1000 ease-out ${
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -583,7 +739,7 @@ function ItinerarySection() {
           return (
             <div
               key={item.title}
-              className={`flex flex-col items-center rounded-2xl border border-primary/10 bg-background p-6 shadow-sm transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-md ${
+              className={`flex flex-col items-center rounded-2xl border border-primary/10 bg-secondary/40 p-6 shadow-sm transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-md ${
                 isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
               style={{ transitionDelay: isVisible ? `${(index + 1) * 150}ms` : "0ms" }}
@@ -607,30 +763,15 @@ function ItinerarySection() {
 /*  RSVP                                                                      */
 /* -------------------------------------------------------------------------- */
 
-const rsvpSchema = z.object({
-  fullName: z.string().min(2, "Por favor, escribe tu nombre completo."),
-  email: z.string().email("Introduce un email válido."),
-  attendance: z.enum(["yes", "no"], {
-    required_error: "Por favor, confirma tu asistencia.",
-  }),
-  guests: z.coerce.number().min(0).max(10),
-  kidsMenu: z.enum(["no", "yes"]),
-  kidsCount: z.coerce.number().min(0).max(10),
-  dietary: z.string().optional(),
-  message: z.string().optional(),
-});
-
-type RSVPFormData = z.infer<typeof rsvpSchema>;
-
 function RSVPSection() {
   const ref = useRef<HTMLElement>(null);
   const isVisible = useInView(ref, { once: true, threshold: 0.15 });
 
-  // URL provisional. Cuando crees tu Google Form, reemplaza este texto entre comillas por el enlace oficial.
   const googleFormUrl = "https://forms.gle/BxKTaHR7T9Wn2BZFA";
 
   return (
-    <section ref={ref} className="px-6 py-24">
+    <section ref={ref} className="relative bg-secondary/50 px-6 py-28 overflow-hidden border-t border-primary/10">
+      <FloralCorners />
       <div className="mx-auto max-w-2xl">
         <div
           className={`mb-12 text-center transition-all duration-1000 ease-out ${
@@ -649,7 +790,7 @@ function RSVPSection() {
         </div>
 
         <div
-          className={`rounded-2xl border border-primary/10 bg-card p-8 text-center shadow-sm transition-all duration-1000 delay-200 ease-out md:p-12 ${
+          className={`rounded-2xl border border-primary/20 bg-card p-8 text-center shadow-md transition-all duration-1000 delay-200 ease-out md:p-12 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
@@ -672,31 +813,13 @@ function RSVPSection() {
   );
 }
 
-function Field({
-  label,
-  error,
-  children,
-}: {
-  label: string;
-  error?: string | undefined;
-  children: ReactNode;
-}) {
-  return (
-    <div className="flex flex-col gap-2">
-      <label className="text-sm font-medium text-foreground">{label}</label>
-      {children}
-      {error && <span className="text-xs text-destructive">{error}</span>}
-    </div>
-  );
-}
-
 /* -------------------------------------------------------------------------- */
 /*  FOOTER                                                                    */
 /* -------------------------------------------------------------------------- */
 
 function Footer() {
   return (
-    <footer className="border-t border-primary/10 bg-secondary/40 px-6 py-16 text-center">
+    <footer className="border-t border-primary/10 bg-background px-6 py-16 text-center">
       <Heart className="mx-auto mb-4 h-5 w-5 animate-pulse text-primary" strokeWidth={1.5} />
       <p className="font-display text-2xl font-medium text-foreground">Carolina & Daniel</p>
       <p className="mt-2 text-sm text-muted-foreground">16 de abril de 2027 · Madrid, España</p>

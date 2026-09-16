@@ -60,13 +60,13 @@
   --card-foreground: oklch(0.22 0.03 60);
   --popover: oklch(0.93 0.015 65);
   --popover-foreground: oklch(0.22 0.03 60);
-  --primary: oklch(0.55 0.12 250);            /* Azul lavanda/índigo con fuerza para botones */
+  --primary: oklch(0.60 0.10 250);            /* Azul lavanda/índigo con fuerza para botones */
   --primary-foreground: oklch(0.98 0.005 85); /* Texto blanco sobre el botón */
   --secondary: oklch(0.84 0.02 65);
   --secondary-foreground: oklch(0.25 0.03 60);
   --muted: oklch(0.82 0.02 65);
   --muted-foreground: oklch(0.42 0.03 60);    /* Texto secundario en marrón grisáceo suave */
-  --accent: oklch(0.55 0.12 250);             /* Azul lavanda de acento */
+  --accent: oklch(0.60 0.10 250);             /* Azul lavanda de acento */
   --accent-foreground: oklch(0.98 0.005 85);
   --destructive: oklch(0.57 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
