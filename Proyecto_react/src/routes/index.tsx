@@ -16,18 +16,19 @@ import {
 
 import oliveBranch from "../assets/olive-branch.png";
 import { GUESTS_DATABASE } from "../data/guests";
+import couplePhoto from "../assets/caro-daniel-1.png";
 
 const WEDDING_DATE = new Date("2027-04-16T17:00:00");
 
 const head = () => ({
   meta: [
-    { title: "Carolina &amp; Daniel | Invitación de Boda" },
+    { title: "Carolina & Daniel | Invitación de Boda" },
     {
       name: "description",
       content:
         "Nos encantaría celebrar nuestra boda contigo. Confirma tu asistencia y descubre todos los detalles del gran día.",
     },
-    { property: "og:title", content: "Carolina &amp; Daniel | Invitación de Boda" },
+    { property: "og:title", content: "Carolina & Daniel | Invitación de Boda" },
     {
       property: "og:description",
       content:
@@ -90,7 +91,7 @@ function Index() {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  ENVELOPE GATE                                                             */
+/*  ENVELOPE GATE (DURACIÓN AMPLIADA)                                         */
 /* -------------------------------------------------------------------------- */
 
 type EnvelopePhase = "closed" | "flap" | "card" | "out";
@@ -117,8 +118,8 @@ function EnvelopeGate({
     setPhase("flap");
     timers.current.push(
       setTimeout(() => setPhase("card"), 1000),
-      setTimeout(() => setPhase("out"), 6500),
-      setTimeout(onOpen, 3500),
+      setTimeout(() => setPhase("out"), 9500),  // Aumentado el tiempo visible en pantalla
+      setTimeout(onOpen, 6500),                  // Retraso ampliado antes de habilitar el scroll
     );
   };
 
@@ -127,7 +128,7 @@ function EnvelopeGate({
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-background/95 px-6 backdrop-blur-sm transition-opacity duration-700 ease-out ${
+      className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-background/95 px-6 backdrop-blur-sm transition-opacity duration-1000 ease-out ${
         phase === "out" ? "pointer-events-none opacity-0" : "opacity-100"
       }`}
     >
@@ -234,6 +235,17 @@ function EnvelopeGate({
 function Hero() {
   return (
     <section className="relative flex min-h-screen flex-col items-center justify-center px-6 py-20 text-center overflow-hidden bg-[#5B1E22] text-white">
+      {/* Imagen de fondo / Marca de agua */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        <img
+          src={couplePhoto}
+          alt="Carolina y Daniel"
+          className="absolute inset-0 h-full w-full object-cover object-center opacity-15 mix-blend-luminosity scale-105 filter blur-[1px]"
+        />
+        {/* Capa de degradado extra para asegurar que el texto resalte perfectamente */}
+        <div className="absolute inset-0 bg-[#5B1E22]/60 mix-blend-multiply" />
+      </div>
+
       <div className="animate-fade-in absolute inset-0 -z-10 opacity-35">
         <div className="absolute left-1/2 top-1/2 h-[40rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/10 blur-3xl" />
       </div>
@@ -252,7 +264,7 @@ function Hero() {
 
       <h1 className="animate-fade-in-up font-display text-5xl font-medium leading-[1.1] text-white md:text-7xl lg:text-8xl animation-delay-200">
         Carolina
-        <span className="mx-3 align-middle text-3xl text-white/80 md:text-5xl">&amp;</span>
+        <span className="mx-3 align-middle font-serif italic text-3xl font-normal text-white/80 md:text-5xl" style={{ fontFamily: "Georgia, Cambria, 'Times New Roman', serif" }}>&</span>
         Daniel
       </h1>
 
@@ -261,8 +273,7 @@ function Hero() {
       </div>
 
       <p className="animate-fade-in-up max-w-md text-lg leading-relaxed text-white/90 animation-delay-400">
-        Con mucha ilusión, te invitamos a ser parte del día en que comenzamos nuestra historia como
-        marido y mujer.
+        Con mucha ilusión, te invitamos a ser parte del día en que comenzamos nuestra historia como recién casados
       </p>
 
       <div className="animate-fade-in-up mt-10 flex flex-col items-center gap-2 animation-delay-500">
@@ -402,9 +413,6 @@ function StorySection() {
           paso juntos. Queremos compartir este día tan especial con las personas que hacen nuestra
           vida más feliz.
         </p>
-        <p className="mt-4 font-display text-xl text-white">
-          ¡Esperamos verte en la celebración!
-        </p>
       </div>
     </section>
   );
@@ -429,7 +437,7 @@ const LOCATIONS = [
     type: "Celebración",
     name: "Casa de Burgos",
     address: "C. Principal de Provincias, 3, Moncloa - Aravaca, 28011 Madrid",
-    time: "23:00",
+    time: "19:00",
     mapsUrl:
       "https://www.google.com/maps/search/?api=1&query=C.+Principal+de+Provincias+3+Moncloa+Aravaca+28011+Madrid",
   },
@@ -447,10 +455,8 @@ function LocationsSection() {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <p className="mb-3 text-xs font-medium uppercase tracking-[0.25em] text-primary">
-            Localización
-          </p>
-          <h2 className="font-display text-3xl font-medium md:text-4xl">Dónde celebraremos</h2>
+          <MapPin className="mx-auto mb-4 h-8 w-8 text-primary/80" strokeWidth={1.5} />
+          <h2 className="font-display text-3xl font-medium md:text-4xl">Localización</h2>
           <div className="mx-auto my-6 h-px w-16 bg-primary/40" />
         </div>
 
@@ -528,7 +534,7 @@ const ITINERARY = [
   { time: "17:00", title: "Ceremonia", icon: Church },
   { time: "19:00", title: "Cóctel", icon: Wine },
   { time: "20:15-20:30", title: "Banquete", icon: UtensilsCrossed },
-  { time: "00:00", title: "Fiesta", icon: Music },
+  { time: "23:00", title: "Fiesta", icon: Music },
   { time: "03:00", title: "Fin fiesta", icon: Moon },
 ];
 
@@ -658,7 +664,7 @@ export function DressCodeSection() {
 
         <div className="rounded-2xl border border-primary/20 bg-[#D4C5B9] p-8 shadow-sm">
           <p className="text-sm font-medium text-foreground mb-3">
-            Te pedimos con cariño que evites los siguientes colores reservados para los novios y el cortejo:
+            Te pedimos con cariño que evites los siguientes colores reservados para la novia:
           </p>
           <p className="text-xs text-muted-foreground mb-8 italic">
             * El azul está permitido siempre y cuando no sea unicolor.
@@ -729,7 +735,8 @@ function RegistrySection() {
 function RSVPSection({ guestName, seats }: { guestName: string; seats: number }) {
   const ref = useRef<HTMLElement>(null);
   const isVisible = useInView(ref, { once: true, threshold: 0.15 });
-  const googleFormUrl = `https://docs.google.com/forms/d/e/1FAIpQLScUqWIZvrLVh0uOpVg32ZZKYtiWqJpPRTWGZ9KFZbLxQlgQNA/viewform?usp=pp_url&entry.1498135098=${encodeURIComponent(guestName)}&entry.151129012=${seats}`;
+  // URL del formulario de Google simplificada sin el parámetro de asientos
+  const googleFormUrl = `https://docs.google.com/forms/d/e/1FAIpQLScUqWIZvrLVh0uOpVg32ZZKYtiWqJpPRTWGZ9KFZbLxQlgQNA/viewform?usp=pp_url&entry.1498135098=${encodeURIComponent(guestName)}`;
 
   return (
     <section ref={ref} className="relative bg-background px-6 py-28 overflow-hidden">
@@ -795,7 +802,7 @@ function Footer() {
   return (
     <footer className="border-t border-white/15 bg-[#5B1E22] px-6 py-16 text-center text-white">
       <Heart className="mx-auto mb-4 h-5 w-5 animate-pulse text-white/90" strokeWidth={1.5} />
-      <p className="font-display text-2xl font-medium text-white">Carolina &amp; Daniel</p>
+      <p className="font-display text-2xl font-medium text-white">Carolina & Daniel</p>
       <p className="mt-2 text-sm text-white/80">16 de abril de 2027 · Madrid, España</p>
       <p className="mt-8 text-xs text-white/60">Invitación creada con cariño para ti.</p>
     </footer>

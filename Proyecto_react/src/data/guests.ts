@@ -50,7 +50,7 @@ export const GUESTS_DATABASE: Record<string, GuestInfo> = {
   "yolanda-gonzalez": { name: "Yolanda Gonzalez S.", seats: 1 },
   "tony-maggy": { name: "Tony Angilechia y Maggy Antypas", seats: 2 },
   "familia-mota-figueras": { name: "Familia Mota Figueras", seats: 3 },
-  "familia-mara-diego": { name: "Familia Mara Alfonso", seats: 4 },
+  "familia-freitas-piñeiro": { name: "Familia Freitas Piñero", seats: 4 },
   "Maria Andreina": { name: "Maria Andreina Mejias", seats: 1 },
   "edgard-marisa": { name: "Edgard Yitani  y Marisa Medina", seats: 2 },
   "eladio-elena": { name: "Eladio Arvelo y Elena", seats: 2 },
