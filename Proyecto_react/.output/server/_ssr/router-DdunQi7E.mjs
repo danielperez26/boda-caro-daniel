@@ -139,7 +139,7 @@ var Route = createRootRouteWithContext()({
 			},
 			{
 				rel: "icon",
-				href: "/favicon.ico",
+				href: "/caro-dani.svg",
 				type: "image/x-icon"
 			},
 			{

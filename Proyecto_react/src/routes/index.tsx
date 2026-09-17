@@ -42,7 +42,7 @@ const head = () => ({
     { name: "twitter:card", content: "summary_large_image" },
   ],
   link: [
-    { rel: "icon", href: "/alianzas.jpg" }
+    { rel: "icon", type: "image/svg+xml", href: "/caro-dani.svg" }
   ],
 });
 

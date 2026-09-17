@@ -23,12 +23,12 @@ var public_assets_data_default = {
 		"size": 22761,
 		"path": "../public/assets/routes-B0ZFvIXv.js"
 	},
-	"/favicon.ico": {
+	"/caro-dani.svg": {
 		"type": "image/vnd.microsoft.icon",
 		"etag": "\"4f95-3RXc3p2mhEAs1WBwaIvE0Y0uu0Y\"",
 		"mtime": "2026-09-14T14:08:09.631Z",
 		"size": 20373,
-		"path": "../public/favicon.ico"
+		"path": "../public/caro-dani.svg"
 	},
 	"/robots.txt": {
 		"type": "text/plain; charset=utf-8",
