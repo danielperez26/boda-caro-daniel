@@ -12,11 +12,17 @@ import {
   Music,
   Moon,
   Shirt,
+  Volume2,
+  VolumeX,
 } from "lucide-react";
 
 import oliveBranch from "../assets/olive-branch.png";
 import { GUESTS_DATABASE } from "../data/guests";
-import couplePhoto from "../assets/caro-daniel-1.png";
+import foto1 from "../assets/caro-daniel-1.jpeg";
+import foto2 from "../assets/caro-daniel-2.jpeg";
+import foto3 from "../assets/caro-daniel-3.jpeg";
+import foto4 from "../assets/caro-daniel-4.jpeg";
+import foto5 from "../assets/caro-daniel-5.jpeg";
 
 const WEDDING_DATE = new Date("2027-04-16T17:00:00");
 
@@ -51,8 +57,35 @@ export const Route = createFileRoute("/")({
 function Index() {
   const { inv } = Route.useSearch();
   const [opened, setOpened] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const currentGuest = inv ? GUESTS_DATABASE[inv] : undefined;
+
+  // Manejo de la reproducción de audio al abrir la invitación
+  const handleOpenInvitation = () => {
+    setOpened(true);
+    if (audioRef.current) {
+      audioRef.current.volume = 0.4; // Volumen ambiente agradable
+      audioRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch((e) => console.log("Autoplay bloqueado por el navegador:", e));
+    }
+  };
+
+  const toggleMusic = () => {
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch((e) => console.log("Error al reproducir audio:", e));
+    }
+  };
 
   if (!currentGuest) {
     return (
@@ -67,9 +100,13 @@ function Index() {
 
   return (
     <>
+      {/* Elemento de audio de fondo (puedes cambiar la ruta por tu archivo mp3) */}
+      <audio ref={audioRef} loop src="/audio/wedding-song.mp3" preload="auto" />
+
       {!opened && (
-        <EnvelopeGate guests={currentGuest.seats} guestName={currentGuest.name} onOpen={() => setOpened(true)} />
+        <EnvelopeGate guests={currentGuest.seats} guestName={currentGuest.name} onOpen={handleOpenInvitation} />
       )}
+
       <main
         className={`min-h-screen overflow-x-hidden bg-background text-foreground ${
           opened ? "" : "pointer-events-none h-screen overflow-hidden"
@@ -78,20 +115,77 @@ function Index() {
       >
         <Hero />                 {/* 1. Vinotinto */}
         <CountdownSection />     {/* 2. Blanco */}
-        <StorySection />         {/* 3. Vinotinto */}
+        <StorySection />         {/* 3. Vinotinto (Incluye carrusel y salto de línea) */}
         <LocationsSection />     {/* 4. Blanco */}
         <ItinerarySection />     {/* 5. Vinotinto */}
         <DressCodeSection />     {/* 6. Blanco */}
         <RegistrySection />      {/* 7. Vinotinto */}
         <RSVPSection guestName={currentGuest.name} seats={currentGuest.seats} /> {/* 8. Blanco */}
         <Footer />               {/* 9. Vinotinto */}
+
+        {/* Botón flotante de música que acompaña el scroll */}
+        {opened && (
+          <FloatingMusicButton isPlaying={isPlaying} onToggle={toggleMusic} />
+        )}
       </main>
     </>
   );
 }
 
 /* -------------------------------------------------------------------------- */
-/*  ENVELOPE GATE (DURACIÓN AMPLIADA)                                         */
+/*  BOTÓN FLOTANTE DE MÚSICA CON ANIMACIÓN DE SCROLL                          */
+/* -------------------------------------------------------------------------- */
+
+function FloatingMusicButton({ isPlaying, onToggle }: { isPlaying: boolean; onToggle: () => void }) {
+  const [scrolling, setScrolling] = useState(false);
+  const scrollTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolling(true);
+      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+      scrollTimeout.current = setTimeout(() => {
+        setScrolling(false);
+      }, 300); // Vuelve a su posición normal al detener el scroll un instante
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+    };
+  }, []);
+
+  return (
+    <div
+      className={`fixed bottom-6 right-6 z-40 transition-all duration-500 ease-in-out ${
+        scrolling ? "translate-y-2 scale-95 opacity-80" : "translate-y-0 scale-100 opacity-100"
+      }`}
+    >
+      <button
+        onClick={onToggle}
+        aria-label={isPlaying ? "Silenciar música" : "Reproducir música"}
+        className="group relative flex h-14 w-14 items-center justify-center rounded-full bg-[#5B1E22] text-white shadow-xl border border-white/20 transition-all hover:scale-110 active:scale-95 cursor-pointer"
+        style={{
+          boxShadow: "0 10px 25px rgba(91,30,34,0.4)"
+        }}
+      >
+        {isPlaying ? (
+          <Volume2 className="h-6 w-6 animate-pulse text-white" />
+        ) : (
+          <VolumeX className="h-6 w-6 text-white/60" />
+        )}
+        <span className="absolute -top-1 -right-1 flex h-3 w-3">
+          <span className={`absolute inline-flex h-full w-full rounded-full bg-white opacity-75 ${isPlaying ? "animate-ping" : ""}`} />
+          <span className="relative inline-flex h-3 w-3 rounded-full bg-white" />
+        </span>
+      </button>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*  ENVELOPE GATE                                                             */
 /* -------------------------------------------------------------------------- */
 
 type EnvelopePhase = "closed" | "flap" | "card" | "out";
@@ -118,8 +212,8 @@ function EnvelopeGate({
     setPhase("flap");
     timers.current.push(
       setTimeout(() => setPhase("card"), 1000),
-      setTimeout(() => setPhase("out"), 9500),  // Aumentado el tiempo visible en pantalla
-      setTimeout(onOpen, 6500),                  // Retraso ampliado antes de habilitar el scroll
+      setTimeout(() => setPhase("out"), 9500),
+      setTimeout(onOpen, 6500),
     );
   };
 
@@ -133,7 +227,6 @@ function EnvelopeGate({
       }`}
     >
       <div className="relative w-full max-w-lg [perspective:1400px]">
-        {/* Tarjeta interior que sale del sobre */}
         <div
           className={`absolute inset-x-6 top-2 z-10 rounded-2xl border border-[#5B1E22]/20 bg-[#FAF7F2] px-8 py-10 text-center shadow-2xl transition-all duration-[1100ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
             cardUp ? "-translate-y-[58%] opacity-100" : "translate-y-12 opacity-0"
@@ -154,28 +247,19 @@ function EnvelopeGate({
           </p>
         </div>
 
-        {/* Estructura principal del sobre */}
         <div className="relative aspect-[16/11] w-full rounded-b-2xl bg-[#D4C8B4] shadow-[0_25px_60px_rgba(91,30,34,0.2)] overflow-hidden border border-[#BFAFA0]">
-          
-          {/* Solapa izquierda */}
           <div 
             className="absolute inset-y-0 left-0 w-1/2 bg-[#CBBFAD] border-r border-[#B3A494]"
             style={{ clipPath: "polygon(0 0, 100% 50%, 0 100%)" }}
           />
-
-          {/* Solapa derecha */}
           <div 
             className="absolute inset-y-0 right-0 w-1/2 bg-[#C3B7A5] border-l border-[#AB9C8C]"
             style={{ clipPath: "polygon(100% 0, 0 50%, 100% 100%)" }}
           />
-
-          {/* Solapa inferior */}
           <div 
             className="absolute inset-x-0 bottom-0 h-[60%] bg-[#DCD0BC] border-t border-[#B9AA9A] shadow-inner"
             style={{ clipPath: "polygon(0 100%, 50% 15%, 100% 100%)" }}
           />
-
-          {/* Solapa superior (la que se abre) */}
           <div
             className={`absolute inset-x-0 top-0 z-30 h-[58%] origin-top transition-transform duration-[1000ms] ease-[cubic-bezier(0.65,0,0.35,1)] [backface-visibility:hidden] [transform-style:preserve-3d] ${
               flapOpen ? "[transform:rotateX(-180deg)]" : "[transform:rotateX(0deg)]"
@@ -187,7 +271,6 @@ function EnvelopeGate({
             />
           </div>
 
-          {/* Sello de lacre interactivo centrado */}
           <div className="absolute inset-0 z-40 flex items-center justify-center pointer-events-none">
             <button
               type="button"
@@ -221,7 +304,6 @@ function EnvelopeGate({
               </div>
             </button>
           </div>
-
         </div>
       </div>
     </div>
@@ -229,25 +311,22 @@ function EnvelopeGate({
 }
 
 /* -------------------------------------------------------------------------- */
-/*  HERO (1. Vinotinto)                                                      */
+/*  1. HERO (Vinotinto)                                                      */
 /* -------------------------------------------------------------------------- */
 
 function Hero() {
   return (
-    <section className="relative flex min-h-screen flex-col items-center justify-center px-6 py-20 text-center overflow-hidden bg-[#5B1E22] text-white">
-      {/* Imagen de fondo / Marca de agua */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <img
-          src={couplePhoto}
-          alt="Carolina y Daniel"
-          className="absolute inset-0 h-full w-full object-cover object-center opacity-15 mix-blend-luminosity scale-105 filter blur-[1px]"
-        />
-        {/* Capa de degradado extra para asegurar que el texto resalte perfectamente */}
-        <div className="absolute inset-0 bg-[#5B1E22]/60 mix-blend-multiply" />
-      </div>
-
-      <div className="animate-fade-in absolute inset-0 -z-10 opacity-35">
-        <div className="absolute left-1/2 top-1/2 h-[40rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/10 blur-3xl" />
+    <section 
+      className="relative flex min-h-screen flex-col items-center justify-center px-6 py-20 text-center overflow-hidden text-white"
+      style={{
+        backgroundColor: "#5B1E22",
+        backgroundImage: `linear-gradient(to bottom, rgba(91, 30, 34, 0.82), rgba(91, 30, 34, 0.90)), url(${foto1})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <div className="animate-fade-in absolute inset-0 -z-10 opacity-20 pointer-events-none">
+        <div className="absolute left-1/2 top-1/2 h-[40rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/20 blur-3xl" />
       </div>
 
       <img
@@ -296,7 +375,7 @@ function Hero() {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  COUNTDOWN (2. Blanco)                                                     */
+/*  2. COUNTDOWN (Blanco)                                                    */
 /* -------------------------------------------------------------------------- */
 
 function CountdownSection() {
@@ -318,7 +397,7 @@ function CountdownSection() {
         <p className="mb-3 text-xs font-medium uppercase tracking-[0.25em] text-primary">
           Cuenta atrás
         </p>
-        <h2 className="font-display text-3xl font-medium md:text-4xl">El gran día está cerca</h2>
+        <h2 className="font-display text-3xl font-medium md:text-4xl text-foreground">El gran día está cerca</h2>
         <div className="mx-auto my-6 h-px w-16 bg-primary/40" />
       </div>
       {mounted ? (
@@ -392,7 +471,7 @@ function CountdownPlaceholder({ visible }: { visible: boolean }) {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  STORY (3. Vinotinto)                                                     */
+/*  3. STORY & PHOTOS (Vinotinto) - 2 fotos estáticas y texto renovado        */
 /* -------------------------------------------------------------------------- */
 
 function StorySection() {
@@ -400,26 +479,48 @@ function StorySection() {
   const isVisible = useInView(ref, { once: true, threshold: 0.25 });
 
   return (
-    <section ref={ref} className="relative bg-[#5B1E22] px-6 py-28 text-center overflow-hidden">
+    <section ref={ref} className="relative bg-[#5B1E22] px-6 py-28 text-center overflow-hidden text-white">
       <div
-        className={`mx-auto max-w-2xl transition-all duration-1000 ease-out ${
+        className={`mx-auto max-w-3xl transition-all duration-1000 ease-out ${
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
         }`}
       >
         <Heart className="mx-auto mb-6 h-8 w-8 animate-float text-white/80" strokeWidth={1.5} />
         <h2 className="font-display text-3xl font-medium md:text-4xl text-white">Un día, una promesa</h2>
-        <p className="mt-6 leading-relaxed text-white/90">
+        <div className="mx-auto my-6 h-px w-16 bg-white/30" />
+        
+        <p className="mt-6 leading-relaxed text-white/90 text-lg mb-12">
           Después de años de risas, aventuras y momentos inolvidables, decidimos dar el siguiente
           paso juntos. Queremos compartir este día tan especial con las personas que hacen nuestra
           vida más feliz.
+          <br />
+          Hoy miramos atrás con gratitud y hacia adelante con la ilusión de construir un futuro infinito de la mano.
         </p>
+
+        {/* Dos fotos estáticas */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mx-auto max-w-3xl">
+          <div className="overflow-hidden rounded-2xl shadow-xl bg-black/20 border border-white/20 aspect-[4/5]">
+            <img
+              src={foto3}
+              alt="Carolina y Daniel"
+              className="h-full w-full object-cover object-center transition-transform duration-500 hover:scale-105"
+            />
+          </div>
+          <div className="overflow-hidden rounded-2xl shadow-xl bg-black/20 border border-white/20 aspect-[4/5]">
+            <img
+              src={foto5}
+              alt="Carolina y Daniel"
+              className="h-full w-full object-cover object-center transition-transform duration-500 hover:scale-105"
+            />
+          </div>
+        </div>
       </div>
     </section>
   );
 }
 
 /* -------------------------------------------------------------------------- */
-/*  LOCATIONS (4. Blanco)                                                     */
+/*  4. LOCATIONS (Blanco)                                                    */
 /* -------------------------------------------------------------------------- */
 
 const LOCATIONS = [
@@ -448,15 +549,18 @@ function LocationsSection() {
   const isVisible = useInView(ref, { once: true, threshold: 0.15 });
 
   return (
-    <section ref={ref} className="relative bg-background px-6 py-28 overflow-hidden">
+    <section ref={ref} className="relative bg-background px-6 py-28 overflow-hidden text-foreground">
       <div className="mx-auto max-w-5xl">
         <div
           className={`mb-14 text-center transition-all duration-1000 ease-out ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <MapPin className="mx-auto mb-4 h-8 w-8 text-primary/80" strokeWidth={1.5} />
-          <h2 className="font-display text-3xl font-medium md:text-4xl">Localización</h2>
+          <MapPin className="mx-auto mb-4 h-8 w-8 text-primary" strokeWidth={1.5} />
+          <p className="mb-3 text-xs font-medium uppercase tracking-[0.25em] text-primary">
+            Localización
+          </p>
+          <h2 className="font-display text-3xl font-medium md:text-4xl text-foreground">¿Dónde nos vemos?</h2>
           <div className="mx-auto my-6 h-px w-16 bg-primary/40" />
         </div>
 
@@ -497,10 +601,10 @@ function LocationCard({
         <Icon className="h-6 w-6" strokeWidth={1.5} />
       </div>
 
-      <span className="mb-1 text-xs font-medium uppercase tracking-widest text-primary">
+      <span className="mb-1 text-xs font-medium uppercase tracking-widest text-muted-foreground">
         {location.type}
       </span>
-      <h3 className="font-display text-2xl font-medium">{location.name}</h3>
+      <h3 className="font-display text-2xl font-medium text-foreground">{location.name}</h3>
 
       <div className="mt-4 space-y-2 text-muted-foreground">
         <div className="flex items-start gap-2">
@@ -517,7 +621,7 @@ function LocationCard({
         href={location.mapsUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-8 inline-flex items-center justify-center gap-2 rounded-md border border-primary bg-transparent px-5 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+        className="mt-8 inline-flex items-center justify-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary/90"
       >
         <MapPin className="h-4 w-4" />
         Cómo llegar
@@ -527,7 +631,7 @@ function LocationCard({
 }
 
 /* -------------------------------------------------------------------------- */
-/*  ITINERARY (5. Vinotinto)                                                 */
+/*  5. ITINERARY (Vinotinto)                                                 */
 /* -------------------------------------------------------------------------- */
 
 const ITINERARY = [
@@ -543,13 +647,13 @@ function ItinerarySection() {
   const isVisible = useInView(ref, { once: true, threshold: 0.15 });
 
   return (
-    <section ref={ref} className="relative bg-[#5B1E22] px-6 py-28 text-center overflow-hidden">
+    <section ref={ref} className="relative bg-[#5B1E22] px-6 py-28 text-center overflow-hidden text-white">
       <div
         className={`mx-auto max-w-4xl transition-all duration-1000 ease-out ${
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
         }`}
       >
-        <Clock className="mx-auto mb-6 h-8 w-8 animate-float text-white/80" strokeWidth={1.5} />
+        <Clock className="mx-auto mb-6 h-8 w-8 text-white/80" strokeWidth={1.5} />
         <p className="mb-3 text-xs font-medium uppercase tracking-[0.25em] text-white/80">
           Itinerario
         </p>
@@ -563,7 +667,7 @@ function ItinerarySection() {
           return (
             <div
               key={item.title}
-              className={`flex flex-col items-center rounded-2xl border border-white/20 bg-white/10 p-6 shadow-sm backdrop-blur-sm transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-md ${
+              className={`flex flex-col items-center rounded-2xl border border-white/20 bg-white/10 backdrop-blur-sm p-6 shadow-sm transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-md ${
                 isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
               style={{ transitionDelay: isVisible ? `${(index + 1) * 150}ms` : "0ms" }}
@@ -584,7 +688,7 @@ function ItinerarySection() {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  DRESS CODE (6. Blanco)                                                    */
+/*  6. DRESS CODE (Blanco)                                                   */
 /* -------------------------------------------------------------------------- */
 
 import vestidoImg from "../assets/vestido.png";
@@ -619,17 +723,17 @@ export function DressCodeSection() {
   }, []);
 
   return (
-    <section ref={ref} className="relative bg-background px-6 py-28 text-center overflow-hidden">
+    <section ref={ref} className="relative bg-background px-6 py-28 text-center overflow-hidden text-foreground">
       <div
         className={`mx-auto max-w-4xl transition-all duration-1000 ease-out ${
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
         }`}
       >
-        <Shirt className="mx-auto mb-6 h-8 w-8 animate-pulse text-primary/80" strokeWidth={1.5} />
+        <Shirt className="mx-auto mb-6 h-8 w-8 animate-pulse text-primary" strokeWidth={1.5} />
         <p className="mb-3 text-xs font-medium uppercase tracking-[0.25em] text-primary">
           Vestimenta
         </p>
-        <h2 className="font-display text-3xl font-medium md:text-4xl">Código de Vestimenta</h2>
+        <h2 className="font-display text-3xl font-medium md:text-4xl text-foreground">Código de Vestimenta</h2>
         <div className="mx-auto mb-16 mt-6 h-px w-16 bg-primary/40" />
 
         <div className="grid gap-8 md:grid-cols-2 mb-16">
@@ -638,7 +742,7 @@ export function DressCodeSection() {
               <img
                 src={vestidoImg}
                 alt="Vestido largo"
-                className="h-full w-auto object-contain brightness-0 opacity-85"
+                className="h-full w-auto object-contain text-primary"
               />
             </div>
             <h3 className="font-display text-2xl font-medium mb-3 text-foreground">Ellas</h3>
@@ -652,7 +756,7 @@ export function DressCodeSection() {
               <img
                 src={trajeImg}
                 alt="Traje"
-                className="h-full w-auto object-contain brightness-0 opacity-85"
+                className="h-full w-auto object-contain text-primary"
               />
             </div>
             <h3 className="font-display text-2xl font-medium mb-3 text-foreground">Ellos</h3>
@@ -694,7 +798,7 @@ export function DressCodeSection() {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  REGISTRY / GIFTS (7. Vinotinto)                                          */
+/*  7. REGISTRY / GIFTS (Vinotinto)                                          */
 /* -------------------------------------------------------------------------- */
 
 function RegistrySection() {
@@ -702,13 +806,13 @@ function RegistrySection() {
   const isVisible = useInView(ref, { once: true, threshold: 0.15 });
 
   return (
-    <section ref={ref} className="relative bg-[#5B1E22] px-6 py-28 text-center overflow-hidden">
+    <section ref={ref} className="relative bg-[#5B1E22] px-6 py-28 text-center overflow-hidden text-white">
       <div
         className={`mx-auto max-w-2xl transition-all duration-1000 ease-out ${
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
         }`}
       >
-        <Heart className="mx-auto mb-4 h-7 w-7 text-pink-300 fill-pink-300" strokeWidth={1.5} />
+        <Heart className="mx-auto mb-4 h-7 w-7 text-white/90" strokeWidth={1.5} />
         <p className="mb-3 text-xs font-medium uppercase tracking-[0.25em] text-white/80">
           Regalos
         </p>
@@ -719,7 +823,7 @@ function RegistrySection() {
           <p className="font-display text-xl md:text-2xl text-white leading-relaxed">
             Celebrar este día contigo ya es un regalo.
           </p>
-          <p className="text-base leading-relaxed text-white/90">
+          <p className="text-base leading-relaxed text-white/80">
             Si además quieres obsequiarnos algo agradeceríamos que cualquier contribución sea en efectivo.
           </p>
         </div>
@@ -729,28 +833,27 @@ function RegistrySection() {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  RSVP (8. Blanco)                                                          */
+/*  8. RSVP (Blanco)                                                         */
 /* -------------------------------------------------------------------------- */
 
 function RSVPSection({ guestName, seats }: { guestName: string; seats: number }) {
   const ref = useRef<HTMLElement>(null);
   const isVisible = useInView(ref, { once: true, threshold: 0.15 });
-  // URL del formulario de Google simplificada sin el parámetro de asientos
   const googleFormUrl = `https://docs.google.com/forms/d/e/1FAIpQLScUqWIZvrLVh0uOpVg32ZZKYtiWqJpPRTWGZ9KFZbLxQlgQNA/viewform?usp=pp_url&entry.1498135098=${encodeURIComponent(guestName)}`;
 
   return (
-    <section ref={ref} className="relative bg-background px-6 py-28 overflow-hidden">
+    <section ref={ref} className="relative bg-background px-6 py-28 overflow-hidden text-foreground">
       <div className="mx-auto max-w-2xl">
         <div
           className={`mb-12 text-center transition-all duration-1000 ease-out ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <CalendarHeart className="mx-auto mb-4 h-8 w-8 text-primary/80" strokeWidth={1.5} />
+          <CalendarHeart className="mx-auto mb-4 h-8 w-8 text-primary" strokeWidth={1.5} />
           <p className="mb-3 text-xs font-medium uppercase tracking-[0.25em] text-primary">
             Confirmación
           </p>
-          <h2 className="font-display text-3xl font-medium md:text-4xl">Confirma tu asistencia</h2>
+          <h2 className="font-display text-3xl font-medium md:text-4xl text-foreground">Confirma tu asistencia</h2>
           <p className="mx-auto mt-4 max-w-md text-muted-foreground">
             Por favor, confirma tu asistencia antes del 01 de marzo de 2027 rellenando nuestro formulario.
           </p>
@@ -758,18 +861,18 @@ function RSVPSection({ guestName, seats }: { guestName: string; seats: number })
         </div>
 
         <div
-          className={`rounded-2xl border border-primary/20 bg-[#D4C5B9] p-8 text-center shadow-md transition-all duration-1000 delay-200 ease-out md:p-12 ${
+          className={`rounded-2xl border border-primary/20 bg-[#D4C5B9] backdrop-blur-sm p-8 text-center shadow-md transition-all duration-1000 delay-200 ease-out md:p-12 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
           <div className="space-y-6 py-4">
-            <div className="rounded-xl bg-[#5B1E22] p-5 shadow-sm">
-              <p className="font-display text-xl font-medium text-white">
+            <div className="rounded-xl border border-primary/20 bg-background/50 p-5 shadow-sm">
+              <p className="font-display text-xl font-medium text-foreground">
                 {guestName}
               </p>
-              <p className="text-sm text-white/80 mt-1">
+              <p className="text-sm text-muted-foreground mt-1">
                 Invitación válida para{" "}
-                <span className="font-semibold text-white">
+                <span className="font-semibold text-foreground">
                   {seats} {seats === 1 ? "persona" : "personas"}
                 </span>
               </p>
@@ -783,7 +886,7 @@ function RSVPSection({ guestName, seats }: { guestName: string; seats: number })
               href={googleFormUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex w-full items-center justify-center rounded-md bg-[#5B1E22] px-6 py-4 text-base font-medium text-white transition-all hover:bg-[#5B1E22]/90 md:w-auto md:min-w-[280px]"
+              className="inline-flex w-full items-center justify-center rounded-md bg-primary px-6 py-4 text-base font-medium text-white transition-all hover:bg-primary/90 md:w-auto md:min-w-[280px]"
             >
               Rellenar formulario de asistencia
             </a>
@@ -795,14 +898,14 @@ function RSVPSection({ guestName, seats }: { guestName: string; seats: number })
 }
 
 /* -------------------------------------------------------------------------- */
-/*  FOOTER (9. Vinotinto)                                                    */
+/*  9. FOOTER (Vinotinto)                                                    */
 /* -------------------------------------------------------------------------- */
 
 function Footer() {
   return (
-    <footer className="border-t border-white/15 bg-[#5B1E22] px-6 py-16 text-center text-white">
-      <Heart className="mx-auto mb-4 h-5 w-5 animate-pulse text-white/90" strokeWidth={1.5} />
-      <p className="font-display text-2xl font-medium text-white">Carolina & Daniel</p>
+    <footer className="border-t border-white/20 bg-[#5B1E22] px-6 py-16 text-center text-white">
+      <Heart className="mx-auto mb-4 h-5 w-5 animate-pulse text-white/80" strokeWidth={1.5} />
+      <p className="font-display text-2xl font-medium text-white">Carolina &amp; Daniel</p>
       <p className="mt-2 text-sm text-white/80">16 de abril de 2027 · Madrid, España</p>
       <p className="mt-8 text-xs text-white/60">Invitación creada con cariño para ti.</p>
     </footer>
