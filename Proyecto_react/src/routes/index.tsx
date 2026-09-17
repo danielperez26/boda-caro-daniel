@@ -19,7 +19,9 @@ import {
 import oliveBranch from "../assets/olive-branch.png";
 import { GUESTS_DATABASE } from "../data/guests";
 import foto1 from "../assets/caro-daniel-1.jpeg";
+import foto2 from "../assets/caro-daniel-2.jpeg";
 import foto3 from "../assets/caro-daniel-3.jpeg";
+import foto4 from "../assets/caro-daniel-4.jpeg";
 import foto5 from "../assets/caro-daniel-5.jpeg";
 
 const WEDDING_DATE = new Date("2027-04-16T17:00:00");
@@ -42,7 +44,7 @@ const head = () => ({
     { name: "twitter:card", content: "summary_large_image" },
   ],
   link: [
-    { rel: "icon", type: "image/svg+xml", href: "/caro-dani.svg" }
+    { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" }
   ],
 });
 
@@ -63,11 +65,10 @@ function Index() {
 
   const currentGuest = inv ? GUESTS_DATABASE[inv] : undefined;
 
-  // Manejo de la reproducción de audio al abrir la invitación
   const handleOpenInvitation = () => {
     setOpened(true);
     if (audioRef.current) {
-      audioRef.current.volume = 0.4; // Volumen ambiente agradable
+      audioRef.current.volume = 0.4;
       audioRef.current
         .play()
         .then(() => setIsPlaying(true))
@@ -101,7 +102,6 @@ function Index() {
 
   return (
     <>
-      {/* Elemento de audio de fondo (puedes cambiar la ruta por tu archivo mp3) */}
       <audio ref={audioRef} loop src="/audio/wedding-song.mp3" preload="auto" />
 
       {!opened && (
@@ -114,17 +114,16 @@ function Index() {
         }`}
         aria-hidden={!opened}
       >
-        <Hero />                 {/* 1. Vinotinto */}
-        <CountdownSection />     {/* 2. Blanco */}
-        <StorySection />         {/* 3. Vinotinto (Incluye carrusel y salto de línea) */}
-        <LocationsSection />     {/* 4. Blanco */}
-        <ItinerarySection />     {/* 5. Vinotinto */}
-        <DressCodeSection />     {/* 6. Blanco */}
-        <RegistrySection />      {/* 7. Vinotinto */}
-        <RSVPSection guestName={currentGuest.name} seats={currentGuest.seats} /> {/* 8. Blanco */}
-        <Footer />               {/* 9. Vinotinto */}
+        <Hero />                 
+        <CountdownSection />     
+        <StorySection />         
+        <LocationsSection />     
+        <ItinerarySection />     
+        <DressCodeSection />     {/* Incluye la tarjeta y justo debajo la foto en la marca roja */}
+        <RegistrySection />      {/* Sección de regalos limpia */}
+        <RSVPSection guestName={currentGuest.name} seats={currentGuest.seats} /> 
+        <Footer />               
 
-        {/* Botón flotante de música que acompaña el scroll */}
         {opened && (
           <FloatingMusicButton isPlaying={isPlaying} onToggle={toggleMusic} />
         )}
@@ -134,7 +133,7 @@ function Index() {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  BOTÓN FLOTANTE DE MÚSICA CON ANIMACIÓN DE SCROLL                          */
+/*  BOTÓN FLOTANTE DE MÚSICA                                                  */
 /* -------------------------------------------------------------------------- */
 
 function FloatingMusicButton({ isPlaying, onToggle }: { isPlaying: boolean; onToggle: () => void }) {
@@ -147,7 +146,7 @@ function FloatingMusicButton({ isPlaying, onToggle }: { isPlaying: boolean; onTo
       if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
       scrollTimeout.current = setTimeout(() => {
         setScrolling(false);
-      }, 300); // Vuelve a su posición normal al detener el scroll un instante
+      }, 300);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -312,7 +311,7 @@ function EnvelopeGate({
 }
 
 /* -------------------------------------------------------------------------- */
-/*  1. HERO (Vinotinto)                                                      */
+/*  1. HERO                                                                   */
 /* -------------------------------------------------------------------------- */
 
 function Hero() {
@@ -376,7 +375,7 @@ function Hero() {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  2. COUNTDOWN (Blanco)                                                    */
+/*  2. COUNTDOWN                                                              */
 /* -------------------------------------------------------------------------- */
 
 function CountdownSection() {
@@ -472,7 +471,7 @@ function CountdownPlaceholder({ visible }: { visible: boolean }) {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  3. STORY & PHOTOS (Vinotinto) - Sin el párrafo final                      */
+/*  3. STORY & PHOTOS                                                         */
 /* -------------------------------------------------------------------------- */
 
 function StorySection() {
@@ -496,22 +495,13 @@ function StorySection() {
           vida más feliz.
         </p>
 
-        {/* Dos fotos estáticas */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mx-auto max-w-3xl">
-          <div className="overflow-hidden rounded-2xl shadow-xl bg-black/20 border border-white/20 aspect-[4/5]">
-            <img
-              src={foto3}
-              alt="Carolina y Daniel"
-              className="h-full w-full object-cover object-center transition-transform duration-500 hover:scale-105"
-            />
-          </div>
-          <div className="overflow-hidden rounded-2xl shadow-xl bg-black/20 border border-white/20 aspect-[4/5]">
-            <img
-              src={foto5}
-              alt="Carolina y Daniel"
-              className="h-full w-full object-cover object-center transition-transform duration-500 hover:scale-105"
-            />
-          </div>
+        {/* Solo una foto centrada (la de la izquierda) */}
+        <div className="mx-auto max-w-sm overflow-hidden rounded-2xl shadow-xl bg-black/20 border border-white/20 aspect-[4/5]">
+          <img
+            src={foto3}
+            alt="Carolina y Daniel"
+            className="h-full w-full object-cover object-center transition-transform duration-500 hover:scale-105"
+          />
         </div>
       </div>
     </section>
@@ -519,7 +509,7 @@ function StorySection() {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  4. LOCATIONS (Blanco) - Sin el subtítulo pequeño superior                  */
+/*  4. LOCATIONS                                                              */
 /* -------------------------------------------------------------------------- */
 
 const LOCATIONS = [
@@ -560,7 +550,7 @@ function LocationsSection() {
           <div className="mx-auto my-6 h-px w-16 bg-primary/40" />
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-2 mb-12">
           {LOCATIONS.map((location, index) => (
             <LocationCard
               key={location.name}
@@ -569,6 +559,14 @@ function LocationsSection() {
               visible={isVisible}
             />
           ))}
+        </div>
+
+        <div className="mx-auto max-w-sm overflow-hidden rounded-2xl shadow-xl border border-primary/25 aspect-[4/3]">
+          <img
+            src={foto5}
+            alt="Localización boda"
+            className="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-105"
+          />
         </div>
       </div>
     </section>
@@ -627,7 +625,7 @@ function LocationCard({
 }
 
 /* -------------------------------------------------------------------------- */
-/*  5. ITINERARY (Vinotinto)                                                 */
+/*  5. ITINERARY                                                              */
 /* -------------------------------------------------------------------------- */
 
 const ITINERARY = [
@@ -684,7 +682,7 @@ function ItinerarySection() {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  6. DRESS CODE (Blanco)                                                   */
+/*  6. DRESS CODE (Incluye la foto abajo en la zona solicitada)               */
 /* -------------------------------------------------------------------------- */
 
 import vestidoImg from "../assets/vestido.png";
@@ -719,7 +717,7 @@ export function DressCodeSection() {
   }, []);
 
   return (
-    <section ref={ref} className="relative bg-background px-6 py-28 text-center overflow-hidden text-foreground">
+    <section ref={ref} className="relative bg-background px-6 pt-28 pb-16 text-center overflow-hidden text-foreground">
       <div
         className={`mx-auto max-w-4xl transition-all duration-1000 ease-out ${
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -762,9 +760,9 @@ export function DressCodeSection() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-primary/20 bg-[#D4C5B9] p-8 shadow-sm">
+        <div className="rounded-2xl border border-primary/20 bg-[#D4C5B9] p-8 shadow-sm mb-16">
           <p className="text-sm font-medium text-foreground mb-3">
-            Te pedimos con cariño que evites los siguientes colores reservados para los novios y cortejo:
+            Te pedimos con cariño que evites los siguientes colores reservados para los novios y su cortejo:
           </p>
           <p className="text-xs text-muted-foreground mb-8 italic">
             * El azul está permitido siempre y cuando no sea unicolor.
@@ -788,13 +786,22 @@ export function DressCodeSection() {
             ))}
           </div>
         </div>
+
+        {/* FOTO UBICADA EXACTAMENTE EN LA MARCA ROJA (ENTRE LA SECCIÓN CLARA Y EL FONDO GRANATE) */}
+        <div className="mx-auto max-w-sm overflow-hidden rounded-2xl shadow-xl border border-primary/25 aspect-[4/3]">
+          <img
+            src={foto2}
+            alt="Carolina y Daniel"
+            className="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-105"
+          />
+        </div>
       </div>
     </section>
   );
 }
 
 /* -------------------------------------------------------------------------- */
-/*  7. REGISTRY / GIFTS (Vinotinto) - Corazón con relleno rosado              */
+/*  7. REGISTRY / GIFTS (Vinotinto limpio)                                    */
 /* -------------------------------------------------------------------------- */
 
 function RegistrySection() {
@@ -829,7 +836,7 @@ function RegistrySection() {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  8. RSVP (Blanco)                                                         */
+/*  8. RSVP                                                                   */
 /* -------------------------------------------------------------------------- */
 
 function RSVPSection({ guestName, seats }: { guestName: string; seats: number }) {
@@ -894,7 +901,7 @@ function RSVPSection({ guestName, seats }: { guestName: string; seats: number })
 }
 
 /* -------------------------------------------------------------------------- */
-/*  9. FOOTER (Vinotinto)                                                    */
+/*  9. FOOTER                                                                 */
 /* -------------------------------------------------------------------------- */
 
 function Footer() {
