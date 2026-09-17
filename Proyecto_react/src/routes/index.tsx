@@ -342,9 +342,9 @@ function Hero() {
       </p>
 
       <h1 className="animate-fade-in-up font-display text-5xl font-medium leading-[1.1] text-white md:text-7xl lg:text-8xl animation-delay-200">
-        Mª Carolina
+        Mari
         <span className="mx-3 align-middle font-serif italic text-3xl font-normal text-white/80 md:text-5xl" style={{ fontFamily: "Georgia, Cambria, 'Times New Roman', serif" }}>&</span>
-        Daniel
+        Dani
       </h1>
 
       <div className="animate-fade-in-up animation-delay-300">
