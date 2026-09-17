@@ -537,7 +537,7 @@ const LOCATIONS = [
     icon: PartyPopper,
     type: "Celebración",
     name: "Casa de Burgos",
-    address: "C. Principal de Provincias, 3, Moncloa - Aravaca, 28011 Madrid",
+    address: "C. Principal de Provincias, 3, 28011 Madrid",
     time: "19:00",
     mapsUrl:
       "https://www.google.com/maps/search/?api=1&query=C.+Principal+de+Provincias+3+Moncloa+Aravaca+28011+Madrid",
