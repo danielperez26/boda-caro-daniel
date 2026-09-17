@@ -28,13 +28,13 @@ const WEDDING_DATE = new Date("2027-04-16T17:00:00");
 
 const head = () => ({
   meta: [
-    { title: "Carolina & Daniel | Invitación de Boda" },
+    { title: "Mari & Dani | Invitación de Boda" },
     {
       name: "description",
       content:
         "Nos encantaría celebrar nuestra boda contigo. Confirma tu asistencia y descubre todos los detalles del gran día.",
     },
-    { property: "og:title", content: "Carolina & Daniel | Invitación de Boda" },
+    { property: "og:title", content: "Mari & Dani | Invitación de Boda" },
     {
       property: "og:description",
       content:
@@ -299,7 +299,7 @@ function EnvelopeGate({
                     fontFamily: "Georgia, Cambria, 'Times New Roman', serif"
                   }}
                 >
-                  C &amp; D
+                  M &amp; D
                 </span>
               </div>
             </button>
@@ -499,7 +499,7 @@ function StorySection() {
         <div className="mx-auto max-w-sm overflow-hidden rounded-2xl shadow-xl bg-black/20 border border-white/20 aspect-[4/5]">
           <img
             src={foto3}
-            alt="Carolina y Daniel"
+            alt="Mari y Dani"
             className="h-full w-full object-cover object-center transition-transform duration-500 hover:scale-105"
           />
         </div>
@@ -791,7 +791,7 @@ export function DressCodeSection() {
         <div className="mx-auto max-w-sm overflow-hidden rounded-2xl shadow-xl border border-primary/25 aspect-[4/3]">
           <img
             src={foto2}
-            alt="Carolina y Daniel"
+            alt="Mari y Dani"
             className="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-105"
           />
         </div>
@@ -908,7 +908,10 @@ function Footer() {
   return (
     <footer className="border-t border-white/20 bg-[#5B1E22] px-6 py-16 text-center text-white">
       <Heart className="mx-auto mb-4 h-5 w-5 animate-pulse text-white/80" strokeWidth={1.5} />
-      <p className="font-display text-2xl font-medium text-white">Carolina &amp; Daniel</p>
+
+      <p className="font-display text-2xl font-medium text-white">Mari
+        <span className="font-display text-2xl font-medium text-white" style={{ fontFamily: "Georgia, Cambria, 'Times New Roman', serif" }}> & </span>
+      Dani</p>
       <p className="mt-2 text-sm text-white/80">16 de abril de 2027 · Madrid, España</p>
       <p className="mt-8 text-xs text-white/60">Invitación creada con cariño para ti.</p>
     </footer>
