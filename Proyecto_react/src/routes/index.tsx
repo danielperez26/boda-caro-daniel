@@ -19,9 +19,7 @@ import {
 import oliveBranch from "../assets/olive-branch.png";
 import { GUESTS_DATABASE } from "../data/guests";
 import foto1 from "../assets/caro-daniel-1.jpeg";
-import foto2 from "../assets/caro-daniel-2.jpeg";
 import foto3 from "../assets/caro-daniel-3.jpeg";
-import foto4 from "../assets/caro-daniel-4.jpeg";
 import foto5 from "../assets/caro-daniel-5.jpeg";
 
 const WEDDING_DATE = new Date("2027-04-16T17:00:00");
@@ -42,6 +40,9 @@ const head = () => ({
     },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
+  ],
+  link: [
+    { rel: "icon", href: "/alianzas.jpg" }
   ],
 });
 
@@ -471,7 +472,7 @@ function CountdownPlaceholder({ visible }: { visible: boolean }) {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  3. STORY & PHOTOS (Vinotinto) - 2 fotos estáticas y texto renovado        */
+/*  3. STORY & PHOTOS (Vinotinto) - Sin el párrafo final                      */
 /* -------------------------------------------------------------------------- */
 
 function StorySection() {
@@ -493,8 +494,6 @@ function StorySection() {
           Después de años de risas, aventuras y momentos inolvidables, decidimos dar el siguiente
           paso juntos. Queremos compartir este día tan especial con las personas que hacen nuestra
           vida más feliz.
-          <br />
-          Hoy miramos atrás con gratitud y hacia adelante con la ilusión de construir un futuro infinito de la mano.
         </p>
 
         {/* Dos fotos estáticas */}
@@ -520,7 +519,7 @@ function StorySection() {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  4. LOCATIONS (Blanco)  ...                                                  */
+/*  4. LOCATIONS (Blanco) - Sin el subtítulo pequeño superior                  */
 /* -------------------------------------------------------------------------- */
 
 const LOCATIONS = [
@@ -557,10 +556,7 @@ function LocationsSection() {
           }`}
         >
           <MapPin className="mx-auto mb-4 h-8 w-8 text-primary" strokeWidth={1.5} />
-          <p className="mb-3 text-xs font-medium uppercase tracking-[0.25em] text-primary">
-            Localización
-          </p>
-          <h2 className="font-display text-3xl font-medium md:text-4xl text-foreground">¿Dónde nos vemos?</h2>
+          <h2 className="font-display text-3xl font-medium md:text-4xl text-foreground">Localización</h2>
           <div className="mx-auto my-6 h-px w-16 bg-primary/40" />
         </div>
 
@@ -667,7 +663,7 @@ function ItinerarySection() {
           return (
             <div
               key={item.title}
-              className={`flex flex-col items-center rounded-2xl border border-white/20 bg-white/10 backdrop-blur-sm p-6 shadow-sm transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-md ${
+              className={`flex flex-col items-center rounded-2xl border border-white/20 bg-white/15 backdrop-blur-sm p-6 shadow-sm transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-md ${
                 isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
               style={{ transitionDelay: isVisible ? `${(index + 1) * 150}ms` : "0ms" }}
@@ -768,7 +764,7 @@ export function DressCodeSection() {
 
         <div className="rounded-2xl border border-primary/20 bg-[#D4C5B9] p-8 shadow-sm">
           <p className="text-sm font-medium text-foreground mb-3">
-            Te pedimos con cariño que evites los siguientes colores reservados para la novia:
+            Te pedimos con cariño que evites los siguientes colores reservados para los novios y cortejo:
           </p>
           <p className="text-xs text-muted-foreground mb-8 italic">
             * El azul está permitido siempre y cuando no sea unicolor.
@@ -798,7 +794,7 @@ export function DressCodeSection() {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  7. REGISTRY / GIFTS (Vinotinto)                                          */
+/*  7. REGISTRY / GIFTS (Vinotinto) - Corazón con relleno rosado              */
 /* -------------------------------------------------------------------------- */
 
 function RegistrySection() {
@@ -812,7 +808,7 @@ function RegistrySection() {
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
         }`}
       >
-        <Heart className="mx-auto mb-4 h-7 w-7 text-white/90" strokeWidth={1.5} />
+        <Heart className="mx-auto mb-4 h-7 w-7 text-pink-400 fill-pink-400/40" strokeWidth={1.5} />
         <p className="mb-3 text-xs font-medium uppercase tracking-[0.25em] text-white/80">
           Regalos
         </p>
