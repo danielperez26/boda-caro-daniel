@@ -232,18 +232,22 @@ function EnvelopeGate({
             cardUp ? "-translate-y-[58%] opacity-100" : "translate-y-12 opacity-0"
           }`}
         >
-          <p className="text-xs font-medium uppercase tracking-[0.25em] text-[#5B1E22]">
-            Estás invitado
-          </p>
+          {/* 1. SE QUITÓ EL TEXTO "Estás invitado" de aquí */}
           <p className="mt-3 font-display text-3xl font-medium text-foreground md:text-4xl">
             {guestName ? `¡Hola, ${guestName}!` : "¡Estás invitado!"}
           </p>
           <div className="mx-auto my-4 h-px w-16 bg-[#5B1E22]/30" />
           <p className="text-sm text-muted-foreground md:text-base">
-            Esta invitación es válida para{" "}
-            <span className="font-semibold text-foreground">
-              {guests} {guests === 1 ? "invitado" : "invitados"}
-            </span>
+            {guests === 1 ? (
+              <span className="font-semibold text-foreground">Invitación individual</span>
+            ) : (
+              <>
+                Esta invitación es válida para{" "}
+                <span className="font-semibold text-foreground">
+                  {guests} personas
+                </span>
+              </>
+            )}
           </p>
         </div>
 
@@ -351,8 +355,9 @@ function Hero() {
         <div className="mx-auto my-8 h-px w-24 bg-white/30 animate-draw-line" />
       </div>
 
+      {/* 4. FRASE MODIFICADA */}
       <p className="animate-fade-in-up max-w-md text-lg leading-relaxed text-white/90 animation-delay-400">
-        Con mucha ilusión, te invitamos a ser parte del día en que comenzamos nuestra historia como recién casados
+        Con mucha ilusion, te invitamos a ser parte del dia en que comenzaremos nuestra historia como recien casados
       </p>
 
       <div className="animate-fade-in-up mt-10 flex flex-col items-center gap-2 animation-delay-500">
@@ -631,7 +636,7 @@ function LocationCard({
 const ITINERARY = [
   { time: "17:00", title: "Ceremonia", icon: Church },
   { time: "19:00", title: "Cóctel", icon: Wine },
-  { time: "20:15-20:30", title: "Banquete", icon: UtensilsCrossed },
+  { time: "20:15/20:30", title: "Banquete", icon: UtensilsCrossed }, // 3. CAMBIADO AQUÍ
   { time: "23:00", title: "Fiesta", icon: Music },
   { time: "03:00", title: "Fin fiesta", icon: Moon },
 ];
@@ -682,7 +687,7 @@ function ItinerarySection() {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  6. DRESS CODE (Incluye la foto abajo en la zona solicitada)               */
+/*  6. DRESS CODE                                                             */
 /* -------------------------------------------------------------------------- */
 
 import vestidoImg from "../assets/vestido.png";
@@ -787,7 +792,6 @@ export function DressCodeSection() {
           </div>
         </div>
 
-        {/* FOTO UBICADA EXACTAMENTE EN LA MARCA ROJA (ENTRE LA SECCIÓN CLARA Y EL FONDO GRANATE) */}
         <div className="mx-auto max-w-sm overflow-hidden rounded-2xl shadow-xl border border-primary/25 aspect-[4/3]">
           <img
             src={foto2}
@@ -801,7 +805,7 @@ export function DressCodeSection() {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  7. REGISTRY / GIFTS (Vinotinto limpio)                                    */
+/*  7. REGISTRY / GIFTS                                                       */
 /* -------------------------------------------------------------------------- */
 
 function RegistrySection() {
@@ -874,10 +878,16 @@ function RSVPSection({ guestName, seats }: { guestName: string; seats: number })
                 {guestName}
               </p>
               <p className="text-sm text-muted-foreground mt-1">
-                Invitación válida para{" "}
-                <span className="font-semibold text-foreground">
-                  {seats} {seats === 1 ? "persona" : "personas"}
-                </span>
+                {seats === 1 ? (
+                  <span className="font-semibold text-foreground">Invitación individual</span>
+                ) : (
+                  <>
+                    Esta invitación es válida para{" "}
+                    <span className="font-semibold text-foreground">
+                      {seats} personas
+                    </span>
+                  </>
+                )}
               </p>
             </div>
 
