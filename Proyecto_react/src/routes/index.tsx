@@ -102,7 +102,7 @@ function Index() {
 
   return (
     <>
-      <audio ref={audioRef} loop src="/audio/wedding-song.mp3" preload="auto" />
+      <audio ref={audioRef} loop src="/audio/elena-rose.mp3" preload="auto" />
 
       {!opened && (
         <EnvelopeGate guests={currentGuest.seats} guestName={currentGuest.name} onOpen={handleOpenInvitation} />
