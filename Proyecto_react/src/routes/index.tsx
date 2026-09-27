@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 
 import oliveBranch from "../assets/olive-branch.png";
+import transparentLogo from "../assets/logo2.png";
 import { GUESTS_DATABASE } from "../data/guests";
 import foto1 from "../assets/caro-daniel-1.jpeg";
 import foto2 from "../assets/caro-daniel-2.jpeg";
@@ -121,7 +122,7 @@ function Index() {
         <ItinerarySection />     
         <DressCodeSection />     
         <RegistrySection />      
-        <RSVPSection guestName={currentGuest.name} seats={currentGuest.seats} /> 
+        <RSVPSection guestName={currentGuest.name} /> 
         <Footer />               
 
         {opened && (
@@ -213,12 +214,32 @@ function EnvelopeGate({
     timers.current.push(
       setTimeout(() => setPhase("card"), 1000),
       setTimeout(() => setPhase("out"), 9500),
-      setTimeout(onOpen, 6500),
+      setTimeout(onOpen, 8500),
     );
   };
 
   const flapOpen = phase !== "closed";
   const cardUp = phase === "card" || phase === "out";
+
+  const renderGuestNames = (name: string) => {
+    const namesList = name.split(/\s+y\s+|,\s*/);
+    if (namesList.length <= 1) return <span>{name}</span>;
+
+    return (
+      <span className="flex flex-col items-center gap-1">
+        {namesList.map((n, idx) => (
+          <span key={idx} className="block">
+            {n.trim()}
+          </span>
+        ))}
+      </span>
+    );
+  };
+
+  const rsvpMessage =
+    guests === 1
+      ? "Hemos reservado este momento especial exclusivamente para la persona indicada en esta invitación"
+      : "Hemos reservado este momento especial exclusivamente para las personas indicadas en esta invitación";
 
   return (
     <div
@@ -232,35 +253,26 @@ function EnvelopeGate({
             cardUp ? "-translate-y-[58%] opacity-100" : "translate-y-12 opacity-0"
           }`}
         >
-          <p className="mt-3 font-display text-3xl font-medium text-foreground md:text-4xl">
-            {guestName ? `¡Hola, ${guestName}!` : "¡Estás invitado!"}
-          </p>
-          <div className="mx-auto my-4 h-px w-16 bg-[#5B1E22]/30" />
-          <p className="text-sm text-muted-foreground md:text-base">
-            {guests === 1 ? (
-              <span className="font-semibold text-foreground">Invitación individual</span>
-            ) : (
-              <>
-                Invitación válida para{" "}
-                <span className="font-semibold text-foreground">
-                  {guests} personas
-                </span>
-              </>
-            )}
+          <div className="mt-3 font-display text-2xl md:text-3xl font-medium text-foreground">
+            {guestName ? renderGuestNames(guestName) : "¡Estás invitado!"}
+          </div>
+          <p className="mt-6 text-sm text-muted-foreground leading-relaxed">
+            {rsvpMessage}
           </p>
         </div>
 
-        <div className="relative aspect-[16/11] w-full rounded-b-2xl bg-[#D4C8B4] shadow-[0_25px_60px_rgba(91,30,34,0.2)] overflow-hidden border border-[#BFAFA0]">
+        {/* Sobre en color vinotinto */}
+        <div className="relative aspect-[16/11] w-full rounded-b-2xl bg-[#5B1E22] shadow-[0_25px_60px_rgba(91,30,34,0.3)] overflow-hidden border border-[#4A171B]">
           <div 
-            className="absolute inset-y-0 left-0 w-1/2 bg-[#CBBFAD] border-r border-[#B3A494]"
+            className="absolute inset-y-0 left-0 w-1/2 bg-[#521A1E] border-r border-[#441418]"
             style={{ clipPath: "polygon(0 0, 100% 50%, 0 100%)" }}
           />
           <div 
-            className="absolute inset-y-0 right-0 w-1/2 bg-[#C3B7A5] border-l border-[#AB9C8C]"
+            className="absolute inset-y-0 right-0 w-1/2 bg-[#4D181C] border-l border-[#3F1215]"
             style={{ clipPath: "polygon(100% 0, 0 50%, 100% 100%)" }}
           />
           <div 
-            className="absolute inset-x-0 bottom-0 h-[60%] bg-[#DCD0BC] border-t border-[#B9AA9A] shadow-inner"
+            className="absolute inset-x-0 bottom-0 h-[60%] bg-[#5B1E22] border-t border-[#441418] shadow-inner"
             style={{ clipPath: "polygon(0 100%, 50% 15%, 100% 100%)" }}
           />
           <div
@@ -269,42 +281,26 @@ function EnvelopeGate({
             }`}
           >
             <div
-              className="absolute inset-0 bg-[#E5DCC9] border-b border-[#C4B5A5] shadow-md"
+              className="absolute inset-0 bg-[#682328] border-b border-[#4A171B] shadow-md"
               style={{ clipPath: "polygon(0 0, 100% 0, 50% 100%)" }}
             />
           </div>
 
+          {/* Logo transparente beige ampliado directamente en el centro */}
           <div className="absolute inset-0 z-40 flex items-center justify-center pointer-events-none">
             <button
               type="button"
               onClick={handleOpen}
               aria-label="Abrir invitación"
-              className={`group relative flex h-24 w-24 items-center justify-center text-white border border-[#481316] transition-all duration-300 pointer-events-auto hover:scale-110 active:scale-95 cursor-pointer ${
+              className={`group relative flex items-center justify-center transition-all duration-300 pointer-events-auto hover:scale-105 cursor-pointer ${
                 flapOpen ? "opacity-0 pointer-events-none" : "opacity-100"
               }`}
-              style={{
-                backgroundColor: "#6A2226",
-                backgroundImage: "radial-gradient(circle at 35% 35%, #822C31 0%, #5B1E22 65%, #421316 100%)",
-                borderRadius: "42% 58% 50% 50% / 48% 42% 58% 52%",
-                boxShadow: "0 12px 30px rgba(50,15,18,0.5), inset 0 3px 6px rgba(255,255,255,0.3), inset 0 -5px 10px rgba(35,10,12,0.6)"
-              }}
             >
-              <div 
-                className="absolute inset-2.5 flex items-center justify-center border border-white/15 transition-transform duration-300 group-hover:scale-105"
-                style={{
-                  borderRadius: "45% 55% 48% 52% / 50% 45% 55% 50%"
-                }}
-              >
-                <span 
-                  className="font-serif italic text-2xl font-normal tracking-wider text-[#F7EFE5] whitespace-nowrap select-none"
-                  style={{
-                    textShadow: "0 1px 1px rgba(255,255,255,0.4), 0 -1px 1px rgba(0,0,0,0.8)",
-                    fontFamily: "Georgia, Cambria, 'Times New Roman', serif"
-                  }}
-                >
-                  M &amp; D
-                </span>
-              </div>
+              <img 
+                src={transparentLogo} 
+                alt="Logo Mari y Dani" 
+                className="w-44 h-auto object-contain drop-shadow-xl"
+              />
             </button>
           </div>
         </div>
@@ -840,7 +836,7 @@ function RegistrySection() {
 /*  8. RSVP                                                                   */
 /* -------------------------------------------------------------------------- */
 
-function RSVPSection({ guestName, seats }: { guestName: string; seats: number }) {
+function RSVPSection({ guestName }: { guestName: string }) {
   const ref = useRef<HTMLElement>(null);
   const isVisible = useInView(ref, { once: true, threshold: 0.15 });
   const googleFormUrl = `https://docs.google.com/forms/d/e/1FAIpQLScUqWIZvrLVh0uOpVg32ZZKYtiWqJpPRTWGZ9KFZbLxQlgQNA/viewform?usp=pp_url&entry.1498135098=${encodeURIComponent(guestName)}`;
@@ -859,7 +855,7 @@ function RSVPSection({ guestName, seats }: { guestName: string; seats: number })
           </p>
           <h2 className="font-display text-3xl font-medium md:text-4xl text-foreground">Confirma tu asistencia</h2>
           <p className="mx-auto mt-4 max-w-md text-muted-foreground">
-            Por favor, confirma tu asistencia antes del 1 de marzo de 2027 rellenando nuestro formulario.
+            Por favor, confirma tu asistencia antes del 16 de febrero de 2027 rellenando nuestro formulario.
           </p>
           <div className="mx-auto my-6 h-px w-16 bg-primary/40" />
         </div>
@@ -870,26 +866,8 @@ function RSVPSection({ guestName, seats }: { guestName: string; seats: number })
           }`}
         >
           <div className="space-y-6 py-4">
-            <div className="rounded-xl border border-primary/20 bg-background/50 p-5 shadow-sm">
-              <p className="font-display text-xl font-medium text-foreground">
-                {guestName}
-              </p>
-              <p className="text-sm text-muted-foreground mt-1">
-                {seats === 1 ? (
-                  <span className="font-semibold text-foreground">Invitación individual</span>
-                ) : (
-                  <>
-                    Invitación válida para{" "}
-                    <span className="font-semibold text-foreground">
-                      {seats} personas
-                    </span>
-                  </>
-                )}
-              </p>
-            </div>
-
-            <p className="text-muted-foreground text-sm">
-              Haz clic en el botón de abajo para acceder al formulario de confirmación e indicar vuestra asistencia. ¡Os esperamos!
+            <p className="text-muted-foreground text-sm pt-2">
+              Haz clic en el botón de abajo para acceder al formulario de confirmación. ¡Los esperamos!
             </p>
             
             <a
@@ -898,7 +876,7 @@ function RSVPSection({ guestName, seats }: { guestName: string; seats: number })
               rel="noopener noreferrer"
               className="inline-flex w-full items-center justify-center rounded-md bg-primary px-6 py-4 text-base font-medium text-white transition-all hover:bg-primary/90 md:w-auto md:min-w-[280px]"
             >
-              Rellenar formulario de asistencia
+              Rellenar formulario
             </a>
           </div>
         </div>
