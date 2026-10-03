@@ -24,6 +24,8 @@ import foto2 from "../assets/caro-daniel-2.jpeg";
 import foto3 from "../assets/caro-daniel-3.jpeg";
 import foto4 from "../assets/caro-daniel-4.jpeg";
 import foto5 from "../assets/caro-daniel-5.jpeg";
+import foto6 from "../assets/caro-daniel-6.jpeg";
+import foto7 from "../assets/caro-daniel-7.jpeg";
 
 const WEDDING_DATE = new Date("2027-04-16T17:00:00");
 
@@ -636,7 +638,7 @@ function LocationCard({
 }
 
 /* -------------------------------------------------------------------------- */
-/*  5. ITINERARY                                                              */
+/*  5. ITINERARY & PHOTO                                                      */
 /* -------------------------------------------------------------------------- */
 
 const ITINERARY = [
@@ -687,6 +689,19 @@ function ItinerarySection() {
             </div>
           );
         })}
+      </div>
+
+      {/* Foto 2 ampliada con zoom interno para recortar los laterales */}
+      <div
+        className={`mx-auto mt-16 max-w-xl md:max-w-2xl overflow-hidden rounded-2xl shadow-2xl border border-white/20 aspect-[16/10] transition-all duration-1000 delay-500 ease-out ${
+          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+        }`}
+      >
+        <img
+          src={foto6}
+          alt="Mari y Dani"
+          className="h-full w-full object-cover object-center scale-125 transition-transform duration-700 hover:scale-[1.35]"
+        />
       </div>
     </section>
   );
