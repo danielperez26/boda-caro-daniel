@@ -236,10 +236,23 @@ function EnvelopeGate({
     );
   };
 
-  const rsvpMessage =
-    guests === 1
-      ? "Hemos reservado este momento especial exclusivamente para la persona indicada en esta invitación"
-      : "Hemos reservado este momento especial exclusivamente para las personas indicadas en esta invitación";
+  // Lista de invitados de honor especificados
+  const honorGuests = ["Manuel Correa", "Marusi Yitani", "Lucia Capriulo y David Pérez", "Maria Teresa Pérez y Victor Pérez"];
+  
+  // Verificamos si el invitado actual coincide con alguno de la lista (ignorando mayúsculas/minúsculas o espacios extra si es necesario)
+  const isHonorGuest = guestName 
+    ? honorGuests.some(honor => honor.toLowerCase() === guestName.trim().toLowerCase())
+    : false;
+
+  let rsvpMessage = "";
+  if (isHonorGuest) {
+    rsvpMessage = guests === 1 ? "Invitado de Honor" : "Invitados de Honor";
+  } else {
+    rsvpMessage =
+      guests === 1
+        ? "Hemos reservado este momento especial exclusivamente para la persona indicada en esta invitación"
+        : "Hemos reservado este momento especial exclusivamente para las personas indicadas en esta invitación";
+  }
 
   return (
     <div
@@ -256,7 +269,7 @@ function EnvelopeGate({
           <div className="mt-3 font-display text-2xl md:text-3xl font-medium text-foreground">
             {guestName ? renderGuestNames(guestName) : "¡Estás invitado!"}
           </div>
-          <p className="mt-6 text-sm text-muted-foreground leading-relaxed">
+          <p className={`mt-6 leading-relaxed ${isHonorGuest ? "font-display text-xl md:text-2xl font-medium text-primary" : "text-sm text-muted-foreground"}`}>
             {rsvpMessage}
           </p>
         </div>
