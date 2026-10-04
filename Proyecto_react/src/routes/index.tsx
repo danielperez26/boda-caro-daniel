@@ -419,6 +419,18 @@ function CountdownSection() {
       ) : (
         <CountdownPlaceholder visible={isVisible} />
       )}
+            {/* Foto 2 ampliada con zoom interno para recortar los laterales */}
+      <div
+        className={`mx-auto mt-16 max-w-xl md:max-w-2xl overflow-hidden rounded-2xl shadow-2xl border border-white/20 aspect-[16/10] transition-all duration-1000 delay-500 ease-out ${
+          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+        }`}
+      >
+        <img
+          src={foto6}
+          alt="Mari y Dani"
+          className="h-full w-full object-cover object-center scale-125 transition-transform duration-700 hover:scale-[1.35]"
+        />
+      </div>
     </section>
   );
 }
@@ -690,19 +702,6 @@ function ItinerarySection() {
           );
         })}
       </div>
-
-      {/* Foto 2 ampliada con zoom interno para recortar los laterales */}
-      <div
-        className={`mx-auto mt-16 max-w-xl md:max-w-2xl overflow-hidden rounded-2xl shadow-2xl border border-white/20 aspect-[16/10] transition-all duration-1000 delay-500 ease-out ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-        }`}
-      >
-        <img
-          src={foto6}
-          alt="Mari y Dani"
-          className="h-full w-full object-cover object-center scale-125 transition-transform duration-700 hover:scale-[1.35]"
-        />
-      </div>
     </section>
   );
 }
@@ -883,7 +882,7 @@ function RSVPSection({ guestName }: { guestName: string }) {
           </p>
           <h2 className="font-display text-3xl font-medium md:text-4xl text-foreground">Confirma tu asistencia</h2>
           <p className="mx-auto mt-4 max-w-md text-muted-foreground">
-            Por favor, confirma tu asistencia antes del 16 de febrero de 2027 rellenando nuestro formulario.
+            Por favor, confirma tu asistencia antes del <b>16 de febrero de 2027</b> rellenando nuestro formulario.
           </p>
           <div className="mx-auto my-6 h-px w-16 bg-primary/40" />
         </div>
