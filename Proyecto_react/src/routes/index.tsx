@@ -63,7 +63,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   const { inv } = Route.useSearch();
   const [opened, setOpened] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true); // Iniciamos en true para que esté activa
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const currentGuest = inv ? GUESTS_DATABASE[inv] : undefined;
@@ -75,7 +75,10 @@ function Index() {
       audioRef.current
         .play()
         .then(() => setIsPlaying(true))
-        .catch((e) => console.log("Autoplay bloqueado por el navegador:", e));
+        .catch((e) => {
+          console.log("Autoplay bloqueado por el navegador:", e);
+          setIsPlaying(false);
+        });
     }
   };
 
@@ -238,10 +241,8 @@ function EnvelopeGate({
     );
   };
 
-  // Lista de invitados de honor especificados
   const honorGuests = ["Manuel Correa", "Marusi Yitani", "Lucia Capriulo y David Pérez", "Maria Teresa Pérez y Victor Pérez"];
   
-  // Verificamos si el invitado actual coincide con alguno de la lista (ignorando mayúsculas/minúsculas o espacios extra si es necesario)
   const isHonorGuest = guestName 
     ? honorGuests.some(honor => honor.toLowerCase() === guestName.trim().toLowerCase())
     : false;
@@ -276,7 +277,6 @@ function EnvelopeGate({
           </p>
         </div>
 
-        {/* Sobre en color vinotinto */}
         <div className="relative aspect-[16/11] w-full rounded-b-2xl bg-[#5B1E22] shadow-[0_25px_60px_rgba(91,30,34,0.3)] overflow-hidden border border-[#4A171B]">
           <div 
             className="absolute inset-y-0 left-0 w-1/2 bg-[#521A1E] border-r border-[#441418]"
@@ -301,7 +301,6 @@ function EnvelopeGate({
             />
           </div>
 
-          {/* Logo transparente beige ampliado directamente en el centro */}
           <div className="absolute inset-0 z-40 flex items-center justify-center pointer-events-none">
             <button
               type="button"
@@ -419,7 +418,7 @@ function CountdownSection() {
       ) : (
         <CountdownPlaceholder visible={isVisible} />
       )}
-            {/* Foto 2 ampliada con zoom interno para recortar los laterales */}
+      
       <div
         className={`mx-auto mt-16 max-w-xl md:max-w-2xl overflow-hidden rounded-2xl shadow-2xl border border-white/20 aspect-[16/10] transition-all duration-1000 delay-500 ease-out ${
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
