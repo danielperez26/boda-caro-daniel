@@ -63,7 +63,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   const { inv } = Route.useSearch();
   const [opened, setOpened] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(true); // Iniciamos en true para que esté activa
+  const [isPlaying, setIsPlaying] = useState(true);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const currentGuest = inv ? GUESTS_DATABASE[inv] : undefined;
@@ -106,11 +106,13 @@ function Index() {
     );
   }
 
-  // Lista de invitados de honor
   const honorGuests = ["Manuel Correa", "Marusi Yitani", "Lucia Capriulo y David Pérez", "Maria Teresa Pérez y Victor Pérez"];
   const isHonorGuest = currentGuest.name 
     ? honorGuests.some(honor => honor.toLowerCase() === currentGuest.name.trim().toLowerCase())
     : false;
+
+  const isFamilyUrl = inv ? inv.toLowerCase().includes("familia") : false;
+  const isBastideNacad = inv ? inv.toLowerCase().includes("familia-bastide-nacad") : false;
 
   return (
     <>
@@ -121,6 +123,8 @@ function Index() {
           guests={currentGuest.seats} 
           guestName={currentGuest.name} 
           isHonorGuest={isHonorGuest}
+          isFamilyUrl={isFamilyUrl}
+          isBastideNacad={isBastideNacad}
           onOpen={handleOpenInvitation} 
         />
       )}
@@ -211,11 +215,15 @@ function EnvelopeGate({
   guests,
   guestName,
   isHonorGuest,
+  isFamilyUrl,
+  isBastideNacad,
   onOpen,
 }: {
   guests: number;
   guestName?: string | undefined;
   isHonorGuest: boolean;
+  isFamilyUrl: boolean;
+  isBastideNacad: boolean;
   onOpen: () => void;
 }) {
   const [phase, setPhase] = useState<EnvelopePhase>("closed");
@@ -230,7 +238,6 @@ function EnvelopeGate({
     if (phase !== "closed") return;
     setPhase("flap");
 
-    // Si es invitado de honor, reducimos los tiempos a la mitad (aprox. 4 segundos en total en lugar de ~9.5s)
     const cardDelay = isHonorGuest ? 500 : 1000;
     const outDelay = isHonorGuest ? 4000 : 9500;
     const openCallbackDelay = isHonorGuest ? 3500 : 8500;
@@ -261,13 +268,21 @@ function EnvelopeGate({
   };
 
   let rsvpMessage = "";
-  if (isHonorGuest) {
-    rsvpMessage = guests === 1 ? "Invitado de Honor" : "Invitados de Honor";
+  let showMessage = true;
+
+  if (isBastideNacad) {
+    rsvpMessage = "Válido para 6 personas";
+  } else if (isFamilyUrl) {
+    showMessage = false;
   } else {
-    rsvpMessage =
-      guests === 1
-        ? "Hemos reservado este momento especial exclusivamente para la persona indicada en esta invitación"
-        : "Hemos reservado este momento especial exclusivamente para las personas indicadas en esta invitación";
+    if (isHonorGuest) {
+      rsvpMessage = guests === 1 ? "Invitado de Honor" : "Invitados de Honor";
+    } else {
+      rsvpMessage =
+        guests === 1
+          ? "Hemos reservado este momento especial exclusivamente para la persona indicada en esta invitación"
+          : "Hemos reservado este momento especial exclusivamente para las personas indicadas en esta invitación";
+    }
   }
 
   return (
@@ -285,9 +300,11 @@ function EnvelopeGate({
           <div className="mt-3 font-display text-2xl md:text-3xl font-medium text-foreground">
             {guestName ? renderGuestNames(guestName) : "¡Estás invitado!"}
           </div>
-          <p className={`mt-6 leading-relaxed ${isHonorGuest ? "font-display text-xl md:text-2xl font-medium text-primary" : "text-sm text-muted-foreground"}`}>
-            {rsvpMessage}
-          </p>
+          {showMessage && (
+            <p className={`mt-6 leading-relaxed ${isHonorGuest ? "font-display text-xl md:text-2xl font-medium text-primary" : "text-sm text-muted-foreground"}`}>
+              {rsvpMessage}
+            </p>
+          )}
         </div>
 
         <div className="relative aspect-[16/11] w-full rounded-b-2xl bg-[#5B1E22] shadow-[0_25px_60px_rgba(91,30,34,0.3)] overflow-hidden border border-[#4A171B]">
@@ -803,7 +820,7 @@ export function DressCodeSection() {
             Te pedimos con cariño que evites los siguientes colores reservados para los novios y su cortejo:
           </p>
           <p className="text-xs text-muted-foreground mb-3 italic">
-            * El azul está permitido siempre y cuando no sea unicolor.
+            * El azul está permitido siempre y когда no sea unicolor.
           </p>
           <p className="text-xs text-muted-foreground mb-8 italic">
             * El borgoña está permitido siempre y cuando no sea unicolor.
@@ -884,7 +901,6 @@ function RSVPSection({ guestName, country }: { guestName: string; country?: stri
   const isVisible = useInView(ref, { once: true, threshold: 0.15 });
   const googleFormUrl = `https://docs.google.com/forms/d/e/1FAIpQLScUqWIZvrLVh0uOpVg32ZZKYtiWqJpPRTWGZ9KFZbLxQlgQNA/viewform?usp=pp_url&entry.1498135098=${encodeURIComponent(guestName)}`;
 
-  // Condicionamos la fecha límite según el país del invitado
   const deadlineDate = country === "España" ? "01 de marzo de 2027" : "16 de febrero de 2027";
 
   return (

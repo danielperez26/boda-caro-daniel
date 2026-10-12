@@ -20,7 +20,7 @@ function AdminPage() {
         <ul className="space-y-4">
           {Object.entries(GUESTS_DATABASE).map(([code, guest]) => {
             const personalUrl = `${baseUrl}/?inv=${code}`;
-            const whatsappText = `¡Hola ${guest.name}! Nos encantaría que nos acompañes en nuestra boda. Puedes ver tu invitación aquí: ${personalUrl}`;
+            const whatsappText = `¡Hola ${guest.name}!: ${personalUrl}`;
 
             return (
               <li key={code} className="p-5 border border-primary/20 rounded-xl bg-card shadow-sm">
