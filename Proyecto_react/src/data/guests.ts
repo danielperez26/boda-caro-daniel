@@ -49,7 +49,7 @@ export const GUESTS_DATABASE: Record<string, GuestInfo> = {
 
   //ESPAÑA
   "marusi-yitani": { name: "Marusi Yitani", seats: 1, country: "España" },
-  "fran-Ana": { name: "Fran y Ana Fernández", seats: 2, country: "España" },
+  "fran-Ana": { name: "Fran Correa y Ana Fernández", seats: 2, country: "España" },
   "lucia-david": { name: "Lucia Capriulo y David Pérez", seats: 2, country: "España" },
   "andres-michelle": { name: "Andres Pérez y Michelle Amiel", seats: 2, country: "España" },
   "familia-andrade-silva": { name: "Javier Silva, Leidy De Andrade y Antoine Silve", seats: 3, country: "España" },

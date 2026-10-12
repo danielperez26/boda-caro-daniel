@@ -106,12 +106,23 @@ function Index() {
     );
   }
 
+  // Lista de invitados de honor
+  const honorGuests = ["Manuel Correa", "Marusi Yitani", "Lucia Capriulo y David Pérez", "Maria Teresa Pérez y Victor Pérez"];
+  const isHonorGuest = currentGuest.name 
+    ? honorGuests.some(honor => honor.toLowerCase() === currentGuest.name.trim().toLowerCase())
+    : false;
+
   return (
     <>
       <audio ref={audioRef} loop src="/audio/juanes.mp3" preload="auto" />
 
       {!opened && (
-        <EnvelopeGate guests={currentGuest.seats} guestName={currentGuest.name} onOpen={handleOpenInvitation} />
+        <EnvelopeGate 
+          guests={currentGuest.seats} 
+          guestName={currentGuest.name} 
+          isHonorGuest={isHonorGuest}
+          onOpen={handleOpenInvitation} 
+        />
       )}
 
       <main
@@ -199,10 +210,12 @@ type EnvelopePhase = "closed" | "flap" | "card" | "out";
 function EnvelopeGate({
   guests,
   guestName,
+  isHonorGuest,
   onOpen,
 }: {
   guests: number;
   guestName?: string | undefined;
+  isHonorGuest: boolean;
   onOpen: () => void;
 }) {
   const [phase, setPhase] = useState<EnvelopePhase>("closed");
@@ -216,10 +229,16 @@ function EnvelopeGate({
   const handleOpen = () => {
     if (phase !== "closed") return;
     setPhase("flap");
+
+    // Si es invitado de honor, reducimos los tiempos a la mitad (aprox. 4 segundos en total en lugar de ~9.5s)
+    const cardDelay = isHonorGuest ? 500 : 1000;
+    const outDelay = isHonorGuest ? 4000 : 9500;
+    const openCallbackDelay = isHonorGuest ? 3500 : 8500;
+
     timers.current.push(
-      setTimeout(() => setPhase("card"), 1000),
-      setTimeout(() => setPhase("out"), 9500),
-      setTimeout(onOpen, 8500),
+      setTimeout(() => setPhase("card"), cardDelay),
+      setTimeout(() => setPhase("out"), outDelay),
+      setTimeout(onOpen, openCallbackDelay),
     );
   };
 
@@ -240,12 +259,6 @@ function EnvelopeGate({
       </span>
     );
   };
-
-  const honorGuests = ["Manuel Correa", "Marusi Yitani", "Lucia Capriulo y David Pérez", "Maria Teresa Pérez y Victor Pérez"];
-  
-  const isHonorGuest = guestName 
-    ? honorGuests.some(honor => honor.toLowerCase() === guestName.trim().toLowerCase())
-    : false;
 
   let rsvpMessage = "";
   if (isHonorGuest) {
@@ -861,10 +874,6 @@ function RegistrySection() {
     </section>
   );
 }
-
-/* -------------------------------------------------------------------------- */
-/*  8. RSVP                                                                   */
-/* -------------------------------------------------------------------------- */
 
 /* -------------------------------------------------------------------------- */
 /*  8. RSVP                                                                   */
