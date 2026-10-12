@@ -108,7 +108,7 @@ function Index() {
 
   return (
     <>
-      <audio ref={audioRef} loop src="/audio/elena-rose.mp3" preload="auto" />
+      <audio ref={audioRef} loop src="/audio/juanes.mp3" preload="auto" />
 
       {!opened && (
         <EnvelopeGate guests={currentGuest.seats} guestName={currentGuest.name} onOpen={handleOpenInvitation} />
@@ -127,7 +127,7 @@ function Index() {
         <ItinerarySection />     
         <DressCodeSection />     
         <RegistrySection />      
-        <RSVPSection guestName={currentGuest.name} /> 
+        <RSVPSection guestName={currentGuest.name} country={currentGuest.country} /> 
         <Footer />               
 
         {opened && (
@@ -587,7 +587,7 @@ function LocationsSection() {
 
         <div className="mx-auto max-w-sm overflow-hidden rounded-2xl shadow-xl border border-primary/25 aspect-[4/3]">
           <img
-            src={foto5}
+            src={foto4}
             alt="Localización boda"
             className="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-105"
           />
@@ -716,6 +716,7 @@ const FORBIDDEN_COLORS = [
   { name: "Blanco", className: "bg-[oklch(0.99_0_0)]" },
   { name: "Azul", className: "bg-[#6B9AC4]" },
   { name: "Beige", className: "bg-[#e1d0c0]" },
+  { name: "Borgoña", className: "bg-[#5a0028]" },
 ];
 
 export function DressCodeSection() {
@@ -788,8 +789,11 @@ export function DressCodeSection() {
           <p className="text-sm font-medium text-foreground mb-3">
             Te pedimos con cariño que evites los siguientes colores reservados para los novios y su cortejo:
           </p>
-          <p className="text-xs text-muted-foreground mb-8 italic">
+          <p className="text-xs text-muted-foreground mb-3 italic">
             * El azul está permitido siempre y cuando no sea unicolor.
+          </p>
+          <p className="text-xs text-muted-foreground mb-8 italic">
+            * El borgoña está permitido siempre y cuando no sea unicolor.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-8">
@@ -862,10 +866,17 @@ function RegistrySection() {
 /*  8. RSVP                                                                   */
 /* -------------------------------------------------------------------------- */
 
-function RSVPSection({ guestName }: { guestName: string }) {
+/* -------------------------------------------------------------------------- */
+/*  8. RSVP                                                                   */
+/* -------------------------------------------------------------------------- */
+
+function RSVPSection({ guestName, country }: { guestName: string; country?: string }) {
   const ref = useRef<HTMLElement>(null);
   const isVisible = useInView(ref, { once: true, threshold: 0.15 });
   const googleFormUrl = `https://docs.google.com/forms/d/e/1FAIpQLScUqWIZvrLVh0uOpVg32ZZKYtiWqJpPRTWGZ9KFZbLxQlgQNA/viewform?usp=pp_url&entry.1498135098=${encodeURIComponent(guestName)}`;
+
+  // Condicionamos la fecha límite según el país del invitado
+  const deadlineDate = country === "España" ? "01 de marzo de 2027" : "16 de febrero de 2027";
 
   return (
     <section ref={ref} className="relative bg-background px-6 py-28 overflow-hidden text-foreground">
@@ -881,7 +892,7 @@ function RSVPSection({ guestName }: { guestName: string }) {
           </p>
           <h2 className="font-display text-3xl font-medium md:text-4xl text-foreground">Confirma tu asistencia</h2>
           <p className="mx-auto mt-4 max-w-md text-muted-foreground">
-            Por favor, confirma tu asistencia antes del <b>16 de febrero de 2027</b> rellenando nuestro formulario.
+            Por favor, confirma tu asistencia antes del <b>{deadlineDate}</b> rellenando nuestro formulario.
           </p>
           <div className="mx-auto my-6 h-px w-16 bg-primary/40" />
         </div>
