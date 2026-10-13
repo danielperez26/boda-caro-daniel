@@ -15,7 +15,7 @@ export const GUESTS_DATABASE: Record<string, GuestInfo> = {
   "simon-ana": { name: "Simón Yitani y Ana Luisa Hoyos", seats: 2, country: "Caracas" },
   "yoli-javier": { name: "Yoli Sorbara y Javier Añor", seats: 2, country: "Caracas" },
   "geraldine-mario": { name: "Geraldine Bruzual, Mario Bruno y Roma Bruno", seats: 3, country: "Caracas" },
-  "familia-perez-marquez": { name: "Hector Pérez, Rudymar Marquez, Valeria Pérez, Jesus Manuel Pérez", seats: 4, country: "Caracas" },
+  "familia-perez-marquez": { name: "Familia Pérez Marquez", seats: 4, country: "Caracas" },
   "teresa-victor": { name: "Maria Teresa Pérez y Victor Pérez", seats: 2, country: "Caracas" },
   "david-ortiz": { name: "David Ortiz", seats: 1, country: "Caracas" },
   "gianfranco-cafaro": { name: "Gianfranco Cafaro", seats: 1, country: "Caracas" },
@@ -28,7 +28,7 @@ export const GUESTS_DATABASE: Record<string, GuestInfo> = {
   "eladio-elena": { name: "Eladio Arvelo y Elena Arvelo", seats: 2, country: "Miami-Mexico" },
   "maria-alejandra-bencomo": { name: "Maria Alejandra Bencomo y Javier Villalba", seats: 2, country: "Miami-Mexico" },
   "lucia-estrada": { name: "Lucia Estrada", seats: 1, country: "Miami-Mexico" },
-  "familia-colmenares-peña": { name: "Eduardo Colmenares, Nesly Peña y Oliver Colmenares", seats: 3, country: "Miami-Mexico" },
+  "familia-colmenares-peña": { name: "Familia Colmenares Peña", seats: 3, country: "Miami-Mexico" },
   "maria-andreina": { name: "Maria Andreina Mejías", seats: 1, country: "Miami-Mexico" },
   "edgard-marisa": { name: "Edgard Yitani y Marisa Medina", seats: 2, country: "Miami-Mexico" },
   "familia-perez-lorcas": { name: "Isaac Pérez y Belmary Lorcas", seats: 2, country: "Miami-Mexico" },
@@ -37,7 +37,7 @@ export const GUESTS_DATABASE: Record<string, GuestInfo> = {
   //PANAMA
   "magaly-felix": { name: "Magaly Yitani y Felix Caceres", seats: 2, country: "Panama" },
   "diego-hillary": { name: "Diego Caceres y Hillary Watson", seats: 2, country: "Panama" },
-  "familia-caceres-acevedo": { name: "Felix Caceres, Indra Acevedo, Daniel Caceres, Sofia Caceres", seats: 4, country: "Panama" },
+  "familia-caceres-acevedo": { name: "Familia Caceres Acevedo", seats: 4, country: "Panama" },
 
   //BERLIN
   "valentina-campitelli": { name: "Valentina Campitelli", seats: 1, country: "Berlin" },
@@ -70,7 +70,7 @@ export const GUESTS_DATABASE: Record<string, GuestInfo> = {
   "cristina-rocio": { name: "Cristian Sever y Rocío Morales", seats: 2, country: "España" },
   "madeleine-javier": { name: "Madeleine Chuecos y Javier Ibáñez", seats: 2, country: "España" },
   "familia-rojas": { name: "Henry Rojas, Sabina, Oliver Rojas", seats: 3, country: "España" },
-  "familia-freitas-piñeiro": { name: "Familia Freitas Piñero", seats: 2, country: "España" },
+  "maralesy-diego": { name: "Maralesy Piñero y Diego Freitas", seats: 2, country: "España" },
   "familia-vilalta-ramirez": { name: "Familia Vilalta Ramírez", seats: 3, country: "España" },
   "david-iriana": { name: "David Reyes e Iriana Hernández", seats: 2, country: "España" },
   "luis-lopez": { name: "Luis Lopez", seats: 1, country: "España" },

@@ -820,7 +820,7 @@ export function DressCodeSection() {
             Te pedimos con cariño que evites los siguientes colores reservados para los novios y su cortejo:
           </p>
           <p className="text-xs text-muted-foreground mb-3 italic">
-            * El azul está permitido siempre y когда no sea unicolor.
+            * El azul está permitido siempre y cuando no sea unicolor.
           </p>
           <p className="text-xs text-muted-foreground mb-8 italic">
             * El borgoña está permitido siempre y cuando no sea unicolor.
