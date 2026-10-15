@@ -62,7 +62,7 @@ export const GUESTS_DATABASE: Record<string, GuestInfo> = {
   "marina-cañizares": { name: "Marina Cañizares", seats: 2, country: "España" },
   "karla-wilmer": { name: "Karla Blohm y Wilmer Indaburo", seats: 2, country: "España" },
   "familia-bastide-nacad": { name: "Familia De La Bastide Nacad", seats: 6, country: "España" },
-  "Familia-althaus-yitani": { name: "Familia Althaus Yitani", seats: 3, country: "España" },
+  "familia-althaus-yitani": { name: "Familia Althaus Yitani", seats: 3, country: "España" },
   "maria-sol-ochoa": { name: "Maria Sol Ochoa y Sol Nacad", seats: 2, country: "España" },
   "isabella-yitani": { name: "Isabella Yitani", seats: 1, country: "España" },
   "lorea-alberto": { name: "Familia Piedra Yanez", seats: 3, country: "España" },
