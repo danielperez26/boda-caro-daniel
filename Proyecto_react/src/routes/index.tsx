@@ -113,6 +113,7 @@ function Index() {
 
   const isFamilyUrl = inv ? inv.toLowerCase().includes("familia") : false;
   const isBastideNacad = inv ? inv.toLowerCase().includes("familia-bastide-nacad") : false;
+  const isMonicaRobella = inv ? inv.toLowerCase().includes("monica-robella") : false;
 
   return (
     <>
@@ -125,6 +126,7 @@ function Index() {
           isHonorGuest={isHonorGuest}
           isFamilyUrl={isFamilyUrl}
           isBastideNacad={isBastideNacad}
+          isMonicaRobella={isMonicaRobella}
           onOpen={handleOpenInvitation} 
         />
       )}
@@ -217,6 +219,7 @@ function EnvelopeGate({
   isHonorGuest,
   isFamilyUrl,
   isBastideNacad,
+  isMonicaRobella,
   onOpen,
 }: {
   guests: number;
@@ -224,6 +227,7 @@ function EnvelopeGate({
   isHonorGuest: boolean;
   isFamilyUrl: boolean;
   isBastideNacad: boolean;
+  isMonicaRobella: boolean;
   onOpen: () => void;
 }) {
   const [phase, setPhase] = useState<EnvelopePhase>("closed");
@@ -272,7 +276,9 @@ function EnvelopeGate({
 
   if (isBastideNacad) {
     rsvpMessage = "Válido para 6 personas";
-  } else if (isFamilyUrl) {
+  } else if (isMonicaRobella){
+    rsvpMessage = "Válido para 2 personas";
+  }else if (isFamilyUrl) {
     showMessage = false;
   } else {
     if (isHonorGuest) {
