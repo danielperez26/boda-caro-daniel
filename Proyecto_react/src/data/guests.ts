@@ -32,7 +32,9 @@ export const GUESTS_DATABASE: Record<string, GuestInfo> = {
   "maria-andreina": { name: "Maria Andreina Mejías", seats: 1, country: "Miami-Mexico" },
   "edgard-marisa": { name: "Edgard Yitani y Marisa Medina", seats: 2, country: "Miami-Mexico" },
   "familia-perez-lorcas": { name: "Isaac Pérez y Belmary Lorcas", seats: 2, country: "Miami-Mexico" },
-  "familia-perez-litua": { name: "Javier Pérez, Cristina, Anthanas Pérez, Andrea Pérez y Javier Pérez", seats: 5, country: "Miami-Mexico" },
+  "familia-perez-litua": { name: "Familia Pérez Pérez", seats: 3, country: "Miami-Mexico" },
+  "andrea-perez": { name: "Andrea Pérez", seats: 1, country: "Miami-Mexico" },
+  "javier-perez": { name: "Javier Pérez", seats: 1, country: "Miami-Mexico" },
 
   //PANAMA
   "magaly-felix": { name: "Magaly Yitani y Felix Caceres", seats: 2, country: "Panama" },
@@ -59,7 +61,7 @@ export const GUESTS_DATABASE: Record<string, GuestInfo> = {
   "marina-cañizares": { name: "Marina Cañizares", seats: 2, country: "España" },
   "karla-wilmer": { name: "Karla Blohm y Wilmer Indaburo", seats: 2, country: "España" },
   "familia-bastide-nacad": { name: "Familia De La Bastide Nacad", seats: 6, country: "España" },
-  "melisa-yitani": { name: "Melisa Yitani y Johann Althaus", seats: 3, country: "España" },
+  "Familia-yitani-althaus": { name: "Familia Yitani Althaus", seats: 3, country: "España" },
   "maria-sol-ochoa": { name: "Maria Sol Ochoa y Sol Nacad", seats: 2, country: "España" },
   "isabella-yitani": { name: "Isabella Yitani", seats: 1, country: "España" },
   "lorea-alberto": { name: "Lorea Yanez y Alberto Piedra", seats: 2, country: "España" },
@@ -69,7 +71,7 @@ export const GUESTS_DATABASE: Record<string, GuestInfo> = {
   "joseph-goncalves": { name: "Joseph Goncalves", seats: 2, country: "España" },
   "cristina-rocio": { name: "Cristian Sever y Rocío Morales", seats: 2, country: "España" },
   "madeleine-javier": { name: "Madeleine Chuecos y Javier Ibáñez", seats: 2, country: "España" },
-  "familia-rojas": { name: "Henry Rojas, Sabina, Oliver Rojas", seats: 3, country: "España" },
+  "familia-rojas-": { name: "Familia Rojas Sabina", seats: 3, country: "España" },
   "maralesy-diego": { name: "Maralesy Piñero y Diego Freitas", seats: 2, country: "España" },
   "familia-vilalta-ramirez": { name: "Familia Vilalta Ramírez", seats: 3, country: "España" },
   "david-iriana": { name: "David Reyes e Iriana Hernández", seats: 2, country: "España" },
