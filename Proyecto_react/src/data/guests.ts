@@ -33,6 +33,7 @@ export const GUESTS_DATABASE: Record<string, GuestInfo> = {
   "maria-andreina": { name: "Maria Andreina Mejías", seats: 1, country: "Miami-Mexico" },
   "edgard-marisa": { name: "Edgard Yitani y Marisa Medina", seats: 2, country: "Miami-Mexico" },
   "familia-perez-lorcas": { name: "Isaac Pérez y Belmary Lorcas", seats: 2, country: "Miami-Mexico" },
+  "sofia-daniel": { name: "Sofía Pérez y Daniel Walus", seats: 2, country: "Miami-Mexico" },
   "familia-perez-perez": { name: "Familia Pérez Pérez", seats: 3, country: "Miami-Mexico" },
   "andrea-perez": { name: "Andrea Pérez", seats: 1, country: "Miami-Mexico" },
   "javier-perez": { name: "Javier Pérez", seats: 1, country: "Miami-Mexico" },
