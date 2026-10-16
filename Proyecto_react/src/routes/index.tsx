@@ -242,9 +242,9 @@ function EnvelopeGate({
     if (phase !== "closed") return;
     setPhase("flap");
 
-    const cardDelay = isHonorGuest ? 500 : 1000;
-    const outDelay = isHonorGuest ? 4000 : 9500;
-    const openCallbackDelay = isHonorGuest ? 3500 : 8500;
+    const cardDelay = isHonorGuest ? 500 : 800;
+    const outDelay = isHonorGuest ? 4000 : 7800;
+    const openCallbackDelay = isHonorGuest ? 3500 : 6800;
 
     timers.current.push(
       setTimeout(() => setPhase("card"), cardDelay),
