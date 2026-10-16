@@ -86,7 +86,7 @@ export const GUESTS_DATABASE: Record<string, GuestInfo> = {
   "giovanni-carmen": { name: "Giovanni Capriulo y Carmen Vargas", seats: 2, country: "España" },
   "jessica-carlos": { name: "Jessica Marian y Carlos Aznar", seats: 2, country: "España" },
   "mauricio-bottini": { name: "Mauricio Bottini", seats: 1, country: "España" },
-  "roberto-katerine": { name: "Roberto Hernández y Katerine Alvarez", seats: 2, country: "España" },
+  "roberto-katerine": { name: "Roberto Hernández y Katerine Álvarez", seats: 2, country: "España" },
   "monica-robella": { name: "Monica Robella", seats: 2, country: "España" },
   "pablo-josefina": { name: "Pablo de Sousa y Josefina Caprile", seats: 2, country: "España" },
   "tony-maggy": { name: "Tony Angilecchia y Maggy Antypas", seats: 2, country: "España" },
