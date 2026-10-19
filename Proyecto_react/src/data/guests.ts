@@ -74,7 +74,7 @@ export const GUESTS_DATABASE: Record<string, GuestInfo> = {
   "joseph-lourdes": { name: "Joseph Goncalves y Lourdes Fernández", seats: 2, country: "España" },
   "cristian-rocio": { name: "Cristian Sever y Rocío Morales", seats: 2, country: "España" },
   "familia-ibañez-chuecos": { name: "Familia Ibáñez Chuecos", seats: 2, country: "España" },
-  "henry-sabina-": { name: "Henry Rojas, Sabina Quiroja, Oliver Rojas", seats: 3, country: "España" },
+  "henry-sabina": { name: "Henry Rojas, Sabina Quiroja, Oliver Rojas", seats: 3, country: "España" },
   "maralesy-diego": { name: "Maralesy Piñero y Diego Freitas", seats: 2, country: "España" },
   "familia-vilalta-ramirez": { name: "Familia Vilalta Ramírez", seats: 3, country: "España" },
   "david-iriana": { name: "David Reyes e Iriana Hernández", seats: 2, country: "España" },
