@@ -95,7 +95,7 @@ export const GUESTS_DATABASE: Record<string, GuestInfo> = {
   "marina-carlos": { name: "Marina Gonzalez y Carlos Casas", seats: 2, country: "España" },
   "aaron-": { name: "Aaron Rodriguez y Misha", seats: 2, country: "España" },
   "cayetana-guillaume": { name: "Cayetana Fajardo y Guillaume Ayala", seats: 2, country: "España" },
-  "eva-tunom": { name: "Eva Tunom y ", seats: 2, country: "España" },
+  "eva-alberto": { name: "Eva Tuñon y Alberto Robledo ", seats: 2, country: "España" },
 };
 
 export const DEFAULT_GUEST: GuestInfo = {
